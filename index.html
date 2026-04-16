@@ -82,24 +82,24 @@
             padding-bottom: 8px;
             border-bottom: 2px solid #1a1a1a;
         }
-        .review-card {
+        a.review-card {
+            display: block;
             background: #fff;
             border: 1px solid #e5e5e5;
             border-radius: 8px;
             padding: 24px;
             margin-bottom: 16px;
             transition: border-color 0.2s;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
         }
-        .review-card:hover { border-color: #0066cc; }
+        a.review-card:hover { border-color: #0066cc; }
         .review-card h3 {
             font-size: 18px;
             margin-bottom: 4px;
-        }
-        .review-card h3 a {
             color: #1a1a1a;
-            text-decoration: none;
         }
-        .review-card h3 a:hover { color: #0066cc; }
         .review-card .meta {
             font-size: 13px;
             color: #888;
@@ -181,17 +181,14 @@
     <div class="reviews">
         <h2>Reviews</h2>
 
-        <div class="review-card">
-            <h3><a href="2604-06425.html">Neural Computers</a></h3>
+        <a href="2604-06425.html" class="review-card">
+            <h3>Neural Computers</h3>
             <p class="meta">
                 Zhuge et al. (Meta AI, KAUST) &middot; April 2026 &middot;
-                <a href="https://arxiv.org/abs/2604.06425">arXiv:2604.06425</a>
+                arXiv:2604.06425
             </p>
             <p class="summary">Can a single neural network replace a physical computer's runtime? This paper introduces the Neural Computer (NC) abstraction and two prototypes: NC_CLIGen for terminal simulation and NC_GUIWorld for desktop GUI. We found a verified novel domain contribution in CLI simulation and a decisive training insight (SVG cursor supervision: 8.7% &rarr; 98.7%), alongside significant gaps in closed-loop evaluation and citation coverage.</p>
-            <div class="links">
-                <a href="2604-06425.html">Read full review &rarr;</a>
-            </div>
-        </div>
+        </a>
 
         <!-- Add new review cards here -->
 
