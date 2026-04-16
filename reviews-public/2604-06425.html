@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: Neural Computers | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Neural Computers (arXiv:2604.06425)">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Neural Computers</h1>
+        <p class="meta">
+            Zhuge et al. (Meta AI, KAUST) &middot; April 2026 &middot;
+            <a href="https://arxiv.org/abs/2604.06425">arXiv:2604.06425</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            Reviewed by <a href="https://t46.github.io/">Shiro Takagi</a> using
+            <a href="https://github.com/unktok/unktok-reviewer">Unktok Reviewer</a>
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using
+            <a href="https://github.com/unktok/unktok-reviewer">Unktok Reviewer</a>,
+            a 26-agent, 8-phase evaluation pipeline. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no accept/reject predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <h2>Paper overview</h2>
+
+        <p><strong>Neural Computers</strong> asks a foundational question: can a single neural network take over the runtime responsibilities of a physical computer &mdash; executing instructions, maintaining persistent state, and rendering responsive interfaces &mdash; without a separate programmed operating system? The paper introduces the <em>Neural Computer</em> (NC) abstraction and a formal four-condition definition of a <em>Completely Neural Computer</em> (CNC).</p>
+
+        <p>The core formalism frames the NC as a state machine whose hidden state evolves through the model's own outputs &mdash; distinguishing it from AI agents (which control separate execution environments) and world models (which predict environment state without replacing it). Two prototype implementations are presented, both built by fine-tuning the Wan2.1 video diffusion model:</p>
+
+        <ul>
+            <li><strong>NC_CLIGen</strong>: a video model trained on ~824k CLI/terminal video streams plus ~128k Dockerized scripted sessions, evaluated on character rendering accuracy and arithmetic probe completion.</li>
+            <li><strong>NC_GUIWorld</strong>: a video model for desktop GUI simulation on Ubuntu XFCE, trained on data splits ranging from 1,400h of random interactions to 110h of goal-directed agent traces.</li>
+        </ul>
+
+        <p>The paper reports 10 controlled ablation experiments and closes with a roadmap toward fully realized CNCs, organized around four measurable open challenges: symbolic stability, routine reuse, controlled updates, and machine-native semantics.</p>
+
+        <h2>Key strengths</h2>
+
+        <p><strong>NC_CLIGen is a verified novel domain contribution.</strong> An independent search across approximately 250 literature candidates found no prior work on CLI/terminal video simulation. Character accuracy progressing from 3% (untrained) to 54% over 60k training steps and reprompting raising arithmetic probe accuracy from 4% to 83% are the first numbers of any kind in this domain.</p>
+
+        <p><strong>SVG cursor supervision is a decisive training insight.</strong> Providing explicit per-frame SVG binary cursor masks as visual supervision raises cursor accuracy from 8.7% to 98.7% (delta = 90 percentage points). Coordinate-only and Fourier-encoded baselines both fail entirely, confirming the result is non-obvious.</p>
+
+        <p><strong>The data quality over quantity finding provides actionable design guidance.</strong> 110h of goal-directed CUA agent data achieves FVD 14.72 while 1,400h of random interaction data achieves at best FVD 20.37. CUA outperforms 12.7&times; more data by 69.4% on FVD.</p>
+
+        <p><strong>The NC/CNC conceptual framework introduces genuine new formal vocabulary.</strong> The four-condition CNC specification and formal state machine notation are not anticipated by competing papers. The framework performs real analytical work: it organizes the ablation results and structures the roadmap.</p>
+
+        <p><strong>Transparent limitation disclosure is notably uncommon for an ML systems paper.</strong> The paper explicitly labels its vision section as "Position," acknowledges open-loop-only evaluation, and discloses negative training findings. This epistemic honesty lends credibility.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+
+        <p><strong>The central "runtime" claim is unsupported by any closed-loop experiment.</strong> All 10 experiments use open-loop evaluation where oracle ground-truth frames are provided at each step. The defining property of a runtime &mdash; that the model's own outputs drive subsequent state &mdash; is never tested. <em>To address this</em>, the authors could add a minimal 100-task, 5-step autoregressive evaluation in CLIGen Clean requiring no new data collection or model training &mdash; only a modified evaluation loop.</p>
+
+        <p><strong>Four directly relevant peer-reviewed papers are absent from the citations.</strong> GameNGen (ICLR 2025), DIAMOND (NeurIPS 2024 Spotlight), AVID (ICLR 2025), and DWS (ICLR 2025) all establish the technical design space NC_GUIWorld operates in. <em>To address this</em>, the authors should add all four citations and reframe NC_GUIWorld's contribution as the first systematic application of the GameNGen/DIAMOND paradigm to desktop GUI environments &mdash; an accurate and still valuable contribution.</p>
+
+        <p><strong>NeuralOS receives one sentence despite being the most directly comparable system.</strong> NeuralOS (ICLR 2026) demonstrates 256+ frame long-horizon OS state persistence via hierarchical RNN, directly addressing the open-loop limitation. <em>To address this</em>, the authors could add a formal comparison subsection acknowledging NeuralOS's advantage for long-horizon state persistence.</p>
+
+        <p><strong>No variance measures appear anywhere across all 10 experiments.</strong> For the paper's most consequential architectural recommendation (injection mode, SSIM delta = 0.006, estimated Cohen's d ~0.06&ndash;0.15), the difference may be within noise. <em>To address this</em>, the authors could run 2&ndash;3 random seeds for the key ablation tables.</p>
+
+        <p><strong>The captioning pipeline driving NC_CLIGen's key result is absent from the released code.</strong> This means users cannot reproduce core experiments. <em>To address this</em>, the authors could release the captioning pipeline with prompt templates and the episode packaging system.</p>
+
+        <h2>What would most improve this paper</h2>
+
+        <p><strong>1. Add a minimal closed-loop experiment.</strong> Highest impact-to-effort ratio. Even a degradation curve showing performance collapse would accurately characterize limitations and establish the measurement framework for future NC research.</p>
+
+        <p><strong>2. Add the four missing citations and reframe NC_GUIWorld.</strong> Writing-only change that removes the most serious scholarly integrity concern.</p>
+
+        <p><strong>3. Add a zero-shot Wan2.1 baseline.</strong> A single evaluation run to demonstrate fine-tuning actually surpasses the base model.</p>
+
+        <p><strong>4. Add statistical variance reporting.</strong> Multi-seed runs for the key ablation tables would validate or qualify the architectural recommendations.</p>
+
+        <p><strong>5. Add a formal NeuralOS comparison and disclose code attribution in the paper body.</strong> Currently the attribution appears only in the README, not the paper.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by <a href="https://github.com/unktok/unktok-reviewer">Unktok Reviewer</a>
+</footer>
+
+</body>
+</html>
