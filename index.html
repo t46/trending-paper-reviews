@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Paper Review Series</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.6;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+        /* Header */
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        header .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+        header .philosophy {
+            font-size: 14px;
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        /* About section */
+        .about {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            max-width: 800px;
+        }
+        .about h2 { font-size: 18px; margin-bottom: 12px; }
+        .about p { font-size: 14px; color: #555; margin-bottom: 8px; }
+        .about a { color: #0066cc; text-decoration: none; }
+        .about a:hover { text-decoration: underline; }
+
+        /* Pipeline visualization */
+        .pipeline {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .pipeline .step {
+            background: #f0f4ff;
+            border: 1px solid #ccd6f0;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #334;
+        }
+        .pipeline .arrow { color: #aaa; font-size: 18px; }
+
+        /* Reviews list */
+        .reviews { max-width: 800px; margin: 32px auto; }
+        .reviews h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #1a1a1a;
+        }
+        .review-card {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        .review-card:hover { border-color: #0066cc; }
+        .review-card h3 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        .review-card h3 a {
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+        .review-card h3 a:hover { color: #0066cc; }
+        .review-card .meta {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+        .review-card .meta a { color: #888; }
+        .review-card .summary {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 16px;
+        }
+        .review-card .quality {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .review-card .quality .badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .badge-strong { background: #e8f5e9; color: #2e7d32; }
+        .badge-moderate { background: #fff3e0; color: #e65100; }
+        .badge-good { background: #e3f2fd; color: #1565c0; }
+
+        .links {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+        }
+        .links a {
+            font-size: 13px;
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .links a:hover { text-decoration: underline; }
+
+        /* Feedback */
+        .feedback {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        .feedback h2 { font-size: 18px; margin-bottom: 8px; }
+        .feedback p { font-size: 14px; color: #555; }
+        .feedback a { color: #0066cc; text-decoration: none; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+            border-top: 1px solid #e5e5e5;
+            margin-top: 48px;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Trending Paper Review Series</h1>
+        <p class="subtitle">Automated rigorous reviews of trending ML/AI papers</p>
+        <p class="philosophy">Rigorous Constructive Criticism &mdash; no numerical scores, no accept/reject predictions, just evidence-based analysis and actionable improvement suggestions.</p>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="about">
+        <h2>How it works</h2>
+        <p>We use <a href="https://github.com/unktok/unktok-reviewer">Unktok Reviewer</a>, a 26-agent, 8-phase AI evaluation pipeline, to provide in-depth reviews of trending ML/AI papers. Each review includes literature analysis, methodology evaluation, effect size calculations, code-paper consistency checks, and a Devil's Advocate review.</p>
+
+        <div class="pipeline">
+            <span class="step">Paper Selection</span>
+            <span class="arrow">&rarr;</span>
+            <span class="step">8-Phase Evaluation</span>
+            <span class="arrow">&rarr;</span>
+            <span class="step">26 Agents</span>
+            <span class="arrow">&rarr;</span>
+            <span class="step">Constructive Review</span>
+        </div>
+
+        <p>This is an experiment in AI-assisted peer review. We are exploring what rigorous, transparent, and constructive evaluation looks like when driven by AI. Your feedback helps us improve &mdash; see below.</p>
+    </div>
+
+    <div class="reviews">
+        <h2>Reviews</h2>
+
+        <div class="review-card">
+            <h3><a href="https://t46.github.io/blogs/review-2604-06425.html">Neural Computers</a></h3>
+            <p class="meta">
+                Zhuge et al. (Meta AI, KAUST) &middot; April 2026 &middot;
+                <a href="https://arxiv.org/abs/2604.06425">arXiv:2604.06425</a>
+            </p>
+            <p class="summary">Can a single neural network replace a physical computer's runtime? This paper introduces the Neural Computer (NC) abstraction and two prototypes: NC_CLIGen for terminal simulation and NC_GUIWorld for desktop GUI. We found a verified novel domain contribution in CLI simulation and a decisive training insight (SVG cursor supervision: 8.7% &rarr; 98.7%), alongside significant gaps in closed-loop evaluation and citation coverage.</p>
+            <div class="quality">
+                <span class="badge badge-strong">Novelty: Strong (CLIGen)</span>
+                <span class="badge badge-moderate">Novelty: Limited (GUIWorld)</span>
+                <span class="badge badge-good">Technical: Good</span>
+            </div>
+            <div class="links">
+                <a href="https://t46.github.io/blogs/review-2604-06425.html">Read full review &rarr;</a>
+                <a href="https://github.com/t46/trending-paper-reviews/tree/main/reviews/2604.06425">View all 54 artifacts &rarr;</a>
+            </div>
+        </div>
+
+        <!-- Add new review cards here -->
+
+    </div>
+
+    <div class="feedback">
+        <h2>Your feedback matters</h2>
+        <p>This is AI-driven review. We know it has blind spots. If you notice anything inaccurate, unfair, or improvable, please tell us &mdash; it directly improves the pipeline.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+</div>
+
+<footer>
+    <a href="https://github.com/t46/trending-paper-reviews">GitHub</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by <a href="https://github.com/unktok/unktok-reviewer">Unktok Reviewer</a>
+</footer>
+
+</body>
+</html>
