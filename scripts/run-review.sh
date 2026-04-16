@@ -44,7 +44,7 @@ rm -rf "$REVIEWER_DIR/artifacts"
 mkdir -p "$REVIEWER_DIR/artifacts"
 
 cd "$REVIEWER_DIR"
-claude -p "Evaluate this paper: $ARXIV_ID
+/opt/homebrew/bin/claude --dangerously-skip-permissions -p "Evaluate this paper: $ARXIV_ID
 
 Execute all phases sequentially from Phase-1 through Phase-8-2.
 Follow the workflow-controller for phase routing.
@@ -70,7 +70,7 @@ POST_FILENAME="$TODAY-review-$SLUG.md"
 POST_PATH="$BLOG_DIR/_posts/$POST_FILENAME"
 
 cd "$SCRIPT_DIR"
-claude -p "You are generating a blog post for the Trending Paper Review Series.
+/opt/homebrew/bin/claude --dangerously-skip-permissions -p "You are generating a blog post for the Trending Paper Review Series.
 
 Read the following files:
 1. reviews/$ARXIV_ID/paper_metadata.md (or any metadata file) for title, authors, abstract
