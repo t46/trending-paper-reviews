@@ -90,7 +90,7 @@ Important:
 - No numerical scores — use descriptive quality levels only
 - Every concern must include a constructive improvement suggestion
 - Include the series introduction block
-- Link to the full review at: https://github.com/t46/trending-paper-reviews/tree/main/reviews/$ARXIV_ID" \
+" \
     --add-dir "$BLOG_DIR"
 
 # --- Step 5: Publish ---

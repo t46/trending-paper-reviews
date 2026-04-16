@@ -1,8 +1,10 @@
 # Trending Paper Review Series
 
-Automated rigorous reviews of trending ML/AI papers using [Unktok Reviewer](https://github.com/unktok/unktok-reviewer), a 26-agent, 8-phase evaluation pipeline.
+Automated rigorous reviews of trending ML/AI papers using AI agents.
 
 **Philosophy**: *Rigorous Constructive Criticism* — no numerical scores, no accept/reject predictions, just evidence-based analysis and actionable improvement suggestions.
+
+**Site**: https://t46.github.io/trending-paper-reviews/
 
 ## Quick Start
 
@@ -23,13 +25,9 @@ DRAFT=true bash scripts/run-review.sh 2504.12345
 ## How It Works
 
 1. **Select**: Fetches trending papers from [Hugging Face Daily Papers](https://huggingface.co/papers) and [AlphaXiv](https://www.alphaxiv.org/)
-2. **Evaluate**: Runs the full Unktok Reviewer pipeline (26 agents, 8 phases) — includes literature analysis, methodology evaluation, effect size calculations, code-paper consistency checks, and Devil's Advocate review
-3. **Publish**: Generates a blog post and publishes to [t46.github.io](https://t46.github.io)
-
-## Review Archive
-
-Each review's full artifacts (15+ files) are archived in `reviews/<arXiv-ID>/`.
+2. **Evaluate**: Runs AI agents to analyze literature, methodology, effect sizes, code-paper consistency, and more
+3. **Publish**: Generates a review and publishes to the site
 
 ## Published Reviews
 
-Reviews are published at [t46.github.io](https://t46.github.io) with the tag `trending-paper-review-series`.
+Reviews are published at https://t46.github.io/trending-paper-reviews/
