@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: HiVLA | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of HiVLA: A Visual-Grounded-Centric Hierarchical Embodied Manipulation System (arXiv:2604.14125)">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>HiVLA: A Visual-Grounded-Centric Hierarchical Embodied Manipulation System</h1>
+        <p class="meta">
+            Yang, Chen, Chen, Liang et al. &middot; April 2026 &middot;
+            <a href="https://arxiv.org/abs/2604.14125">arXiv:2604.14125</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no accept/reject predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            <strong>Recommendation: Major Revision.</strong> Two genuine novel contributions
+            (absolute sinusoidal PE on local crop tokens; cascaded G&rarr;L&rarr;T cross-attention)
+            are well-motivated and ablation-supported. However, the paper's central architectural
+            justification &mdash; that hierarchical decoupling "eliminates catastrophic
+            forgetting" &mdash; is tautological by construction, the contribution framing inverts
+            the evidence hierarchy, 6 of 15 training tasks are absent from all evaluation tables
+            without explanation, and no result in any table reports variance.
+        </div>
+
+        <h2>Paper overview</h2>
+
+        <p><strong>HiVLA</strong> proposes a hierarchical robotic manipulation framework that freezes a Vision-Language Model (VLM) planner and couples it to a flow-matching Diffusion Transformer (DiT) action expert through an explicit visual-grounding interface. The VLM outputs structured JSON containing a subtask description and a bounding box; this invokes an Image Crop tool that extracts a 1920x1080 local patch from the head camera.</p>
+
+        <p>Crucially, each local patch token receives an absolute sinusoidal positional encoding (PE) preserving its global-frame centroid coordinates (Eq. 4), and these position-aware local tokens are injected into the DiT through a novel cascaded three-stage cross-attention mechanism operating in <em>Global &rarr; Local &rarr; Text</em> (G&rarr;L&rarr;T) order. The system achieves 8Hz control via asynchronous VLM-DiT execution and is evaluated on RoboTwin 2.0 (9 tasks, simulation) and on a physical Aloha-Agilex-1.0 bimanual robot.</p>
+
+        <h2>Key strengths</h2>
+
+        <p><strong>Verified-novel absolute sinusoidal PE on local crop tokens.</strong> Independent novelty verification across seven Level-2-read papers covering the closest architectural relatives (InternVLA-M1, ST4VLA, DexGraspVLA, InterleavVLA, RoboGround, VP-VLA, CrayonRobo) found zero prior work applying DETR-style absolute PE to local crop tokens to recover global-frame coordinates. The ablation is decisive: removing the PE collapses Click 3 Bells from 98% to roughly 33% (a -65 pp drop) &mdash; precisely the task most structurally dependent on disambiguating spatially identical objects.</p>
+
+        <p><strong>Verified-novel cascaded G&rarr;L&rarr;T cross-attention in DiT.</strong> Absent across six Level-2-read DiT and diffusion-policy papers (GR00T-N1, DiTA, SkillDiffuser, InternVLA-M1, ST4VLA, Hi-Robot). Table 4A's exhaustive 6-permutation ablation is exemplary: G&rarr;L&rarr;T outperforms the best 2-stage approach by +12.8 pp, the best reversed 3-stage by +3.2 pp, and the worst 3-stage ordering by +9.2 pp &mdash; unusually direct evidence for an attention-ordering design choice.</p>
+
+        <p><strong>Clean architectural ablation via H-RDT baseline.</strong> The HiVLA vs. H-RDT comparison shares the same pre-trained DiT backbone, the same training dataset, and the same compute budget &mdash; among the most controlled pairwise comparisons in recent VLA papers. The +12.7 pp total advantage (estimated Cohen's d &asymp; 0.54), concentrated in Hard Tasks (+18.6 pp) rather than Easy Tasks (+5.5 pp), is architecturally coherent: visual grounding helps most where fine-grained spatial discrimination matters.</p>
+
+        <p><strong>Graduated robustness perturbation study.</strong> Six-level noise injection (0&ndash;100% for bbox, language, and combined noise) is methodologically above the VLA field average. The interpretable finding &mdash; spatial noise degrades sub-linearly (57% retention at 100% bbox corruption due to global visual fallback) while semantic noise degrades near-linearly (12% at 100% language corruption) &mdash; directly addresses the standard objection to hierarchical systems.</p>
+
+        <p><strong>Practical deployment and above-average documentation.</strong> The system runs on a physical 14-DoF bimanual robot at 8Hz. Supplementary material provides complete DiT specs, full VLM system prompt with JSON output format, all task instructions, and warm-start details &mdash; collectively above the VLA field standard.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+
+        <p><strong>The catastrophic forgetting claim is tautological.</strong> The paper's primary architectural motivation &mdash; "eliminating catastrophic forgetting" &mdash; cannot be tested by the experiments reported, because the VLM is frozen by construction during all DiT training runs. No gradient flows to the VLM, so forgetting cannot occur. The claim therefore describes a design choice, not an empirical finding, yet it justifies the entire system's complexity (frozen VLM, JSON interface, separate training pipeline). HiVLA's framing is also the strongest in its architectural class &mdash; InternVLA-M1 and ST4VLA both adopt weaker gradient-attenuation language &mdash; while having the least supporting evidence. <em>To address this</em>, authors can either train a HiVLA-Coupled variant and compare VLM reasoning benchmarks pre/post training (Path A), or reframe the Abstract/Introduction/Conclusion as an architectural design intention plus inference-only MMBench/GQA measurement of the fine-tuned Qwen3-VL-8B (Path B, much lower cost).</p>
+
+        <p><strong>Contribution framing is inverted.</strong> The paper leads with Claim 1 (hierarchical VLM+DiT decoupling), but this architectural family was established by InternVLA-M1 (October 2025) and independently replicated by ST4VLA (ICLR 2026), VP-VLA (March 2026), and HSC-VLA (March 2026). The genuinely verified-novel contributions are Claims 3 and 4 (the PE and cascaded cross-attention mechanisms above). <em>To address this</em>, restructure the contribution list to lead with Claims 3 and 4, repositioning Claim 1 as "within the now-established class of hierarchical VLM+DiT systems, we contribute the following specific interface mechanisms." Editorial fix; no new experiments.</p>
+
+        <p><strong>6 of 15 training tasks are absent from all evaluation tables.</strong> Section 5.1 states HiVLA-HD comprises 15 manipulation tasks. Table 1 reports exactly 9. The 6 omitted tasks are not named, not listed in the supplementary, and no selection criteria are provided. Without knowing which tasks are omitted and why, the headline 83.3% aggregate cannot be verified as representative. None of the 10 reference papers examined omit evaluation tasks in this manner. <em>To address this</em>, add a supplementary table reporting all 15 tasks (preferred), or provide explicit pre-specified selection criteria defined before experiments were conducted.</p>
+
+        <p><strong>Systematic absence of variance reporting.</strong> No table in the paper &mdash; not Table 1 (simulation), Table 2 (robustness), Table 3 (real-world), or Table 4 (ablation) &mdash; reports standard deviations, confidence intervals, or significance tests. All results are single-run checkpoint-averaged point estimates. This matters most for the ablation: HD crop removal (-8.1 pp, est. d &asymp; 0.47) and PE removal (-6.5 pp, est. d &asymp; 0.37) effect sizes are potentially indistinguishable from single-run training variance. All peer-reviewed reference papers (ST4VLA, DexGraspVLA, RoboGround, pi0) report variance. <em>To address this</em>, mean &plusmn; std across &ge;3 independent training seeds for Tables 1 and 4; 95% Wilson CIs for binomial rates in Table 3; replace "significantly outperforms" with "substantially outperforms" unless statistical tests are added.</p>
+
+        <p><strong>Single-benchmark evaluation on an institutional platform.</strong> All simulation experiments use RoboTwin 2.0, a platform developed by the same institutional group. No evaluation on any independent benchmark (LIBERO, RLBench, MetaWorld, CALVIN, FurnitureBench) is included. The concern is generalization uncertainty: because both training data (HiVLA-HD) and evaluation come from RoboTwin 2.0, it cannot be determined whether the reported advantages reflect a general architectural property or a platform-specific advantage. <em>To address this</em>, a zero-shot transfer evaluation on LIBERO-Long would directly test the strongest claimed advantage domain (long-horizon sequential manipulation); even 3&ndash;4 LIBERO-Long tasks would substantially strengthen the generalization argument.</p>
+
+        <p><strong>H-RDT vs. HiVLA confounds visual grounding with structured subtask conditioning.</strong> H-RDT receives neither visual grounding nor VLM-generated subtask language, so the +12.7 pp advantage cannot be attributed to visual grounding specifically. <em>To address this</em>, add an "H-RDT + Skill" condition (H-RDT trained with VLM-generated subtask language but no visual crop) to cleanly isolate the visual grounding contribution.</p>
+
+        <p><strong>Real-world evaluation is underpowered and single-baseline.</strong> Table 3 uses 30 trials per variant against a single baseline (H-RDT) with no confidence intervals. At 30 trials, the 95% Wilson CI for HiVLA's multi-object results spans approximately [10%, 42%] &mdash; intervals wide enough that point estimates cannot be treated as reliable. Three simulation baselines (pi0, pi0.5, StarVLA) are absent from real-world evaluation. <em>To address this</em>, report Wilson CIs, increase trials to &ge;50 per variant, and add at least one additional real-world baseline; alternatively, explicitly acknowledge real-world results as directional demonstrations rather than statistically validated estimates.</p>
+
+        <p><strong>Zero-shot generalization is claimed but not tested.</strong> The Abstract states the framework "allows the VLM planner to retain its ability to zero-shot generalize to diverse instructions," but no zero-shot experiment is included. All evaluation uses objects from the training distribution; the VLM evaluation in Table 6 uses a 20% held-out split of the same 210K dialogue distribution &mdash; in-distribution generalization, not zero-shot. <em>To address this</em>, either evaluate VLM mIoU on held-out object categories (uses existing data, no new robot experiments), or revise the Abstract to "the frozen VLM retains its pre-trained in-context generalization capability through architectural decoupling."</p>
+
+        <h2>What would most improve this paper</h2>
+
+        <p><strong>1. Resolve the catastrophic forgetting claim.</strong> Either run a coupled-training ablation with VLM benchmark comparison, or reframe the Abstract/Introduction/Conclusion to accurately describe the claim as architectural intent. Minimum viable: inference-only MMBench/GQA on the fine-tuned Qwen3-VL-8B.</p>
+
+        <p><strong>2. Restructure the contribution narrative.</strong> Lead with Claims 3 and 4 (verified-novel PE and cascaded cross-attention); reposition Claim 1 as context-setting within the established hierarchical VLM+DiT family. Editorial fix; no new experiments required.</p>
+
+        <p><strong>3. Report all 15 training tasks or pre-specified selection criteria.</strong> Without this, the headline 83.3% cannot be evaluated for selective reporting.</p>
+
+        <p><strong>4. Add variance reporting.</strong> 3-seed mean &plusmn; std for simulation tables and 95% Wilson CIs for real-world results &mdash; without these, the ablation differences validating the paper's two genuinely novel mechanisms cannot be distinguished from single-run artifacts.</p>
+
+        <p><strong>5. Add a cross-benchmark evaluation on LIBERO-Long.</strong> Strongly recommended at top venues; the generalization claims cannot be assessed from a single institutional benchmark.</p>
+
+        <p>Smaller editorial fixes &mdash; specifying the exact PE formula in the supplementary, citing VP-VLA as a concurrent direct competitor, correcting the InternVLA-M1 characterization (gradient attenuation, not "integrated"), reframing the Stack 3 Blocks "excelling" claim (37% absolute success is not excellence in any practical sense), and adding a Limitations subsection noting the single-bounding-box-per-subtask architectural constraint &mdash; would substantially strengthen the paper without requiring new major experiments.</p>
+
+        <p>With these revisions, HiVLA has a clear path to a publishable contribution. The specific design of the spatial grounding interface &mdash; bounding-box-directed HD crop extraction + absolute sinusoidal PE + cascaded G&rarr;L&rarr;T cross-attention &mdash; is a coherent original contribution to the design space of hierarchical VLA systems.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
