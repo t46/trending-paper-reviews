@@ -136,6 +136,8 @@ Replace ALL of the following placeholders in the template:
 - {{MONTH_YEAR}} — e.g. 'April 2026'
 - {{ARXIV_ID}} — the arXiv ID
 - {{VERDICT_SUMMARY}} — 2-4 sentences stating the paper's most consequential strength and the most important improvement direction. Free-form prose, NOT a categorical recommendation.
+- {{VERDICT_SUMMARY_PLAIN}} — same content as {{VERDICT_SUMMARY}} but as a single line (no HTML tags, no entities; use plain '—' and '->' if needed). Used in og:description / twitter:description meta tags. Keep under ~280 characters for SNS preview compatibility.
+- {{ARXIV_ID_DASHED}} — the arXiv ID with dots replaced by dashes (e.g. '2604.14125' -> '2604-14125'). Used in og:url meta tag.
 - {{OVERVIEW_PARAGRAPHS}} — Paper overview as HTML <p> tags
 - {{STRENGTHS_PARAGRAPHS}} — Key strengths as HTML <p> tags (each strength: <p><strong>Strength title.</strong> details</p>)
 - {{CONCERNS_PARAGRAPHS}} — Key concerns as HTML <p> tags (each concern: <p><strong>Concern title.</strong> evidence. <em>To address this</em>, ...</p>)
