@@ -6,6 +6,18 @@ Automated rigorous reviews of trending ML/AI papers using AI agents.
 
 **Site (primary output)**: https://t46.github.io/trending-paper-reviews/
 
+## Editorial policy
+
+This series rejects the traditional peer-review framing. **The following labels and their analogues are prohibited everywhere in our outputs (HTML body, blog posts, summary cards):**
+
+- "Major Revision", "Minor Revision", "Accept", "Reject"
+- "Recommendation: ...", "Verdict: ..." (as categorical prefixes)
+- Any other phrasing that compresses an evaluation into an editorial-decision label
+
+These labels are artifacts of legacy journal/conference workflows where a binary editorial decision was the deliverable. In this series there *is no editorial decision* — we are not gatekeeping publication. The verdict box at the top of each review surfaces the **substance** (the paper's most consequential strength + the most important improvement direction) as free-form prose, not as a category. Constructive critique and concrete improvement suggestions are the entire deliverable.
+
+If you are forking or adapting `templates/site_review.html` or `scripts/run-review.sh`, preserve this policy.
+
 ## Output policy
 
 - **The site is the primary output.** Every review must be published to https://t46.github.io/trending-paper-reviews/ as a static HTML page (`<arxiv-id-dashed>.html`) and listed in `index.html`.
@@ -42,7 +54,7 @@ DRAFT=true bash scripts/run-review.sh 2604.14125   # equivalent
 
 ## Templates
 
-- `templates/site_review.html` — site review HTML template (used for every review; placeholders: `{{TITLE}}`, `{{ARXIV_ID}}`, `{{RECOMMENDATION}}`, `{{VERDICT_SUMMARY}}`, `{{OVERVIEW_PARAGRAPHS}}`, `{{STRENGTHS_PARAGRAPHS}}`, `{{CONCERNS_PARAGRAPHS}}`, `{{IMPROVEMENTS_PARAGRAPHS}}`, etc.).
+- `templates/site_review.html` — site review HTML template (used for every review; placeholders: `{{TITLE}}`, `{{ARXIV_ID}}`, `{{VERDICT_SUMMARY}}` (free-form prose, no editorial labels), `{{OVERVIEW_PARAGRAPHS}}`, `{{STRENGTHS_PARAGRAPHS}}`, `{{CONCERNS_PARAGRAPHS}}`, `{{IMPROVEMENTS_PARAGRAPHS}}`, etc.).
 - `templates/blog_post.md` — Jekyll blog post template (used only with `--blog`).
 
 ## Published Reviews

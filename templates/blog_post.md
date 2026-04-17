@@ -78,7 +78,7 @@ tags:
 1. Keep total length between 1500-2500 words
 2. Use the same HTML style as the template (section tags, h3 with sect symbols, centered headers)
 3. Replace all {PLACEHOLDER} values with content from the review artifacts
-4. NO numerical scores, quality labels (Strong/Good/etc.), or accept/reject predictions
+4. NO numerical scores, quality labels (Strong/Good/etc.), or accept/reject predictions. **PROHIBITED phrases**: 'Major Revision', 'Minor Revision', 'Accept', 'Reject', 'Recommendation:', 'Verdict:', or any equivalent traditional peer-review editorial label. The verdict surfaces *substance* (core critique + key improvement direction), never an editorial category.
 5. Every concern MUST include a constructive suggestion ("To address this, the authors could...")
 6. Include specific evidence (section references, table citations) for all claims
 7. Maintain the "Rigorous Constructive Criticism" tone: respectful, thorough, improvement-oriented

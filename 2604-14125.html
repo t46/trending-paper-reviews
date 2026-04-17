@@ -131,13 +131,18 @@
         </div>
 
         <div class="verdict">
-            <strong>Recommendation: Major Revision.</strong> Two genuine novel contributions
-            (absolute sinusoidal PE on local crop tokens; cascaded G&rarr;L&rarr;T cross-attention)
-            are well-motivated and ablation-supported. However, the paper's central architectural
-            justification &mdash; that hierarchical decoupling "eliminates catastrophic
-            forgetting" &mdash; is tautological by construction, the contribution framing inverts
-            the evidence hierarchy, 6 of 15 training tasks are absent from all evaluation tables
-            without explanation, and no result in any table reports variance.
+            Two genuine novel contributions stand out: absolute sinusoidal positional encoding on
+            local crop tokens, and the cascaded G&rarr;L&rarr;T cross-attention inside the DiT
+            &mdash; both are well-motivated and ablation-supported.
+            The paper's central architectural justification, however, is tautological by
+            construction: claiming that hierarchical decoupling "eliminates catastrophic
+            forgetting" relies on freezing the VLM, which trivially makes forgetting impossible
+            by definition rather than by architecture. Compounding this, the contribution framing
+            inverts the evidence hierarchy, 6 of 15 training tasks are absent from all evaluation
+            tables without explanation, and no result in any table reports variance.
+            The most useful next steps are to reframe the contribution around the two genuinely
+            novel design choices, restore the missing 6 evaluation tasks, and add multi-seed
+            variance reporting on the headline ablations.
         </div>
 
         <h2>Paper overview</h2>

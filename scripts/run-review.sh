@@ -135,18 +135,19 @@ Replace ALL of the following placeholders in the template:
 - {{AUTHORS_SHORT}} — first 3-4 authors then 'et al.' if more
 - {{MONTH_YEAR}} — e.g. 'April 2026'
 - {{ARXIV_ID}} — the arXiv ID
-- {{RECOMMENDATION}} — 'Major Revision' / 'Minor Revision' / 'Accept' / 'Reject' (descriptive only — NO numerical scores)
-- {{VERDICT_SUMMARY}} — 1-3 sentence summary of the verdict
+- {{VERDICT_SUMMARY}} — 2-4 sentences stating the paper's most consequential strength and the most important improvement direction. Free-form prose, NOT a categorical recommendation.
 - {{OVERVIEW_PARAGRAPHS}} — Paper overview as HTML <p> tags
 - {{STRENGTHS_PARAGRAPHS}} — Key strengths as HTML <p> tags (each strength: <p><strong>Strength title.</strong> details</p>)
 - {{CONCERNS_PARAGRAPHS}} — Key concerns as HTML <p> tags (each concern: <p><strong>Concern title.</strong> evidence. <em>To address this</em>, ...</p>)
 - {{IMPROVEMENTS_PARAGRAPHS}} — Top improvements as HTML <p> tags (numbered: <p><strong>1. Title.</strong> details</p>)
 
 Important:
+- **PROHIBITED phrases anywhere in the output**: 'Major Revision', 'Minor Revision', 'Accept', 'Reject', 'Recommendation:', 'Verdict:', or any equivalent traditional peer-review editorial label. This series rejects the accept/reject framing entirely.
+- The verdict box surfaces the *substance* (core critique + key improvement direction), not an editorial label. Do NOT prefix {{VERDICT_SUMMARY}} with 'Recommendation:' or similar.
 - Use ONLY descriptive quality levels — no numerical scores, no accept/reject predictions in the body
 - Every concern MUST include a constructive 'To address this' improvement suggestion
 - Use HTML entities (&mdash; &rarr; &middot; &amp;) where appropriate
-- Match the tone and structure of the existing $SITE_DIR/2604-06425.html and $SITE_DIR/2604-14125.html
+- Match the tone and structure of the existing $SITE_DIR/2604-06425.html (which uses NO verdict label)
 - Do NOT include any other commentary in the output file — only the final HTML
 
 Then UPDATE the file: $INDEX_PATH
@@ -164,7 +165,7 @@ INSERT a new <a class='review-card'> for $ARXIV_ID at the TOP (immediately after
                 AUTHORS_SHORT &middot; MONTH_YEAR &middot;
                 arXiv:$ARXIV_ID
             </p>
-            <p class=\"summary\">2-3 sentence punchy summary capturing the verdict and the most distinctive finding.</p>
+            <p class=\"summary\">2-3 sentence punchy summary capturing the paper's most consequential finding and the central critique. Do NOT use 'Major Revision', 'Accept', 'Reject', or similar editorial labels.</p>
         </a>
 
 Do NOT remove or modify any existing review card. Do NOT change any other part of index.html (header, footer, styles, feedback section).
