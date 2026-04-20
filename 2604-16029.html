@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: STOP | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Cut Your Losses! Learning to Prune Paths Early for Efficient Parallel Reasoning (arXiv:2604.16029)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: STOP &mdash; Learning to Prune Paths Early">
+    <meta property="og:description" content="A clean taxonomy of path pruning and a lightweight learnable pruner achieving 70%+ token savings across 1.5B-20B models, but no variance reporting on 30-problem AIME sets and only a 0.42% gap over retrained external methods when controlling for data quality.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2604-16029.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: STOP &mdash; Learning to Prune Paths Early">
+    <meta name="twitter:description" content="A clean taxonomy of path pruning and a lightweight learnable pruner achieving 70%+ token savings, but no variance on 30-problem sets and only 0.42% over retrained external methods.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Cut Your Losses! Learning to Prune Paths Early for Efficient Parallel Reasoning</h1>
+        <p class="meta">
+            Bi, Luo, Du, Tang, Wang &middot; April 2026 &middot;
+            <a href="https://arxiv.org/abs/2604.16029">arXiv:2604.16029</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no accept/reject predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            STOP provides the first systematic taxonomy of path pruning for parallel reasoning and a clean, lightweight pruning module (special token + LoRA adapter + classification head) that achieves 70%+ token reduction with consistent accuracy gains across 1.5B&ndash;20B models. The 0.59% inference overhead is a decisive practical advantage over external verifier approaches. However, the core architectural advantage claim is undercut by the paper&rsquo;s own ablation: retrained external methods on the same high-quality Monte Carlo data close the gap to just 0.42%. Combined with no variance reporting on 30-problem evaluation sets and diminishing returns at larger scales (+7.8% at 1.5B &rarr; +2.2% at 20B), the most important next steps are adding statistical rigor and strengthening the cross-domain generalization evidence that currently sits buried in appendix tables.
+        </div>
+
+        <h2>Paper overview</h2>
+
+        <p><strong>STOP (Super TOken for Pruning)</strong> addresses a growing practical problem: when large reasoning models generate many parallel reasoning paths to improve accuracy, the majority of compute is wasted on paths doomed by early errors. The paper proposes pruning these futile paths at the prefix level using a lightweight learned module that accesses the model&rsquo;s internal hidden states.</p>
+
+        <p>The work makes two contributions. First, it provides a 2&times;2 taxonomy classifying path pruning methods by signal source (internal vs. external) and learnability (learnable vs. non-learnable), identifying Types I through IV and revealing that Type IV (learnable internal) was previously unexplored. Second, it instantiates this category with STOP: a special token appended to reasoning prefixes, processed through a LoRA adapter that activates only during scoring, producing a probability estimate of path viability via a classification head. Training uses Monte Carlo estimation with K=32 continuations per prefix to generate soft probabilistic labels.</p>
+
+        <p>The &ldquo;Launch-Check-Resume&rdquo; inference pipeline generates N short prefixes (caching KV states), scores them via STOP by appending the special token to the cached states (zero re-encoding overhead), then completes only the top-k candidates. Experiments span four model scales (DeepSeek-Qwen 1.5B/7B/8B and GPT-OSS-20B) across mathematical reasoning (AIME, BRUMO, HMMT), graduate-level QA (GPQA-Diamond), logic puzzles (ZebraLogic), and tool-use settings (AIMO3). Results show 66&ndash;80% token reduction alongside accuracy improvements on all configurations.</p>
+
+        <h2>Key strengths</h2>
+
+        <p><strong>First principled taxonomy of path pruning.</strong> The 2&times;2 classification (signal source &times; learnability) brings immediate clarity to a fragmented literature. By mapping existing methods (SlimSC, LaBoR, DeepPrune, DeepConf, AdaDec) into a structured framework and identifying Type IV as an empty quadrant, the taxonomy serves as both a literature review and a research roadmap. This organizational contribution has standalone value independent of the specific method proposed.</p>
+
+        <p><strong>Exceptionally low inference overhead.</strong> STOP adds only 0.59% latency (0.20 seconds on H100) by reusing cached KV states and requiring no re-encoding of the prefix. This is 5.7&times; lower than Type II external methods (3.37%). For production deployment where every millisecond matters, this near-zero overhead is the single most compelling practical advantage &mdash; and it derives directly from the architectural choice of using internal states rather than external models.</p>
+
+        <p><strong>Thorough ablation studies isolate design contributions.</strong> The paper systematically validates each design choice: soft MC labels outperform hard labels (K=32 vs. K=1), the LoRA adapter is necessary (removing it drops accuracy by 5 points), optimal STOP token count is 4&ndash;6, and moderate LoRA rank (128) suffices. The architecture-vs-data ablation (Table 13) is particularly commendable for its honesty in showing that much of STOP&rsquo;s advantage comes from training data quality rather than internal state access alone.</p>
+
+        <p><strong>Practical deployment guidelines via power-law scaling.</strong> The empirical relationship &gamma;&sup1; = aC<sup>b</sup>(L<sub>prefix</sub><sup>c</sup>/L<sub>task</sub><sup>d</sup>) gives practitioners a way to predict optimal retention ratios without expensive grid search. While the scaling law&rsquo;s generality needs validation, the effort to bridge research and deployment is appreciated.</p>
+
+        <p><strong>Complete reproducibility package.</strong> Code, data, and model checkpoints are publicly available. Training costs are explicitly documented (43&ndash;76 GPU hours on 8&times;H100 depending on model size). Dataset construction details including filtering criteria, prefix lengths, and per-model sample counts are fully specified.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+
+        <p><strong>No uncertainty quantification despite tiny evaluation sets.</strong> AIME contains only 30 problems per year. The headline improvement on AIME24 with 1.5B (30.10% &rarr; 37.92%) represents roughly 2.3 additional correct answers. Without standard deviations across random seeds &mdash; covering both STOP training variance and sampling stochasticity &mdash; it is impossible to determine statistical significance. Every main results table lacks error bars. <em>To address this</em>, run all experiments with 3&ndash;5 seeds, report mean &plusmn; std, and use bootstrap confidence intervals for the small AIME sets specifically.</p>
+
+        <p><strong>The architectural advantage over external methods is marginal when controlling for data quality.</strong> Table 13 shows that when a Type II (external) method is retrained on the same high-quality MC data (K=32), it achieves 37.50% vs. STOP&rsquo;s 37.92% &mdash; a gap of only 0.42 percentage points. This means the majority of STOP&rsquo;s advantage over baseline external methods comes from better training data, not from internal state access. The paper acknowledges this but does not adjust its claims accordingly. <em>To address this</em>, frame the contribution honestly: &ldquo;internal access provides a small but consistent advantage with dramatically lower inference overhead (0.59% vs. 3.37%),&rdquo; positioning the latency advantage rather than accuracy as the primary differentiator.</p>
+
+        <p><strong>Training and evaluation domain overlap undermines generalization claims.</strong> STOP is trained on ~1,000 AIME problems (1984&ndash;2023) and GPQA non-Diamond, then evaluated primarily on AIME24/25 and GPQA-Diamond. While specific problems are held out, the distributions are near-identical. The cross-domain results (ZebraLogic +3.50%, AIMO3 39&rarr;43) are more compelling evidence of generalization but are relegated to appendix tables. <em>To address this</em>, promote cross-domain evaluation to a primary result and add additional out-of-distribution benchmarks (code generation, open-ended reasoning) to test whether STOP learns domain-general reasoning quality assessment.</p>
+
+        <p><strong>Diminishing returns with model quality raise long-term relevance concerns.</strong> Accuracy gains shrink consistently with model capability: +7.82% at 1.5B, +6.98% at 7B, +2.24% at 8B, +2.24% at 20B on AIME24. This pattern suggests STOP primarily helps weaker models that produce many obviously bad paths. As reasoning models improve (70B+, future generations), accuracy gains may vanish entirely. The 70B+ scale &mdash; where inference efficiency matters most &mdash; is untested. <em>To address this</em>, evaluate on at least one 70B-class model and, if the pattern continues, reposition the contribution around token efficiency rather than simultaneous accuracy+efficiency improvement.</p>
+
+        <p><strong>No analysis of pruning failure modes.</strong> The paper never examines when STOP makes wrong pruning decisions. Missing: false negative rate (correct paths pruned), false positive rate (incorrect paths retained), calibration of probability scores, and worst-case analysis (which problems does STOP hurt most vs. no pruning). <em>To address this</em>, report precision/recall of pruning decisions, a calibration plot of STOP scores vs. actual completion success rate, and an analysis of problems where STOP degrades performance.</p>
+
+        <h2>What would most improve this paper</h2>
+
+        <p><strong>1. Add variance reporting across all results.</strong> This is the single most impactful improvement. Run with 3&ndash;5 seeds, report mean &plusmn; std, use bootstrap CIs for AIME. Without this, none of the reported improvements can be assessed for statistical significance, which undermines the entire empirical contribution.</p>
+
+        <p><strong>2. Promote cross-domain generalization to a primary result.</strong> The ZebraLogic and AIMO3 experiments are currently the strongest evidence that STOP learns something general rather than domain-specific, but they are buried in appendix tables. Make systematic cross-domain evaluation (train on math, evaluate on logic/science/code) a central part of the paper.</p>
+
+        <p><strong>3. Reframe the contribution around inference overhead rather than accuracy.</strong> The 0.59% vs. 3.37% overhead comparison is STOP&rsquo;s decisive and unambiguous advantage. Given that the accuracy advantage over retrained external methods is only 0.42%, the honest and more compelling narrative is: &ldquo;STOP matches external methods&rsquo; accuracy with 5.7&times; lower inference overhead by accessing internal states.&rdquo;</p>
+
+        <p><strong>4. Analyze pruning decision quality.</strong> Report precision/recall/F1, calibration plots, and worst-case problem analysis. This is essential for practitioners deciding whether to deploy STOP and understanding its risk profile.</p>
+
+        <p><strong>5. Extend to multi-stage progressive pruning.</strong> The fixed single-position pruning is the most significant architectural limitation. Even a proof-of-concept with 2&ndash;3 checkpoint positions would demonstrate whether progressive narrowing improves results and would open a rich follow-up research direction.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
