@@ -149,6 +149,53 @@
         }
         .links a:hover { text-decoration: underline; }
 
+        /* Newsletter CTA */
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 32px 24px;
+            margin: 32px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 20px; margin-bottom: 8px; }
+        .newsletter p { font-size: 15px; color: #555; margin-bottom: 16px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 14px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 10px; }
+
         /* Feedback */
         .feedback {
             background: #f8f9fa;
@@ -190,6 +237,20 @@
     <div class="about">
         <h2>How it works</h2>
         <p>AI agents read each paper end-to-end and produce a constructive, evidence-based review. Trending papers are auto-selected from <a href="https://huggingface.co/papers">Hugging Face Daily Papers</a>; reader suggestions are also welcome.</p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter — new rigorous reviews of trending ML/AI papers delivered every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
     </div>
 
     <div class="reviews">
