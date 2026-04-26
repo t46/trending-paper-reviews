@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: Temporally Extended MoEs | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Temporally Extended Mixture-of-Experts Models (arXiv:2604.20156)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: Temporally Extended MoEs">
+    <meta property="og:description" content="The paper credibly demonstrates expert switch rate reduction (>50% to <5%) via a novel RL options controller. The key open question: does dynamic routing or standard fine-tuning drive accuracy preservation? A static-mask ablation the authors themselves defer to future work would resolve this.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2604-20156.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: Temporally Extended MoEs">
+    <meta name="twitter:description" content="The paper credibly demonstrates expert switch rate reduction (>50% to <5%) via a novel RL options controller. The key open question: does dynamic routing or standard fine-tuning drive accuracy preservation? A static-mask ablation the authors themselves defer to future work would resolve this.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Temporally Extended Mixture-of-Experts Models</h1>
+        <p class="meta">
+            Shen &amp; Henderson (Princeton) &middot; April 2026 &middot;
+            <a href="https://arxiv.org/abs/2604.20156">arXiv:2604.20156</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no accept/reject predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            The paper's most consequential contribution is a credible, well-evidenced demonstration that expert switch rates can be driven from over 50% to below 5% via a lightweight RL-trained controller &mdash; a genuinely novel application of the options framework to MoE routing grounded in frontier-model measurements. The single most important improvement direction is adding a static-mask fine-tuning ablation that would establish whether the options framework itself, rather than any fine-tuning with self-distillation, is responsible for the accuracy preservation that anchors the headline results &mdash; a gap the authors honestly acknowledge in their own limitations section.
+        </div>
+
+        <h2>Paper overview</h2>
+
+        <p>Modern frontier LLMs such as DeepSeek-V3, Qwen3, and gpt-oss use Mixture-of-Experts architectures that activate only a sparse subset of experts per token, keeping inference compute flat while scaling total parameter count. When the full expert pool exceeds GPU memory, weights must be loaded on demand, and the efficiency of offloading depends critically on how often the active expert set changes. This paper measures switch rates &mdash; the fraction of tokens where the active expert set changes &mdash; across three production-scale MoE models (gpt-oss-20b, gpt-oss-120b, Qwen3-Next-80B-A3B), finding near-maximal rates of 0.94&ndash;1.00 that render prefetching and expert caching effectively useless.</p>
+
+        <p>The proposed solution formalizes expert loading as a semi-Markov Decision Process (s-MDP) and adapts the option-critic framework from hierarchical reinforcement learning. A lightweight per-layer controller learns when to persist the current expert set and when to switch, with a scalar deliberation cost &eta; providing a configurable tradeoff between switching frequency and task accuracy. Applied to gpt-oss-20b with LoRA adapters on the frozen base model and a reverse-KL self-distillation reward, the method reduces switch rates from 57&ndash;79% to 4&ndash;9% across six k/&eta; configurations. At the most favorable configuration (k&#770;=16, &eta;=0.02), the method retains 90.8% of base-model accuracy on MMLU; the more memory-efficient k&#770;=8 configurations yield approximately 52% average retention across benchmarks.</p>
+
+        <p>All experiments are conducted on gpt-oss-20b (24 layers, 32 experts, top-4 routing) using 200-question subsamples of MATH, MMLU, and MMMLU. The paper presents the method as a post-training adaptation applicable to any pre-trained MoE model, grounded in a principled theoretical framing and accompanied by an honest Section 10 disclosing the key missing ablation, deferred hardware measurements, and single-model scope.</p>
+
+        <h2>Key strengths</h2>
+
+        <p><strong>Verified novel design position.</strong> Independent literature analysis across three highly relevant papers (Ada-K Routing at ICLR 2025, TEAM, DES) confirms that the specific combination of training-based adaptation, autoregressive temporal extension, and layer-level expert set persistence is genuinely unoccupied by prior work. Ada-K adjusts per-token expert count; TEAM addresses multi-model cooperation; neither achieves temporal persistence of a fixed expert set across tokens as this paper does.</p>
+
+        <p><strong>Credible and robust switch rate reduction.</strong> The reduction from 57&ndash;79% to 4&ndash;9% switch rates is the paper's most reliable finding. Effect sizes are large (Cohen's h &gt; 0.8 for all six k/&eta; configurations), confidence intervals are tight, and the result holds consistently including the less favorable configurations. This result is independent of the statistical concerns that affect the accuracy claims and stands on its own as a demonstrated capability.</p>
+
+        <p><strong>Principled deliberation cost as a configurable tradeoff parameter.</strong> The scalar &eta; gives practitioners a directly interpretable handle on the capability&ndash;efficiency frontier. All three evaluated values (&eta; &isin; {0.02, 0.03, 0.04}) are reported in full, which is methodologically transparent and practically useful &mdash; more principled than ad hoc pruning ratios in comparable work.</p>
+
+        <p><strong>Frontier-model grounded motivation.</strong> Table 1's measurement of switch rates across three production-scale MoE models grounds the problem in real deployment data rather than theoretical argument. Most efficiency papers motivate their problem analytically; this paper demonstrates the problem's severity in contemporary architectures.</p>
+
+        <p><strong>Honest and thorough limitations disclosure.</strong> Section 10 explicitly acknowledges the missing discriminating ablation ("We leave this ablation to future work"), the deferred hardware measurements, and the single-model scope. This level of disclosure is above the field average and lends credibility to the results that are reported.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+
+        <p><strong>The options framework's contribution to accuracy preservation cannot be established without a missing ablation.</strong> The paper's central empirical claim is that the options framework enables quality-preserving temporal extension. All accuracy baselines are training-free; no trained baseline exists. Without comparing the full dynamic routing controller to a static-mask fine-tuning baseline &mdash; same LoRA adapters, same self-distillation reward, fixed expert mask, no dynamic routing &mdash; the paper demonstrates only that fine-tuning improves accuracy over training-free alternatives, which holds for any fine-tuning procedure and is not attributable to the options framework specifically. The controller's initialization (5% switch probability) and trained behavior (~4% switch rate) raise the possibility it behaves nearly like a static-mask model throughout. <em>To address this</em>, the authors could run a single configuration (k&#770;=16, &eta;=0.02) of static-mask LoRA fine-tuning with identical training setup and report results on all three benchmarks alongside existing baselines &mdash; this ablation requires no new data and relatively modest compute.</p>
+
+        <p><strong>The public repository is non-executable and contains a critical specification discrepancy.</strong> The file <code>controller_trainer.py</code> &mdash; the training entrypoint for the per-layer option controller &mdash; is absent from the public repository, preventing any independent reproduction of the primary method. Separately, the paper specifies LoRA rank r=16 while the repository implements r=64 &mdash; a 4&times; capacity discrepancy that directly affects both the "lightweight training" characterization and confidence that reported accuracy reflects the described method. <em>To address this</em>, the authors should restore the missing training entrypoint, determine which LoRA rank produced the reported results, correct the specification in the paper (or re-run with r=16 and report both), and add a reconciled hyperparameter table. Three additional discrepancies (controller learning rate, response length, and an unreported joint controller variant in the repository) should be resolved in the same pass.</p>
+
+        <p><strong>The k&#770;=16 accuracy claims rest on a statistically fragile foundation.</strong> For the configuration highlighted in the abstract, the proposed method versus the best training-free baseline shows overlapping 95% confidence intervals for MATH (overlap: 3.1 pp) and MMMLU (overlap: 2.3 pp) &mdash; only MMLU shows non-overlapping CIs. Effect sizes are Small for all three benchmarks (Cohen's h = 0.21&ndash;0.36). These co-occur with single-run training whose cross-run reliability is explicitly disclaimed (Footnote 4) and an unstated checkpoint selection criterion. The claim in Section 5 that the controller "substantially outperforms all baselines across benchmarks" is not statistically supported for two of three benchmarks in the primary operating regime. <em>To address this</em>, the authors could replace this characterization with language calibrated to the evidence and add bootstrap hypothesis tests (computable from existing data) or explicitly note that MATH and MMMLU improvements should be interpreted as favorable trends rather than statistically confirmed advantages.</p>
+
+        <p><strong>No hardware measurement connects the switch rate result to the paper's practical motivation.</strong> The paper's stated purpose is enabling expert offloading in memory-constrained deployments, with projected VRAM reductions of 37% at k&#770;=16 and 55% at k&#770;=8. These are analytical projections assuming perfect expert locality; no serving experiment, VRAM measurement, or inference latency comparison is reported. Whether 25-token expert persistence (corresponding to the ~4% switch rate) is sufficient for an offloading system to benefit depends on hardware loading latency that varies substantially across deployments. Contemporaneous efficiency papers (ExpertFlow, Alloc-MoE) report measured throughput results; the target paper is below field standard on this dimension. <em>To address this</em>, even a single serving experiment measuring peak VRAM or token throughput under an offloading configuration at k&#770;=16 would transform the practical claim from theoretical projection to demonstrated result.</p>
+
+        <p><strong>Ada-K Routing (ICLR 2025) &mdash; the most structurally analogous prior work &mdash; is absent from the Related Work.</strong> Ada-K trains a PPO-based lightweight allocator to dynamically adjust the number of activated experts per token at the per-layer level, structurally analogous to the target paper's per-layer option controller. Its absence means reviewers familiar with this line of work cannot assess the differentiation without the authors' analysis. The novelty is independently verified as genuine &mdash; Ada-K optimizes per-token expert count while the target paper achieves temporal persistence of a fixed set &mdash; but the omission will be noticed. <em>To address this</em>, the authors should add a citation to Yue et al. 2025 (arXiv:2410.10456) with 2&ndash;3 sentences drawing this distinction explicitly. Moving the Related Work section from the Appendix to the main paper body would also improve scrutiny of coverage.</p>
+
+        <h2>What would most improve this paper</h2>
+
+        <p><strong>1. Add the static-mask fine-tuning ablation.</strong> This is the single highest-impact experiment available. It resolves the central unverifiability concern: if the full dynamic controller outperforms static-mask fine-tuning, the options framework's contribution to accuracy is established; if results are comparable, the contribution shifts cleanly to switch rate reduction &mdash; still novel and valuable, but more precisely framed. Either outcome produces a stronger paper.</p>
+
+        <p><strong>2. Complete the repository and reconcile all paper&ndash;code discrepancies.</strong> Restoring the missing training entrypoint and resolving the LoRA rank discrepancy are prerequisites for every other improvement &mdash; the static-mask ablation should use the confirmed configuration, and hardware experiments should reflect the actual implementation. This work also determines whether the "lightweight training" characterization accurately describes the method that produced the reported numbers.</p>
+
+        <p><strong>3. Add at least one hardware serving measurement.</strong> A single experiment measuring actual VRAM reduction or token throughput under an offloading configuration at k&#770;=16 would complete the chain from switch rates to hardware efficiency and bring the paper to field standard on practical validation. Section A4 explicitly scopes this out; prioritizing it for revision would substantially strengthen the paper's core argument.</p>
+
+        <p><strong>4. Qualify k&#770;=16 accuracy claims and revise the abstract framing.</strong> Replacing "substantially outperforms all baselines across benchmarks" with language calibrated to the statistical evidence, adding bootstrap tests for the overlapping-CI benchmarks, and revising the abstract's "up to 90%" headline to reflect the full retention range across configurations (approximately 52&ndash;91%) would give readers an accurate picture of the practical capability&ndash;efficiency profile.</p>
+
+        <p><strong>5. Cite Ada-K Routing and address the training&ndash;inference routing discrepancy.</strong> Adding the Ada-K citation with conceptual differentiation closes the most visible citation gap. Adding Ma et al. 2025 (arXiv:2510.11370) &mdash; which documents that 94% of tokens see different expert assignments between training and inference engines in RL-trained MoE models &mdash; and discussing whether this discrepancy affects the target paper's training procedure converts a methodological concern into a demonstrated awareness that strengthens credibility.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
