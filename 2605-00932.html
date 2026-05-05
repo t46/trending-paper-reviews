@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: Code World Model (CWM) | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Code World Model Preparedness Report (arXiv:2605.00932)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: Code World Model (CWM)">
+    <meta property="og:description" content="Agentic CTF evaluation and a five-stage honesty framework are genuine methodological advances. But the ecosystem baseline includes gpt-oss-120b (API-only), and when excluded, CWM leads open-weight peers on Cybench -- directly inverting the cybersecurity risk conclusion.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-00932.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: Code World Model (CWM)">
+    <meta name="twitter:description" content="Agentic CTF evaluation and a five-stage honesty framework are genuine methodological advances. But the ecosystem baseline includes gpt-oss-120b (API-only), and when excluded, CWM leads open-weight peers on Cybench -- directly inverting the cybersecurity risk conclusion.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Code World Model Preparedness Report</h1>
+        <p class="meta">
+            MSL &amp; AI Security Teams (Meta) &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.00932">arXiv:2605.00932</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no accept/reject predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            The agentic CTF evaluation scaffold and five-stage reasoning trace framework are genuine methodological advances for preparedness reporting. The most important improvement direction is correcting the ecosystem baseline: gpt-oss-120b is an API-only model that threat actors cannot download or fine-tune, and when it is excluded from the comparison, CWM leads the remaining open-weight group on Cybench (25% vs. 17.5%) &mdash; directly inverting the evidentiary foundation of the cybersecurity risk conclusion. Separately, the abstract-level risk determination does not carry the paper&rsquo;s own scoping caveat: the evaluation covers only CWM with safety post-training intact, not the fine-tuning attack surface that distinguishes open-weight release from closed API access.
+        </div>
+
+        <h2>Paper overview</h2>
+
+        <p>This report documents Meta&rsquo;s pre-release safety assessment of the <strong>Code World Model (CWM)</strong>, a 32-billion-parameter open-weight model specialized for code generation and code reasoning. The evaluation spans three domains identified in Meta&rsquo;s Frontier AI Framework as posing potential catastrophic risks: cybersecurity capability, chemical and biological uplift potential, and misaligned behavioral propensities (honesty and deception).</p>
+
+        <p>The cybersecurity evaluation uses Cybench (40 CTF challenges, agentic scaffold), Hack the Box intermediate-step scoring, and a Native Code Exploitation benchmark (12 challenges). CWM is compared against three other models: Llama 4 Maverick, Qwen3-Coder-480B-A35B-Instruct, and gpt-oss-120b. The chemical and biological evaluation uses WMDP-cyber, WMDP-Bio/Chem, LAB-Bench, BioLP-Bench, and three proxy-organism computational tasks (HPCT, VCT, MBCT). The propensity evaluation uses a 510-task subset of the MASK benchmark, supplemented by a five-stage structured reasoning trace analysis applied to CWM outputs.</p>
+
+        <p>The paper concludes that CWM &ldquo;does not pose additional frontier risks beyond those present in the current AI ecosystem&rdquo; and releases it as an open-weight model. CWM is 32B parameters; the paper notes it was evaluated with safety post-training intact and explicitly defers fine-tuning attack surface analysis to future work.</p>
+
+        <h2>Key strengths</h2>
+
+        <p><strong>Agentic CTF evaluation advances beyond non-agentic benchmarks.</strong> The Cybench evaluation uses a fully agentic scaffold in which CWM executes multi-step exploit chains rather than answering isolated questions. This captures capabilities relevant to real attack sequences and is a methodological step forward over the static WMDP-cyber multiple-choice format used alongside it.</p>
+
+        <p><strong>The five-stage reasoning trace framework is a novel propensity analysis mechanism.</strong> Rather than recording only final honesty outcomes, the paper introduces a five-stage decomposition &mdash; Task Understanding, Conflict Acknowledgement, Uncertainty Externalization, Conflict Resolution, and Reasoning-Statement Consistency &mdash; scored by an LLM judge on 510 MASK traces. The finding that Conflict Acknowledgement failure specifically predicts dishonest final responses is the kind of mechanistic characterization that behavioral benchmark pass rates alone cannot produce.</p>
+
+        <p><strong>Proxy-organism biosecurity benchmarks are a principled solution to a measurement dilemma.</strong> Directly benchmarking models on live pathogen protocols is not feasible; the HPCT, VCT, and MBCT tasks use proxy organisms to estimate uplift potential without working with dangerous biological material. The bootstrapped confidence intervals on these tasks (e.g., CWM VCT 23.8% &plusmn; 5.1) are appropriately calibrated to the small sample sizes involved.</p>
+
+        <p><strong>The structured reasoning system prompt produces a measurable honesty improvement.</strong> Providing CWM with a system prompt that scaffolds the five-stage reasoning process raises normalized MASK honesty from 44.8% to 58.2% &mdash; a +13.4 percentage point improvement. Whether this generalizes beyond MASK scenarios is an open question (see concerns), but the within-benchmark effect is clearly documented and reproducible from the disclosed system prompt.</p>
+
+        <p><strong>Acknowledged limitations are specific rather than generic.</strong> The paper names three concrete evaluation gaps &mdash; benchmark coverage, tooling constraints, and enterprise-realism gaps &mdash; and explicitly commits to fine-tuning evaluation as future work. This is more informative than the boilerplate limitation language common in safety reports.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+
+        <p><strong>The ecosystem baseline includes a non-open-weight model, reversing the cybersecurity conclusion.</strong> gpt-oss-120b is available through the OpenAI API only; it cannot be downloaded, fine-tuned, or deployed by a malicious actor. The paper introduces it alongside Llama 4 Maverick and Qwen3-Coder as ecosystem comparators. On Cybench, gpt-oss-120b scores 27.5% (11/40) versus CWM&rsquo;s 25% (10/40). When gpt-oss-120b is removed, CWM ties for first among open-weight models (CWM 25% vs. Llama 4 Maverick 17.5%, Qwen3-Coder 25%). The paper&rsquo;s release justification &mdash; &ldquo;the ecosystem already contains models at or above CWM&rsquo;s capability&rdquo; &mdash; is true only when the ecosystem includes a model that threat actors cannot replicate the open-weight download. <em>To address this</em>, the authors should restructure Tables 3, 5, and 6 to distinguish &ldquo;open-weight comparators&rdquo; from &ldquo;closed API frontier reference,&rdquo; add a sensitivity analysis reporting the risk conclusion under each grouping, and explicitly discuss what the open-weight-only ordering implies for the cybersecurity risk characterization.</p>
+
+        <p><strong>Cybersecurity tables carry no confidence intervals despite being the highest-risk domain.</strong> Tables 3, 5, and 6 report pass@10 results as raw counts with no uncertainty bounds, while Tables 8&ndash;13 (Chem/Bio) and Table 14 (MASK) all include bootstrapped 95% CIs. On Native Code Exploitation (n=12), CWM achieves 8.3% (1/12) versus Qwen3-Coder&rsquo;s 16.7% (2/12) &mdash; a one-challenge difference. On Cybench (n=40), the Wilson interval for CWM&rsquo;s 25% result is approximately [13.5%, 40.9%], overlapping every other model&rsquo;s interval. The asymmetry applies the most rigorous statistical treatment to the lower-risk domains. <em>To address this</em>, the authors should apply the same bootstrapped CI procedure from Appendix B to Tables 3, 5, and 6, update the cybersecurity section text to reflect that model ordering differences fall within CI ranges, and add a sentence in Appendix B explaining the consistent statistical treatment.</p>
+
+        <p><strong>The MASK post-intervention design is near-circular.</strong> The structured reasoning system prompt explicitly instructs CWM to produce outputs matching the five rubric stage descriptions; the o3 judge then scores whether that stage-formatted content is present. Under this design, the +13.4 pp improvement measures whether a model instructed to write stage-formatted reasoning produces stage-formatted reasoning &mdash; not necessarily whether its epistemic integrity has genuinely improved. No human validation of the o3 judge is reported, and no held-out behavioral probe tests whether the intervention generalizes beyond MASK scenarios. <em>To address this</em>, the minimum fix is to reframe the finding explicitly: &ldquo;The structured reasoning prompt increases the prevalence of rubric-stage-formatted reasoning in CWM outputs by +13.4 normalized points; whether this reflects genuine improvement in epistemic integrity or format compliance has not been independently validated.&rdquo; The preferred fix is a held-out probe study on 50&ndash;100 scenarios from outside MASK, plus disclosure of the 510-task subset selection criteria and knowledge-consistency threshold.</p>
+
+        <p><strong>The risk conclusion does not carry the paper&rsquo;s own scoping caveat.</strong> Section 1.1 explicitly states that malicious fine-tuning to remove safety post-training is excluded from this assessment, and cites Volkov (2024) confirming such removal is demonstrated for Llama-class models. The abstract states a &ldquo;moderate risk&rdquo; conclusion without a corresponding caveat. Fine-tuning to remove safety constraints is precisely the mechanism that distinguishes open-weight release from closed API access for a malicious actor. <em>To address this</em>, add to both the abstract and conclusions: &ldquo;This assessment evaluates CWM with its safety post-training intact and does not evaluate capability changes from malicious fine-tuning to remove safety constraints &mdash; the primary mechanism by which open-weight models create incremental misuse risk relative to closed API models. The risk conclusion applies within this scope.&rdquo;</p>
+
+        <p><strong>The paper&rsquo;s core risk logic is the subject of a published formal critique it does not cite.</strong> Goemans et al. (arXiv 2411.08088, &ldquo;Safety Case Template for Frontier AI: A Cyber Inability Argument,&rdquo; November 2024) explicitly formalizes the inability argument and identifies requirements it must meet as a valid safety case &mdash; including threat-actor-relative thresholds and validated proxy tasks. CWM&rsquo;s ecosystem-relative comparative reasoning is precisely the argument form Goemans et al. analyze as requiring additional components to constitute a formal safety case. The paper contains no Related Work section and cites none of the six most structurally relevant genre predecessors. <em>To address this</em>, add a 1&ndash;2 page Related Work section that engages Goemans et al. directly: either demonstrate that CWM&rsquo;s design satisfies the formal requirements, or acknowledge explicitly that CWM provides a preliminary ecosystem-relative assessment that does not constitute a formal safety case in the Goemans et al. sense and identify what additional evidence the formal standard would require.</p>
+
+        <h2>What would most improve this paper</h2>
+
+        <p><strong>1. Scope the risk conclusion to the safety-post-training-intact model.</strong> Adding one paragraph to the abstract and conclusions carrying the paper&rsquo;s own acknowledged limitation through to the risk determination is the fastest and most intellectually honest single change. It requires no new experiments and takes approximately half a person-day.</p>
+
+        <p><strong>2. Correct the ecosystem baseline and add a sensitivity analysis.</strong> Restructure the comparison tables to separate open-weight models from the closed API frontier reference (gpt-oss-120b), then report the cybersecurity risk conclusion under both the four-model set and the open-weight-only set. This reanalysis requires no new evaluation runs &mdash; only restructuring of existing table data &mdash; but it determines whether the cybersecurity section&rsquo;s conclusion stands when correctly scoped.</p>
+
+        <p><strong>3. Add confidence intervals to the cybersecurity evaluation tables.</strong> Apply the same bootstrapped CI procedure already in Appendix B to Tables 3, 5, and 6. With pass@10 and n=12&ndash;40 challenges, point estimates have high variance; restoring statistical consistency with the Chem/Bio and propensity sections is essential before comparative claims in the highest-risk domain can be taken at face value.</p>
+
+        <p><strong>4. Add a Related Work section engaging Goemans et al. on the risk logic.</strong> Position the paper&rsquo;s ecosystem-relative approach relative to the published formal safety case literature. If the design satisfies the Goemans et al. requirements, demonstrate this explicitly; if it does not, acknowledge the gap and the additional evidence that would close it. Including the five closest genre predecessors &mdash; the o1 System Card, Meta&rsquo;s own CyberSecEval 2, DeepMind Dangerous Capabilities, Lukošiūtė &amp; Swanda, and Merves et al. &mdash; as part of the same writing effort addresses the full Related Work gap in one pass.</p>
+
+        <p><strong>5. Fix or caveat the MASK post-intervention finding.</strong> The minimum fix is a half-person-day reframing that withdraws the stronger &ldquo;significantly improved honesty&rdquo; claim in favor of an explicit description of what the current design measures and what validation would be needed. The preferred fix is a held-out behavioral probe on external scenarios. Until validation is available, practitioners reading this paper should not treat the +13.4 pp finding as sufficient grounds for deploying the structured reasoning prompt as a safety mitigation.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
