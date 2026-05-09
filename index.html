@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Automated rigorous reviews of trending ML/AI papers using AI agents. Evidence-based analysis with actionable improvement suggestions.">
+    <meta name="description" content="Automated rigorous reviews of trending ML/AI papers using AI agents. Free public TPR reviews plus private paper review options for researchers and labs.">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Trending Paper Review Series">
     <meta property="og:title" content="Trending Paper Review Series">
-    <meta property="og:description" content="Automated rigorous reviews of trending ML/AI papers using AI agents. Evidence-based analysis with actionable improvement suggestions.">
+    <meta property="og:description" content="Automated rigorous reviews of trending ML/AI papers using AI agents. Free public TPR reviews plus private paper review options for researchers and labs.">
     <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/">
     <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
     <meta name="twitter:title" content="Trending Paper Review Series">
-    <meta name="twitter:description" content="Automated rigorous reviews of trending ML/AI papers using AI agents. Evidence-based, constructive, no accept/reject labels.">
+    <meta name="twitter:description" content="Automated rigorous reviews of trending ML/AI papers using AI agents. Free public TPR reviews plus private paper review options for researchers and labs.">
 
     <title>Trending Paper Review Series</title>
     <style>
@@ -53,6 +53,31 @@
             margin: 0 auto;
             font-style: italic;
         }
+        .hero-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .button.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .button.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+        .button:hover { text-decoration: none; }
 
         /* About section */
         .about {
@@ -196,6 +221,49 @@
         .newsletter button:hover { background: #0052a3; }
         .newsletter .privacy { font-size: 12px; color: #999; margin-top: 10px; }
 
+        /* Paid review offer */
+        .offer {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 28px 24px;
+            margin: 32px auto;
+            max-width: 800px;
+        }
+        .offer h2 { font-size: 20px; margin-bottom: 8px; }
+        .offer .lede {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 18px;
+        }
+        .offer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+        .offer-card {
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 18px;
+            background: #fbfbfb;
+        }
+        .offer-card h3 { font-size: 16px; margin-bottom: 4px; }
+        .offer-card .price {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .offer-card p { font-size: 14px; color: #555; }
+        .offer-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 640px) {
+            .offer-grid { grid-template-columns: 1fr; }
+        }
+
         /* Feedback */
         .feedback {
             background: #f8f9fa;
@@ -229,6 +297,10 @@
         <h1>Trending Paper Review Series</h1>
         <p class="subtitle">Automated rigorous reviews of trending ML/AI papers</p>
         <p class="philosophy">Rigorous Constructive Criticism &mdash; no numerical scores, no accept/reject predictions, just evidence-based analysis and actionable improvement suggestions.</p>
+        <div class="hero-actions">
+            <a class="button primary" href="pricing.html">Private review pricing</a>
+            <a class="button secondary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a review</a>
+        </div>
     </div>
 </header>
 
@@ -241,7 +313,7 @@
 
     <div class="newsletter">
         <h2>Get daily AI paper reviews in your inbox</h2>
-        <p>Free newsletter — new rigorous reviews of trending ML/AI papers delivered every day.</p>
+        <p>Free newsletter &mdash; new rigorous reviews of trending ML/AI papers delivered every day.</p>
         <form
             action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
             method="post"
@@ -253,10 +325,39 @@
         <p class="privacy">No spam. Unsubscribe anytime.</p>
     </div>
 
+    <div class="offer" id="private-reviews">
+        <h2>Private paper reviews for researchers and labs</h2>
+        <p class="lede">The public TPR series stays free. If you need the same constructive review process applied to your own paper before submission, use a paid private review.</p>
+        <div class="offer-grid">
+            <div class="offer-card">
+                <h3>Pay-per review</h3>
+                <p class="price">JPY 10,000 / paper</p>
+                <p>One private paper review with key concerns, constructive suggestions, and an improvement roadmap.</p>
+            </div>
+            <div class="offer-card">
+                <h3>Reviewer Pro</h3>
+                <p class="price">JPY 50,000 / month</p>
+                <p>Up to 10 private paper reviews per month for labs, teams, or ongoing research programs.</p>
+            </div>
+        </div>
+        <div class="offer-actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing details</a>
+        </div>
+    </div>
+
     <div class="reviews">
         <h2>Reviews</h2>
 
         <!-- REVIEWS_START -->
+        <a href="2605-06663.html" class="review-card">
+            <h3>EMO</h3>
+            <p class="meta">
+                Wang, Bhagia &amp; Min (UC Berkeley, Ai2) &middot; May 2026 &middot;
+                arXiv:2605.06663
+            </p>
+            <p class="summary">EMO trains a 1B-active / 14B-total Mixture-of-Experts so that tokens within a document share an expert pool &mdash; making expert subsets independently usable, with a robust ~10pp Pareto gap at 25% experts vs. a matched standard MoE (Cohen&rsquo;s <em>d</em> &asymp; 7.2). The central challenge: the &ldquo;1%/3% drop&rdquo; headline bundles three sub-claims of unequal robustness on single-seed runs, the &sect;2 ModuleFormer reproduction is incomplete in three independently-disqualifying ways, and a five-paper citation chain (including property-preempting Mod-Squad) is missing &mdash; most fixable as a framing-and-citation pass without redoing the central science.</p>
+        </a>
         <a href="2605-00932.html" class="review-card">
             <h3>Code World Model Preparedness Report</h3>
             <p class="meta">

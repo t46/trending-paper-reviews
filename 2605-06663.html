@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: EMO | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of EMO: Pretraining Mixture of Experts for Emergent Modularity (arXiv:2605.06663)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: EMO">
+    <meta property="og:description" content="Document-pool routing and dynamic-d sampling deliver a robust ~10pp Pareto gap at 25% experts vs. a matched standard MoE — but the 1%/3% drop headline bundles three sub-claims of uneven robustness on single-seed runs, and the ModuleFormer reproduction is incomplete.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-06663.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: EMO">
+    <meta name="twitter:description" content="Document-pool routing and dynamic-d sampling deliver a robust ~10pp Pareto gap at 25% experts vs. a matched standard MoE — but the 1%/3% drop headline bundles three sub-claims of uneven robustness on single-seed runs, and the ModuleFormer reproduction is incomplete.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>EMO: Pretraining Mixture of Experts for Emergent Modularity</h1>
+        <p class="meta">
+            Wang, Bhagia &amp; Min (UC Berkeley, Ai2) &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.06663">arXiv:2605.06663</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no accept/reject predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            EMO contributes two verified novel mechanisms &mdash; a document-boundary supervisory signal and dynamic-<em>d</em> sampling &mdash; and an unusually robust Pareto gap (Cohen&rsquo;s <em>d</em> &asymp; 7.2) at 25% expert retention against a matched standard MoE, paired with above-typical artifact release. The most consequential improvement direction is calibration of claims to evidence: the &ldquo;1%/3% drop&rdquo; headline bundles three sub-claims of unequal robustness on single-seed runs, the &sect;2 ModuleFormer reproduction is incomplete in three independently-disqualifying ways, and a five-paper citation chain (Mod-Squad, MoCE, MoE Routing Testbed, EMoE, Sim-Pres) is missing &mdash; most of which is fixable in a framing pass without redoing the central science.
+        </div>
+
+        <h2>Paper overview</h2>
+
+        <p><strong>EMO</strong> targets a structural limitation of standard Mixture-of-Experts (MoE) language models: even though they activate only a subset of experts per token, restricting <em>inference</em> to a subset of experts for a given domain causes severe performance degradation, undermining their use in memory-constrained deployment. The paper introduces a pretraining method designed to make expert subsets <em>independently usable and composable</em> &mdash; that is, modular &mdash; without any human-defined priors.</p>
+
+        <p>The core mechanism is a per-document expert-pool constraint. Tokens within a single document are forced to select experts from a shared pool of size <em>d</em>, while different documents use different pools. Because tokens within a document tend to share a domain, this constraint encourages coherent expert groupings to emerge from document boundaries alone. The pool size <em>d</em> is itself sampled per document during training (dynamic-<em>d</em>), so the same model supports a range of subset sizes at inference.</p>
+
+        <p>Empirically, the authors pretrain a 1B-active, 14B-total EMO model on 1T tokens of OLMoE-mix-0824. They report:</p>
+
+        <ul>
+            <li><strong>Full-capacity parity</strong>: EMO is competitive with a matched standard MoE (&ldquo;Reg.MoE&rdquo;) at the full <em>d</em> = 128 setting.</li>
+            <li><strong>Subset-<em>d</em> retention</strong>: at 25% of experts, EMO loses ~1pp absolute (vs. ~10pp for the standard MoE); at 12.5%, ~3pp.</li>
+            <li><strong>Semantic specialization</strong>: expert subsets correspond to interpretable domains (e.g., math, code) rather than the low-level syntactic clusters typical of standard MoEs.</li>
+        </ul>
+
+        <p>The artifact release is above-typical for the field: model weights on Hugging Face, code under Apache-2.0 on GitHub, a blog post, and an interactive visualization.</p>
+
+        <h2>Key strengths</h2>
+
+        <p><strong>Two verified novel mechanisms.</strong> A deep cross-check against ten prior works &mdash; including ModuleFormer, Mod-Squad, MoCE, EMoE, and the MoE Routing Testbed &mdash; finds no preemption of (i) the document-boundary supervisory signal or (ii) the dynamic-<em>d</em> sampling scheme. Both are genuinely original contributions to MoE training-objective design.</p>
+
+        <p><strong>A statistically robust Pareto gap at <em>d</em> = 32.</strong> The flagship comparison &mdash; EMO at 25% expert retention vs. a matched-architecture, matched-data, matched-tokens, matched-hyperparameter Reg.MoE at the same retention &mdash; yields an estimated Cohen&rsquo;s <em>d</em> &asymp; 7.2 on MMLU. The effect is robust under any plausible per-seed standard deviation up to 2pp, meaning this sub-claim survives even pessimistic noise assumptions.</p>
+
+        <p><strong>An unusually clean matched-baseline construction.</strong> A code-level audit confirms that Reg.MoE shares architecture, data ordering, token budget, optimizer, and hyperparameters with EMO &mdash; a level of matching not always achieved in MoE re-implementation studies.</p>
+
+        <p><strong>Above-typical artifact release.</strong> Apache-2.0 code, public matched-baseline weights, a Hugging Face model release, blog, and visualization together place the paper at the upper end of reproducibility for 1B-active MoE pretraining work.</p>
+
+        <p><strong>Semantic specialization is a qualitatively striking finding.</strong> The shift from low-level syntactic clusters (typical of standard MoE) to interpretable semantic domains (math, code, etc.) is a real qualitative change with implications for compositional and modular deployment beyond the immediate paper.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+
+        <p><strong>The &sect;2 ModuleFormer reproduction is incomplete in three independently-disqualifying ways.</strong> A code-level audit shows that <code>mutualinfo_router.py</code> implements only the pretrain MI loss; the finetune-concentration step from ModuleFormer &sect;4.2 Eq. 8 &mdash; the very objective that produces ModuleFormer&rsquo;s 30&ndash;75% retention regime &mdash; is absent. The reproduction launcher (<code>scripts/models/modulemoe_*.sh</code>) is not in the public repo despite the rest of the code being Apache-2.0, and no numerical row appears in any table. The &ldquo;consistent with their reported results&rdquo; framing therefore misrepresents what was reproduced. <em>To address this</em>, the authors should either (a) add a ModuleFormer numerical row at matched scale with the finetune-concentration step explicitly enabled (and release the launcher), or (b) drop the &ldquo;we attempted to reproduce&rdquo; clause and rest the contrast on the architectural distinction (one objective vs. two), which is defensible from ModuleFormer&rsquo;s own &sect;4.1&ndash;&sect;4.2.</p>
+
+        <p><strong>A five-paper citation chain is missing, including one property-preempting work.</strong> Mod-Squad (Z. Chen et al., CVPR 2023) demonstrated single-objective standalone-subset = full-model performance in vision multi-task at 42% retention &mdash; a verbatim preemption of EMO&rsquo;s N2 property claim. ModuleFormer (which EMO does cite) itself cites Mod-Squad, and the two papers share a senior author. Four further adjacent works are also uncited: MoCE (structurally adjacent two-stage routing), MoE Routing Testbed (concurrent confirmation that balancing scope drives specialization at 0.8B/9.6B), EMoE (title-level &ldquo;Emergent Modularity&rdquo; terminology precedence), and Similarity-Preserving Routers + Task-Cond Routing Signatures. <em>To address this</em>, the authors should add all five citations in a single Related Work refresh and reframe N2 as &ldquo;the same property in <em>language pretraining without task labels</em>&rdquo; &mdash; this preserves a real novel contribution while preempting reviewer pushback.</p>
+
+        <p><strong>The &ldquo;1%/3% drop&rdquo; headline bundles three sub-claims of unequal robustness.</strong> A sub-claim decomposition shows: (a) EMO vs. Reg.MoE at <em>d</em> = 32 is robustly attributed (<em>d</em> &asymp; 7.2); (b) EMO vs. Reg.MoE at <em>d</em> = 128 has a signed mean &Delta; = &minus;0.98pp with 4-of-5 negative deltas (the &ldquo;matches&rdquo; framing is directionally misleading); (c) EMO&rsquo;s absolute drop on GSM8K is within plausible single-seed noise. A typical reader internalizes all three as fully supported, but only (a) is. <em>To address this</em>, the abstract and &sect;5.1 should disambiguate the three sub-claims explicitly &mdash; e.g., &ldquo;competitive at full capacity with small consistent losses on Gen5/GSM8K (~1.5&ndash;2pp); ~10pp Pareto gap at 25% experts vs. a matched standard MoE.&rdquo;</p>
+
+        <p><strong>Single-seed regime with no variance reporting on a 4&times;-repeated headline.</strong> All main results in Tables 1, 3 and Figures 3, 11 are single-seed. No confidence intervals, standard deviations, or significance tests appear anywhere in the headline tables, despite the &ldquo;1%/3% drop&rdquo; claim being asserted four times. Compute constraints at the 1T-token scale are real, but the paper already runs many ablations at 130B tokens where multi-seed is feasible. <em>To address this</em>, the authors should run 3&ndash;5 seeds at the 130B-token scale for Reg.MoE and EMO at <em>d</em> = 128 and <em>d</em> = 32 across all five evaluation suites, and report bootstrap-of-test-items 95% CIs (which add no extra training cost).</p>
+
+        <p><strong>The specialization-emergence story at <em>d</em> = 128 is partially confounded by inherited Global LBL.</strong> Triangulating Global LBL (Qiu et al. 2025, Fig 1b at 3.4&ndash;43B) with the MoE Routing Testbed (&sect;4.2.1, &sect;4.2.5 at 0.8B/9.6B) suggests that <em>balancing scope alone</em> &mdash; which Reg.MoE inherits &mdash; drives much of what &sect;5.3 attributes to EMO. EMO&rsquo;s unique value-add is concentrated in the <em>d</em> &lt; 128 regime. <em>To address this</em>, the authors should either run an ablation isolating per-document pool from global LBL (document-pool-only and global-LBL-only at <em>d</em> = 128), or reframe &sect;5.3 to acknowledge inheritance: &ldquo;EMO&rsquo;s per-document constraint adds a structural mechanism on top of global LBL that improves subset-<em>d</em> performance; specialization-emergence at <em>d</em> = 128 is largely attributable to the inherited global LBL.&rdquo;</p>
+
+        <p><strong>Two appendix narratives contradict their own tables on per-axis disaggregation.</strong> &sect;A.3 claims &ldquo;incorporating shared experts improves performance in EMO,&rdquo; but Table 2&rsquo;s averaged effect across <em>d</em> is &minus;0.16pp &mdash; shared experts help only at full <em>k</em> = 128 and hurt at every smaller <em>k</em>. &sect;B.4 claims EMO improves over EMO-anneal &ldquo;across most tasks and expert subset sizes,&rdquo; but on GSM8K, 3-of-5 <em>d</em>-values favor EMO-anneal. <em>To address this</em>, both narratives should be revised with per-<em>d</em> / per-task disaggregation surfaced.</p>
+
+        <p><strong>No Limitations section in a 25-page paper.</strong> Despite 11 main pages plus 14 appendix pages, there is no dedicated Limitations section. The two load-bearing assumptions &mdash; documents are domain-coherent (MA-1) and per-document expert pools transfer to task subsets (MA-2) &mdash; are unvalidated at corpus level even though both are runnable from the released code+data without new training. <em>To address this</em>, the authors should add a &sect;7 Limitations section listing MA-1, MA-2, single-seed, single-corpus, English-only, the &sect;5.3 attribution caveat, and the ModuleFormer reproduction caveat &mdash; and run the corpus diagnostics (WebOrganizer 24-domain classifier on 1K documents; per-document <em>D</em> overlap with MMLU-math task subsets) using the existing release.</p>
+
+        <h2>What would most improve this paper</h2>
+
+        <p><strong>1. Citation-hygiene refresh (presentation-only).</strong> Add Mod-Squad, MoCE, MoE Routing Testbed, EMoE, and Sim-Pres + Task-Cond in a single coherent Related Work pass, and reframe N2 as &ldquo;the same property in language pretraining without task labels.&rdquo; This preempts reviewer pushback and <em>strengthens</em> rather than weakens the contribution. Low effort, high impact.</p>
+
+        <p><strong>2. Multi-seed at the 130B-token scale (one major experiment).</strong> Run 3&ndash;5 seeds for Reg.MoE and EMO at <em>d</em> = 128 and <em>d</em> = 32 across all five evaluation suites; compute Cohen&rsquo;s <em>d</em> per sub-claim; report bootstrap CIs. This single experiment resolves the entire statistical-rigor cluster (single-seed + bundled headline + &ldquo;matches&rdquo; framing).</p>
+
+        <p><strong>3. ModuleFormer reproduction resolution.</strong> Either complete the reproduction with the finetune-concentration step and release the launcher (option a), or drop the &ldquo;we attempted to reproduce&rdquo; clause and rest the contrast on the architectural distinction (option b, presentation-only). Either path retires the only critical-severity finding.</p>
+
+        <p><strong>4. Headline reframe + Limitations section (presentation-only).</strong> Disambiguate the three sub-claims of the &ldquo;1%/3% drop&rdquo; headline in the abstract and &sect;5.1; replace &ldquo;matches Reg.MoE&rdquo; with &ldquo;competitive at <em>d</em> = 128 with small consistent losses on Gen5/GSM8K.&rdquo; Add a &sect;7 Limitations section listing the load-bearing assumptions, single-seed regime, single-corpus / English-only scope, and the &sect;5.3 attribution caveat.</p>
+
+        <p><strong>5. MA-1 / MA-2 corpus diagnostics via the released artifacts (analysis-only).</strong> Run WebOrganizer&rsquo;s 24-domain classifier on 1K OLMoE-mix-0824 documents to report the fraction of single-topic documents (MA-1); compute per-document <em>D</em> and validation-derived task-subset overlap for MMLU-math (MA-2). Both are runnable from the existing release without new training and would empirically ground &mdash; or constrain &mdash; the &sect;5.3 narrative.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
