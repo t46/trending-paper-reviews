@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: SEATS | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Stage-adaptive Token Selection for Efficient Omni-modal LLMs (arXiv:2605.20035)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: SEATS">
+    <meta property="og:description" content="SEATS is strongest as a coherent training-free efficiency method for omni-modal LLM prefill, with substantial speedups across two Qwen Omni backbones. The key improvement direction is auditability: release code, baseline adaptations, and uncertainty reporting.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-20035.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: SEATS">
+    <meta name="twitter:description" content="SEATS is strongest as a coherent training-free efficiency method for omni-modal LLM prefill, with substantial speedups across two Qwen Omni backbones. The key improvement direction is auditability: release code, baseline adaptations, and uncertainty reporting.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Stage-adaptive Token Selection for Efficient Omni-modal LLMs</h1>
+        <p class="meta">
+            Xin, Yang, Zhao, Wang et al. &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.20035">arXiv:2605.20035</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no publication-outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            SEATS is strongest as a coherent training-free efficiency method for omni-modal LLM prefill: it connects layer-wise audio/video dependence observations to a practical stage-adaptive pruning schedule, and the reported FLOPs and prefill speedups are substantial across two Qwen Omni backbones. The main improvement direction is auditability &mdash; release the implementation, evaluation scripts, and baseline adaptations, then add confidence intervals so the close accuracy gaps can be interpreted as more than point estimates.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>SEATS</strong> targets the prefill bottleneck in omni-modal LLMs, where temporally aligned visual and audio tokens are expensive to carry through every language-model layer. The paper's central observation is depth-dependent: non-textual token dependence appears strongest in shallow layers, weaker in middle layers, and negligible in late layers.</p>
+
+        <p>The method maps that observation into a training-free stage-adaptive token selection strategy. It combines pre-LLM diversity selection, inner-LLM query-guided budget allocation, and late-layer removal of non-textual tokens, with separate handling for audio/video streams and stage-specific retention schedules.</p>
+
+        <p>Experiments on Qwen2.5-Omni and Qwen3-Omni cover five audio-video benchmarks, multiple retention ratios, efficiency metrics, and ablations. The evidence supports SEATS as a strong practical acceleration method, while the paper's most consequential open questions concern public reproducibility, uncertainty around close accuracy differences, and validation of the stage boundaries beyond the diagnostic benchmark used to motivate them.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Coherent stage-adaptive design.</strong> The paper does more than prune tokens uniformly: it links a layer-wise audio/video dependence pattern to a shallow-middle-late schedule, making the method conceptually cleaner than a single global token budget.</p>
+
+        <p><strong>Strong efficiency evidence across two backbones.</strong> The reported FLOPs reductions and prefill speedups are substantial on both Qwen2.5-Omni and Qwen3-Omni, while most full-token task performance is preserved under aggressive retention settings.</p>
+
+        <p><strong>Relevant training-free comparison set.</strong> The baseline suite includes omni-modal token selection methods as well as adapted image and video pruning methods such as OmniZip, FastV, VisionZip, and DivPrune, which is the right neighborhood for evaluating a training-free inference method.</p>
+
+        <p><strong>Useful component ablations.</strong> The ablation study separates the effects of inner-LLM selection, decay scheduling, cross-modal allocation, and late-layer removal, giving readers a plausible account of which pieces drive the observed efficiency-performance tradeoff.</p>
+
+        <p><strong>Detailed paper-level reproduction notes.</strong> Appendix material documents retention ratios, baseline adaptation choices, and official repositories. Those notes do not replace executable code, but they make the intended experimental setup clearer than the main tables alone would.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>The public repository currently has no implementation.</strong> The paper and metadata point to a GitHub repository, but the available repository does not contain SEATS source code, dependency files, evaluation scripts, or baseline implementations. <em>To address this</em>, release a tagged reproduction package with SEATS modules, Qwen integration patches, LMMs-Eval adapters, exact configs, dependency lockfiles, and scripts for the main tables.</p>
+
+        <p><strong>Baseline adaptation fairness cannot yet be audited.</strong> Several comparison methods are adapted outside their original target modality, and Appendix B.2 describes these adaptations only at a narrative level. <em>To address this</em>, publish each adapted baseline as a separate config or wrapper with source commit, modified files, retained-token accounting, and validation against the original method's expected behavior.</p>
+
+        <p><strong>Close accuracy gaps need uncertainty reporting.</strong> Some reported differences against the closest baselines are small enough that run-level variance, bootstrap confidence intervals, or paired tests could change how the rankings are interpreted. <em>To address this</em>, add confidence intervals over evaluation instances, repeated-run intervals where seeds are involved, and paired tests whenever per-example outcomes are available.</p>
+
+        <p><strong>The layer-dependency motivation is narrower than the evaluation scope.</strong> The stage schedule is motivated by WorldSense-derived layer-removal diagnostics, but the method is then applied across Daily-Omni, OmniVideoBench, Video-MME, and LVOmniBench as well. <em>To address this</em>, add Figure-2-style diagnostics for each benchmark or show through transfer ablations that the chosen boundaries do not cause measurable loss outside the motivating benchmark.</p>
+
+        <p><strong>Manual hyperparameters limit deployment confidence.</strong> Transition layers, decay parameters, allocation thresholds, and per-backbone ratios are manually selected, which makes it harder to know how much calibration is needed for a new omni-modal backbone. <em>To address this</em>, provide a low-cost boundary and hyperparameter calibration recipe, then report sensitivity around the selected values and include a concrete streaming-inference stress test.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release the complete code and reproduction package.</strong> This is the highest-leverage change: it would make the SEATS implementation, baseline adaptations, and paper-code consistency independently inspectable.</p>
+
+        <p><strong>2. Add statistical uncertainty to the main results.</strong> Confidence intervals and paired tests would distinguish robust efficiency-performance conclusions from close point-estimate rankings.</p>
+
+        <p><strong>3. Validate baseline adaptations explicitly.</strong> Baseline wrappers with source commits, configs, and behavior checks would make the comparison set substantially more credible.</p>
+
+        <p><strong>4. Extend layer-dependency validation across benchmarks.</strong> Per-benchmark diagnostics would show whether the shallow/middle/late schedule is a general omni-modal pattern or a useful heuristic tuned to the motivating analysis.</p>
+
+        <p><strong>5. Reframe scope and deployment guidance.</strong> Position the contribution precisely as training-free omni-modal inference acceleration, clarify its relation to trainable methods such as OmniSIFT and EchoingPixels, and add a checklist for adapting SEATS to new om-LLMs.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&amp;body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
