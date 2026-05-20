@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: POW3R | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Not Every Rubric Teaches Equally: Policy-Aware Rubric Rewards for RLVR (arXiv:2605.20164)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: POW3R">
+    <meta property="og:description" content="POW3R separates rubric importance from current trainability, showing why dead or saturated criteria waste optimization pressure. The next step is public reproducibility, uncertainty reporting, and human or rubric-free validation before empirical claims are treated as settled.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-20164.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: POW3R">
+    <meta name="twitter:description" content="POW3R separates rubric importance from current trainability, showing why dead or saturated criteria waste optimization pressure. The next step is public reproducibility, uncertainty reporting, and human or rubric-free validation before empirical claims are treated as settled.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Not Every Rubric Teaches Equally: Policy-Aware Rubric Rewards for RLVR</h1>
+        <p class="meta">
+            Tyagi, Guo, Rezaei, George et al. &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.20164">arXiv:2605.20164</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no publication-outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            POW3R's most consequential strength is its crisp separation between a rubric criterion's human importance and its current usefulness as a training signal: dead or saturated criteria should not receive the same optimization pressure as criteria with rollout-level contrast. The improvement direction is equally clear &mdash; the paper needs public reproducibility artifacts, uncertainty reporting, and human or rubric-free validation before the empirical claims can be treated as settled.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>Not Every Rubric Teaches Equally</strong> studies reinforcement learning with verifiable rewards in settings where the desired behavior cannot be reduced to a single automatically checked answer. Its target is rubric-based RLVR: prompt-specific qualitative criteria are judged, weighted, and aggregated into a scalar reward for policy optimization.</p>
+
+        <p>The paper's key observation is that standard static rubric aggregation mixes two different ideas. A criterion can be important to the final human rubric while still being useless as a current training signal if every rollout fails it or every rollout already satisfies it. POW3R addresses this by preserving human weights and category balance while adapting criterion-level weights from rollout-level contrast.</p>
+
+        <p>The empirical package spans a private multimodal dataset and HealthBench across vision-language and text model families. The reported point estimates are directionally encouraging for mean rubric reward, and the mechanism is technically coherent. The evidence is still incomplete because uncertainty reporting, public artifacts, judge-independent validation, reward-hacking audits, and close dynamic-rubric baselines are missing.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Clear training-signal diagnostic.</strong> The paper usefully distinguishes dead, saturated, and mixed rubric criteria, then connects that taxonomy to group-relative optimization pressure. This makes the problem concrete rather than merely arguing that rubric weights are imperfect.</p>
+
+        <p><strong>Minimal aggregation-layer method.</strong> POW3R changes the reward aggregation procedure rather than the optimizer, rubric set, or judge interface. That small method surface makes the idea easy to understand and potentially easy to retrofit into existing GRPO or RLVR pipelines.</p>
+
+        <p><strong>Directionally broad empirical support.</strong> The method is evaluated across multimodal and text settings, multiple base policies, and several static aggregation baselines. The consistent mean-reward ordering gives POW3R a credible practical signal, even before stronger validation is added.</p>
+
+        <p><strong>Mechanism evidence is interpretable.</strong> The paper links POW3R's dynamic factors to rollout contrast and reward spread, which helps readers see why the method redirects optimization pressure rather than treating it as a black-box improvement.</p>
+
+        <p><strong>Appendices are unusually useful.</strong> Judge prompts, hyperparameters, criterion categories, and examples are documented more explicitly than in many rubric-RL papers. These details do not solve reproducibility by themselves, but they provide a solid starting point for a public reproduction package.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Public reproducibility remains blocked.</strong> No public implementation, private multimodal dataset, judge-call logs, or end-to-end run scripts were found, so independent labs cannot verify the central empirical claims. <em>To address this</em>, release code, configs, data schemas, a public subset or surrogate benchmark, cached judge verdicts where permissible, run logs, seeds, and checkpoint-selection rules.</p>
+
+        <p><strong>Statistical uncertainty is missing from the main results.</strong> The tables emphasize point estimates even though several deltas appear small and the trained settings use limited repeated runs. <em>To address this</em>, publish per-run values, bootstrap confidence intervals over prompts, paired tests, and judge-disagreement intervals for the main comparisons.</p>
+
+        <p><strong>The evaluation depends heavily on LLM judges.</strong> The same broad class of judge signal underlies training rewards, policy-aware reweighting, and final rubric evaluation, which leaves open whether rubric gains correspond to human-perceived quality. <em>To address this</em>, add blind human evaluation on a stratified sample, rubric-free frontier-judge comparisons, and category-level judge-disagreement analysis.</p>
+
+        <p><strong>Reward-hacking risk is not directly tested.</strong> Preserving external benchmark performance is useful, but it does not rule out verbosity, factual drift, superficial criterion satisfaction, or imbalance between presence-based and absence-based criteria. <em>To address this</em>, audit response length, factual claim density, factuality, absence-criterion behavior, holistic preferences, and examples where high-alpha criteria dominate the final response.</p>
+
+        <p><strong>The comparison set omits close dynamic alternatives.</strong> Static aggregation baselines isolate useful components, but they do not show how POW3R compares with evolving-rubric, curriculum, adaptive pairwise, or multi-reward normalization approaches. <em>To address this</em>, add RuCL-like schedules, OnlineRubrics or RLER-style criteria evolution, OpenRS-style adaptive pairwise evaluation where feasible, and GDPO-style normalization baselines.</p>
+
+        <p><strong>HealthBench strict completion is mixed.</strong> POW3R improves overall HealthBench rubric reward, but it is not uniformly strongest on strict completion across model settings. <em>To address this</em>, state this limitation directly and analyze whether signed-criterion conversion, category balancing, or alpha bounds trade off against perfect-criterion satisfaction.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release a complete reproduction package.</strong> The highest-impact improvement is a tagged repository with training code, exact configs, public or shareable data artifacts, cached judge outputs, seeds, and scripts for reproducing the main tables.</p>
+
+        <p><strong>2. Add uncertainty and paired validation.</strong> Per-seed tables, bootstrap intervals, paired tests, and judge-disagreement intervals would make the claims robust rather than point-estimate based.</p>
+
+        <p><strong>3. Validate quality beyond the training rubric.</strong> Blind human evaluation, rubric-free judge panels, and reward-hacking audits would show whether POW3R improves actual answer quality rather than only the measured rubric reward.</p>
+
+        <p><strong>4. Compare against dynamic-rubric and multi-reward baselines.</strong> RuCL-like curricula, OnlineRubrics or RLER-style criteria evolution, OpenRS-style adaptive pairwise interfaces, and GDPO-style normalization would better locate POW3R within the closest methodological neighborhood.</p>
+
+        <p><strong>5. Stress-test method choices.</strong> Ablations over alpha bounds, smoothing, valid-rollout thresholds, signed criteria, absence criteria, and public-domain datasets would clarify when POW3R is reliable and when static rubric priors are safer.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&amp;body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
