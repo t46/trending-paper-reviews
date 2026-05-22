@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: AutoRubric-T2I | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of AutoRubric-T2I: Robust Rule-Based Reward Model for Text-to-Image Alignment (arXiv:2605.17602)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: AutoRubric-T2I">
+    <meta property="og:description" content="AutoRubric-T2I makes T2I rewards more inspectable by learning compact VLM-scored rubrics from a small preference set. The main improvement direction is stronger evidence: uncertainty intervals, judge calibration, cost curves, and cleaner reproduction scripts.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-17602.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: AutoRubric-T2I">
+    <meta name="twitter:description" content="AutoRubric-T2I makes T2I rewards more inspectable by learning compact VLM-scored rubrics from a small preference set. The main improvement direction is stronger evidence: uncertainty intervals, judge calibration, cost curves, and cleaner reproduction scripts.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>AutoRubric-T2I: Robust Rule-Based Reward Model for Text-to-Image Alignment</h1>
+        <p class="meta">
+            Kuei-Chun Kao, Daixuan Huo, Yuanhao Ban &amp; Cho-Jui Hsieh &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.17602">arXiv:2605.17602</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no accept/reject predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            AutoRubric-T2I makes text-to-image reward modeling more inspectable by learning a compact set of VLM-scored rubrics from a small preference set, then using those rubrics as weighted reward components for evaluation and RL. The most consequential strength is the practical bridge it builds between interpretable rubric judging and reward-model performance; the most important improvement direction is to make the evidence more precise through uncertainty reporting, judge calibration, cost-quality curves, and stronger reproduction packaging.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>AutoRubric-T2I</strong> targets a recurring failure mode in text-to-image alignment: scalar reward models can favor visually appealing outputs while missing prompt-specific requirements. Instead of training a large opaque preference model, the paper proposes a framework that learns explicit rubrics and asks a VLM judge to score image-prompt pairs against those rubrics.</p>
+
+        <p>The method synthesizes candidate rubrics from preference-pair reasoning traces, converts VLM rubric-satisfaction scores into pairwise features, and uses sparse logistic refinement to keep the most discriminative rules. The resulting reward is modular and auditable: each retained rubric contributes a weighted component rather than hiding the preference signal inside a single neural score.</p>
+
+        <p>The empirical package is broad. The paper evaluates on image-reward benchmarks, in-domain preference tests, downstream TIIF and UniGenBench++ optimization, ablations, qualitative examples, human evaluation, and runtime analysis. The public repository also gives the work a stronger reproducibility base than many comparable reward-model papers, although full downstream RL reproduction still depends on external model-serving and compute setup.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Important problem framing.</strong> The paper focuses on opacity and reward hacking in T2I reward models, a real limitation when visual appeal and prompt adherence diverge. Its motivating examples make clear why an inspectable reward decomposition is useful rather than merely cosmetic.</p>
+
+        <p><strong>Interpretable sparse rubric reward.</strong> The core formulation turns VLM rubric satisfaction into a weighted reward with a compact retained rule set. This gives researchers something concrete to audit: which alignment dimensions are being rewarded, how strongly, and where a failure might arise.</p>
+
+        <p><strong>Broad empirical validation.</strong> The experiments span preference benchmarks, downstream generation optimization, ablations, qualitative cases, human evaluation, and cost analysis. That breadth makes the contribution feel like a practical reward-modeling system rather than a narrow benchmark trick.</p>
+
+        <p><strong>Data efficiency and cost transparency.</strong> The paper argues that useful reward signals can be learned from a small preference set, and it reports the one-time refinement and inference costs clearly enough for readers to understand the deployment tradeoff. This transparency strengthens the practical framing even when the cost remains a concern.</p>
+
+        <p><strong>Public implementation materials.</strong> The released repository includes source modules, datasets, seed rules, documentation, and run scripts. That materially improves auditability and gives future work a concrete starting point for reproducing, stress-testing, or extending the method.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Statistical uncertainty is underreported.</strong> Many main automated results are presented as point estimates, so small benchmark differences are difficult to interpret. <em>To address this</em>, the authors should add bootstrap confidence intervals for preference benchmarks, repeated RL runs with mean and variance summaries, and significance tests for the headline comparisons.</p>
+
+        <p><strong>VLM judge reliability is a core dependency.</strong> AutoRubric-T2I depends on VLM-generated rubrics and VLM yes-token probabilities behaving like stable preference evidence, but judge calibration and prompt sensitivity are not yet fully established. <em>To address this</em>, the paper should measure calibration, repeated-generation stability, prompt-perturbation robustness, and cross-judge transfer across Qwen and Gemini variants.</p>
+
+        <p><strong>A compact global rubric set may miss rare prompt constraints.</strong> Global retained rubrics are efficient and auditable, but rare counting, spatial, OCR, object-relation, or compositional requirements may need prompt-adaptive rules. <em>To address this</em>, the authors should compare against prompt-specific rubric generation on targeted rare-composition suites and report where global rubrics fail or generalize.</p>
+
+        <p><strong>Inference cost remains high for large-scale use.</strong> Scoring many rubrics through a VLM judge is substantially more expensive than running a scalar reward model, especially inside RL loops. <em>To address this</em>, the paper should report Top-K cost-quality curves, caching and throughput measurements, and a distillation path to a smaller verifier for repeated use.</p>
+
+        <p><strong>Reproduction is useful but not fully packaged.</strong> The repository is a real strength, yet exact reproduction still requires external VLM servers, API keys, image assets, and downstream Flow-GRPO setup. <em>To address this</em>, the authors should add lockfiles, smoke tests, artifact download scripts, retained-rule CSVs, and one-command scripts for regenerating the main tables.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Add statistical uncertainty to the main results.</strong> Confidence intervals over preference pairs and repeated RL seeds would separate robust improvements from noise and make small gains easier to evaluate.</p>
+
+        <p><strong>2. Validate VLM judge and rubric stability.</strong> Calibration, prompt sensitivity, cross-judge transfer, and resampled-rubric stability tests would show whether the learned rules capture human preference dimensions rather than evaluator artifacts.</p>
+
+        <p><strong>3. Improve the reproduction package.</strong> Environment lockfiles, smoke tests, final retained-rule files, data setup scripts, and table reproduction commands would lower the barrier for independent verification.</p>
+
+        <p><strong>4. Map the cost-quality frontier.</strong> Top-5, Top-10, and Top-20 rubric experiments, plus caching and throughput analysis, would help readers choose between interpretability, quality, and serving cost.</p>
+
+        <p><strong>5. Add reward-hacking and prompt-adaptive stress tests.</strong> Adversarial prompts, rare-composition suites, and comparisons to prompt-specific rubrics would clarify where the global sparse rule set is robust and where it needs adaptation.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
