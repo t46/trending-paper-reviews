@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: Next-Acceleration-Scale MRI Reconstruction | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Next-Acceleration-Scale Prediction for Autoregressive MRI Reconstruction (arXiv:2605.19354)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: Next-Acceleration-Scale MRI Reconstruction">
+    <meta property="og:description" content="A creative acceleration-scale autoregressive MRI method with strong perceptual promise; the key next step is evidence -> open code, uncertainty reporting, and tests for measurement consistency, hallucination risk, and diagnostic faithfulness.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-19354.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: Next-Acceleration-Scale MRI Reconstruction">
+    <meta name="twitter:description" content="A creative acceleration-scale autoregressive MRI method with strong perceptual promise; the key next step is evidence -> open code, uncertainty reporting, and tests for measurement consistency, hallucination risk, and diagnostic faithfulness.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Next-Acceleration-Scale Prediction for Autoregressive MRI Reconstruction</h1>
+        <p class="meta">
+            Korkmaz &amp; Patel &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.19354">arXiv:2605.19354</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no publication-outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            <p>The paper's strongest contribution is a domain-aware reformulation of accelerated MRI reconstruction as discrete autoregressive prediction across acceleration scales, supported by a coherent tokenizer, transformer, and privileged-distillation design. The most important improvement direction is evidentiary: release runnable code, quantify uncertainty, and test whether sharper reconstructions remain measurement-consistent and diagnostically faithful rather than merely perceptually plausible.</p>
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>Next-Acceleration-Scale Prediction for Autoregressive MRI Reconstruction</strong> tackles the ill-posedness of accelerated MRI reconstruction, especially under extreme undersampling where many anatomically plausible images can match incomplete measurements. The paper argues that continuous pixel-domain predictors tend to average over feasible solutions and lose high-frequency anatomy, motivating a discrete latent-space formulation.</p>
+
+        <p>The method represents reconstructions with an additive multi-input vector-quantized autoencoder and trains a cross-attentive transformer to predict the next acceleration scale autoregressively. A privileged teacher with access to fully sampled acquisitions supervises student rollouts through on-policy distillation, aiming to reduce rollout mismatch while preserving detail.</p>
+
+        <p>Experiments focus on fastMRI brain reconstruction at R=32 across several mask patterns and contrasts. The paper is most persuasive as a research prototype for perceptual reconstruction under difficult Cartesian undersampling, while its case for clinical reliability and benchmark reproducibility remains incomplete.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Creative problem reformulation.</strong> The acceleration-scale prediction setup adapts visual autoregressive modeling to MRI in a domain-aware way, rather than simply applying a generic image generator to reconstructed images.</p>
+
+        <p><strong>Well-aligned components.</strong> The AQ-VAE tokenizer, cross-attention mechanism, and on-policy privileged distillation each address a specific reconstruction failure mode: representation constraints, spatial fidelity, and train-test rollout mismatch.</p>
+
+        <p><strong>Useful empirical coverage within the chosen setting.</strong> The R=32 fastMRI experiments compare against a broad suite of UNet, transformer, unrolled, physics-informed, diffusion, and Mamba-style baselines, and the ablations probe the main architectural and distillation choices.</p>
+
+        <p><strong>Honest limitation framing.</strong> The paper acknowledges that R=32 should not be interpreted as routine clinical readiness and notes that discrete tokenization can cap fidelity, which helps keep the technical claims more grounded.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Reproducibility is currently blocked.</strong> The linked repository exists, but it does not contain the implementation needed to audit the tokenizer, transformer training, distillation procedure, baselines, or evaluation scripts. <em>To address this</em>, the authors should release runnable code with environment files, data preparation instructions, model configs, checkpoints or training recipes, and exact evaluation commands.</p>
+
+        <p><strong>Mean-only result tables understate uncertainty.</strong> The main comparisons are reported as point estimates, which makes it hard to judge whether close differences across masks, contrasts, and baselines are robust. <em>To address this</em>, the authors should add confidence intervals, paired tests, per-slice or per-subject distributions, and stratified failure-case plots for the headline results.</p>
+
+        <p><strong>Clinical fidelity remains proxy-based.</strong> The evidence emphasizes perceptual and pixel metrics, but sharper images in a generative medical reconstruction setting may not correspond to diagnostically faithful anatomy. <em>To address this</em>, the authors should add reader evaluation, a downstream diagnostic or segmentation proxy, and explicit separation between perceptual quality, pixel fidelity, measurement consistency, and clinical usefulness.</p>
+
+        <p><strong>Hallucination and data-consistency risk need direct testing.</strong> A learned discrete prior can plausibly restore texture while inventing structures not sufficiently supported by measured k-space. <em>To address this</em>, the authors should report k-space residuals, data-consistency checks, uncertainty maps, error maps, and targeted analyses of false plausible structures under weak measurements.</p>
+
+        <p><strong>Generalization is narrow.</strong> The evaluation concentrates on fastMRI brain data at R=32, leaving unclear whether the gains persist at common acceleration factors, across anatomy, scanner/site shifts, or prospective-style masks. <em>To address this</em>, the authors should add R=4/8/12/16 alongside R=32 and include external brain, knee, scanner/site split, or prospectively motivated evaluations.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release a full reproducibility package.</strong> The fastest quality lift is a complete implementation with configs, environment, data preparation, training, evaluation, and baseline reproduction scripts.</p>
+
+        <p><strong>2. Add statistical and per-case evidence.</strong> Confidence intervals, paired tests, effect sizes, and per-case distributions would clarify which improvements are reliable and where the model fails.</p>
+
+        <p><strong>3. Audit measurement consistency and hallucination risk.</strong> k-space residuals, reconstruction error maps, uncertainty estimates, and false-structure analysis would make the perceptual gains safer to interpret.</p>
+
+        <p><strong>4. Add clinical or task-relevant validation.</strong> A small radiologist reader study, diagnostic acceptability test, or downstream segmentation/lesion-detection proxy would connect visual sharpness to medical usefulness.</p>
+
+        <p><strong>5. Broaden acceleration and domain coverage.</strong> Testing lower acceleration regimes, external sites, other anatomy, and prospective-style masks would show whether the method is a general reconstruction strategy or mainly an extreme-undersampling demonstration.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
