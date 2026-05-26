@@ -25,18 +25,12 @@ for arg in "$@"; do
     esac
 done
 
-# ---- Resolve `claude` binary ----
-CLAUDE_BIN="${CLAUDE_BIN:-$(command -v claude || true)}"
-if [ -z "$CLAUDE_BIN" ]; then
-    if [ -x "/opt/homebrew/bin/claude" ]; then
-        CLAUDE_BIN="/opt/homebrew/bin/claude"
-    elif [ -x "/usr/local/bin/claude" ]; then
-        CLAUDE_BIN="/usr/local/bin/claude"
-    else
-        echo "ERROR: claude binary not found in PATH or standard install locations." >&2
-        echo "  Set CLAUDE_BIN=/path/to/claude or install Claude Code." >&2
-        exit 1
-    fi
+# ---- Resolve Codex runner ----
+CODEX_RUNNER="${CODEX_RUNNER:-$HOME/knowledgebase/scripts/codex-agent-run.sh}"
+if [ ! -x "$CODEX_RUNNER" ]; then
+    echo "ERROR: Codex runner not found or not executable: $CODEX_RUNNER" >&2
+    echo "  Set CODEX_RUNNER=/path/to/codex-agent-run.sh." >&2
+    exit 1
 fi
 
 REVIEWER_DIR="$HOME/unktok/dev/unktok-reviewer"
@@ -49,7 +43,7 @@ TODAY=$(date +%Y-%m-%d)
 echo "========================================="
 echo " Trending Paper Review Series"
 echo " $(date)"
-echo " claude: $CLAUDE_BIN"
+echo " codex:  $CODEX_RUNNER"
 echo " site:   $SITE_DIR (PRIMARY)"
 if [ "$PUBLISH_BLOG" = "true" ]; then
     echo " blog:   $BLOG_DIR (also publishing)"
@@ -83,12 +77,14 @@ rm -rf "$REVIEWER_DIR/artifacts"
 mkdir -p "$REVIEWER_DIR/artifacts"
 
 cd "$REVIEWER_DIR"
-"$CLAUDE_BIN" --dangerously-skip-permissions -p "Evaluate this paper: $ARXIV_ID
+cat <<EOF | "$CODEX_RUNNER" --cd "$REVIEWER_DIR" --add-dir "$SITE_DIR" --sandbox danger-full-access
+Evaluate this paper: $ARXIV_ID
 
 Execute all phases sequentially from Phase-1 through Phase-8-2.
 Follow the workflow-controller for phase routing.
 Proceed automatically without asking for confirmation between phases.
-Save all artifacts to the artifacts/ directory as specified by each phase."
+Save all artifacts to the artifacts/ directory as specified by each phase.
+EOF
 
 # --- Step 3: Archive artifacts ---
 echo ""
@@ -116,7 +112,8 @@ if [ ! -f "$SITE_TEMPLATE" ]; then
 fi
 
 cd "$SITE_DIR"
-"$CLAUDE_BIN" --dangerously-skip-permissions -p "You are generating a static HTML review page for the Trending Paper Review Series site.
+cat <<EOF | "$CODEX_RUNNER" --cd "$SITE_DIR" --add-dir "$REVIEWER_DIR" --sandbox danger-full-access
+You are generating a static HTML review page for the Trending Paper Review Series site.
 
 Read these files:
 1. reviews/$ARXIV_ID/paper_metadata.md — title, authors, arXiv ID, abstract
@@ -171,7 +168,7 @@ INSERT a new <a class='review-card'> for $ARXIV_ID at the TOP (immediately after
         </a>
 
 Do NOT remove or modify any existing review card. Do NOT change any other part of index.html (header, footer, styles, feedback section).
-"
+EOF
 
 if [ ! -f "$SITE_HTML_PATH" ]; then
     echo "  ERROR: site HTML was not generated at $SITE_HTML_PATH" >&2
@@ -204,7 +201,8 @@ if [ "$PUBLISH_BLOG" = "true" ]; then
     POST_PATH="$BLOG_DIR/_posts/$POST_FILENAME"
 
     cd "$SITE_DIR"
-    "$CLAUDE_BIN" --dangerously-skip-permissions -p "You are generating a blog post for the Trending Paper Review Series.
+    cat <<EOF | "$CODEX_RUNNER" --cd "$SITE_DIR" --add-dir "$BLOG_DIR" --sandbox danger-full-access
+You are generating a blog post for the Trending Paper Review Series.
 
 Read the following files:
 1. reviews/$ARXIV_ID/paper_metadata.md (or any metadata file) for title, authors, abstract
@@ -224,8 +222,7 @@ Important:
 - No numerical scores — use descriptive quality levels only
 - Every concern must include a constructive improvement suggestion
 - Include the series introduction block
-" \
-        --add-dir "$BLOG_DIR"
+EOF
 
     if [ "$DRAFT" = "true" ]; then
         echo "  DRAFT MODE — blog post written but not pushed: $POST_PATH"

@@ -6,6 +6,17 @@ Automated rigorous reviews of trending ML/AI papers using AI agents.
 
 **Site (primary output)**: https://t46.github.io/trending-paper-reviews/
 
+## Public funnel and paid offer
+
+TPR stays free as the public proof-of-work and acquisition funnel. Private reviews are now exposed from the static site:
+
+- **Pay-per review**: JPY 10,000 / paper
+- **Reviewer Pro**: JPY 50,000 / month, up to 10 private reviews
+
+Current request flow is intentionally manual: the CTA opens a GitHub issue prefilled with paper URL, plan, deadline, and focus area. Payment collection, invoicing, and Pro quota tracking remain Director-owned external operations until Stripe/Form infrastructure is added.
+
+Pricing rationale is documented in [`docs/pricing-rationale.md`](docs/pricing-rationale.md).
+
 ## Editorial policy
 
 This series rejects the traditional peer-review framing. **The following labels and their analogues are prohibited everywhere in our outputs (HTML body, blog posts, summary cards):**
@@ -56,6 +67,7 @@ DRAFT=true bash scripts/run-review.sh 2604.14125   # equivalent
 
 - `templates/site_review.html` — site review HTML template (used for every review; placeholders: `{{TITLE}}`, `{{ARXIV_ID}}`, `{{VERDICT_SUMMARY}}` (free-form prose, no editorial labels), `{{OVERVIEW_PARAGRAPHS}}`, `{{STRENGTHS_PARAGRAPHS}}`, `{{CONCERNS_PARAGRAPHS}}`, `{{IMPROVEMENTS_PARAGRAPHS}}`, etc.).
 - `templates/blog_post.md` — Jekyll blog post template (used only with `--blog`).
+- `pricing.html` — public paid-review offer and request CTA.
 
 ## Published Reviews
 
