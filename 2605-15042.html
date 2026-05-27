@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: EverAnimate | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of EverAnimate: Minute-Scale Human Animation via Latent Flow Restoration (arXiv:2605.15042)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: EverAnimate">
+    <meta property="og:description" content="EverAnimate offers a coherent, practical route to minute-scale human animation by pairing latent memory with restorative flow matching. Its next step is stronger evidence: uncertainty reporting, perceptual validation, and paper-exact reproducibility.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-15042.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: EverAnimate">
+    <meta name="twitter:description" content="EverAnimate offers a coherent, practical route to minute-scale human animation by pairing latent memory with restorative flow matching. Its next step is stronger evidence: uncertainty reporting, perceptual validation, and paper-exact reproducibility.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>EverAnimate: Minute-Scale Human Animation via Latent Flow Restoration</h1>
+        <p class="meta">
+            Li, Gao, Hassan, Feng et al. &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.15042">arXiv:2605.15042</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no accept/reject predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            EverAnimate's most consequential strength is how directly its design targets long-horizon drift: Persistent Latent Propagation carries motion and identity memory across chunks, while Restorative Flow Matching pulls perturbed latent trajectories back toward clean endpoints. The reported long-horizon gains are compelling, especially at 90 seconds, but the paper would become much stronger with uncertainty reporting, human/perceptual validation, and a release that exactly maps the public code and checkpoints to the paper's headline results.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>EverAnimate</strong> addresses a practical bottleneck in pose-guided human animation: chunk-wise video generation often drifts over time, degrading static backgrounds and weakening character identity across long outputs. The paper frames this as a minute-scale consistency problem and targets 10, 30, 60, and 90 second horizons.</p>
+
+        <p>The method combines two post-training components. <strong>Persistent Latent Propagation</strong> carries motion and identity memory in latent space across generated chunks, while <strong>Restorative Flow Matching</strong> modifies the flow-matching target so perturbed latent trajectories are trained to return toward clean endpoints. The approach is built as an adaptation of a Wan-2.2-Animate-style video generation backbone rather than a fully new video-generation stack.</p>
+
+        <p>The reported results show improvements over several animation baselines across PSNR, SSIM, LPIPS, FID, VideoMAE distance, and face-region PSNR, with the strongest practical signal coming from the 60-90 second regime. The project page also links to a public repository with setup, inference, training instructions, checkpoints, and demo assets, making the work unusually accessible for a long-video generation preprint.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Clear drift decomposition.</strong> The paper separates low-level visual degradation from higher-level identity drift, then ties each failure mode to a plausible mechanism in chunk-wise generation. This makes the motivation sharper than a generic "long videos are hard" argument.</p>
+
+        <p><strong>Method-problem alignment.</strong> PLP and RFM map cleanly onto the diagnosed failure modes: latent propagation supports cross-chunk continuity, while restorative training addresses within-chunk drift correction. The components feel engineered around the actual pathology rather than added as loosely related enhancements.</p>
+
+        <p><strong>Strong long-horizon point estimates.</strong> The reported metrics improve consistently from 10 to 90 seconds, with especially meaningful gains at the longest horizon where accumulated drift should be most visible. This gives the paper a credible practical story for minute-scale human animation.</p>
+
+        <p><strong>Efficient post-training setup.</strong> The method uses LoRA-style adaptation rather than full retraining, which makes the approach more plausible for practitioners who want to extend a strong animation backbone without rebuilding it from scratch.</p>
+
+        <p><strong>Open implementation.</strong> The public MIT-licensed repository, demo materials, scripts, and checkpoints are a major strength. For this type of video generation work, any release that supports hands-on inspection substantially improves the paper's value to the field.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Statistical reliability is underreported.</strong> The main tables present strong point estimates, but they do not include repeated runs, standard deviations, confidence intervals, paired tests, or per-video distributions. <em>To address this</em>, the authors should run paired repeated evaluations on the fixed long-horizon set, report bootstrap confidence intervals, and include per-video gain distributions for the key metrics.</p>
+
+        <p><strong>Perceptual validation is missing for a perceptual task.</strong> Human animation quality depends on identity coherence, temporal smoothness, and subjective plausibility in ways that automatic metrics only partially capture. <em>To address this</em>, the authors should add a blinded user preference study, identity-embedding comparisons, temporal flicker curves, and drift measurements over generated chunks.</p>
+
+        <p><strong>The public release does not yet appear paper-exact.</strong> The repository is valuable, but the released rank-32 480p setup differs from the paper's rank-128 configuration, and the higher-resolution release is incomplete. <em>To address this</em>, the authors should release the rank-128 configs, checkpoints, evaluation scripts, and baseline outputs, or clearly document the metric delta between released and paper-time settings.</p>
+
+        <p><strong>Benchmark and data disclosure are too compressed.</strong> The self-collected YouTube data and long-horizon evaluation splits are not described in enough detail for precise replication or future comparison. <em>To address this</em>, the authors should publish split files, metadata, preprocessing steps, pose and face-crop protocols, and exact metric code, subject to licensing constraints.</p>
+
+        <p><strong>Positioning against adjacent long-video methods needs more structure.</strong> The contribution is useful and domain-specific, but it is best understood as a targeted integration of memory and restoration ideas rather than a wholly new long-video paradigm. <em>To address this</em>, the paper should add a comparison matrix covering direct animation baselines and long-video methods such as SVI, Helios, Matrix-Game, MALT, and WorldMem, with same-backbone rollout baselines where feasible.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Add statistical reliability reporting.</strong> Repeat the central evaluations, report confidence intervals and paired tests, and show per-video distributions. This would make the headline gains statistically interpretable rather than only directionally persuasive.</p>
+
+        <p><strong>2. Add human and identity-specific perceptual evaluation.</strong> Run a blinded preference study and supplement it with identity embeddings, flicker metrics, and chunk-wise drift curves. This would directly test the paper's most important qualitative claims.</p>
+
+        <p><strong>3. Release a paper-exact reproduction package.</strong> Provide the rank-128 configs, checkpoints, evaluation scripts, preprocessing code, and baseline outputs, or document how the released rank-32 setup differs from the reported results.</p>
+
+        <p><strong>4. Publish evaluation splits and metric protocols.</strong> Long-horizon human animation lacks standardized benchmarks, so releasing metadata, split files, pose extraction details, face-crop rules, and metric code would turn the paper into a stronger reference point for follow-up work.</p>
+
+        <p><strong>5. Expand ablations and same-backbone comparisons.</strong> Sweep memory size, motion-latent count, lambda schedule, perturbation type, LoRA rank, sampling steps, and memory augmentation, then compare PLP/RFM with simpler carry-over and perturbation baselines under the same backbone.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&amp;body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
