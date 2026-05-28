@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: LACUNA | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of LACUNA: Safe Agents as Recursive Program Holes (arXiv:2605.28617)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: LACUNA">
+    <meta property="og:description" content="LACUNA's strongest contribution is a clean typed-hole abstraction for safer code-as-action agents. The next step is comparative evidence: matched baselines, uncertainty reporting, and public artifacts.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-28617.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: LACUNA">
+    <meta name="twitter:description" content="LACUNA's strongest contribution is a clean typed-hole abstraction for safer code-as-action agents. The next step is comparative evidence: matched baselines, uncertainty reporting, and public artifacts.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>LACUNA: Safe Agents as Recursive Program Holes</h1>
+        <p class="meta">
+            Zhao, Xu, Bracevac, Pham et al. &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.28617">arXiv:2605.28617</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no publication-outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            LACUNA's strongest contribution is a clean typed-hole abstraction for safer code-as-action agents: model-generated code is checked against the expected type, lexical scope, and capability boundary before it can affect the environment. The most important next step is comparative evidence &mdash; matched baselines, uncertainty reporting, and public artifacts that make the safety and utility claims independently auditable.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>LACUNA</strong> addresses a real tension in LLM-agent design: code-writing agents become more expressive when their generated code can shape control flow, context, and tool use, but that same expressivity expands the damage from prompt injection, wrong tool calls, and partial failures. The paper proposes a programming model where an agent action is written as a typed call, <code>agent[T](task)</code>, whose implementation is supplied by an LLM at runtime and checked before execution.</p>
+
+        <p>The core idea is to treat generated agent code as a recursive program hole inside the host language. The surrounding program provides the expected type, visible names, and available authority; the generated code must satisfy those constraints before it runs. Code that fails these checks leaves the environment untouched, and compiler diagnostics can be fed back into the model for repair.</p>
+
+        <p>The prototype is built around Scala 3 compiler machinery and capture-checking ideas. The paper argues that this single abstraction can express ReAct-style loops, sub-agents, skills, parallel decomposition, and multi-model planning through ordinary host-language control flow, while using type, scope, and capability checks as a pre-execution safety layer.</p>
+
+        <p>The evaluation covers verifier test cases, BrowseComp-Plus, tau2-bench, and AgentDojo-derived prompt-injection settings. The resulting evidence supports feasibility and a meaningful safety story for type, scope, and authority errors, but it is not yet strong enough to settle broader comparative claims against other code-agent designs.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Unified typed-hole abstraction.</strong> The <code>agent[T](task)</code> primitive is compact and expressive. It lets familiar agent patterns &mdash; tool use, recursion, sub-agents, skills, parallel work, and multi-model planning &mdash; appear as ordinary program structure rather than as a separate agent runtime with bespoke control logic.</p>
+
+        <p><strong>Concrete pre-execution safety property.</strong> LACUNA blocks generated snippets that refer to unavailable names, return the wrong shape, or violate capability constraints before they can change the environment. That is a clearer and more inspectable safety boundary than relying only on output parsing, runtime exceptions, or post-hoc monitoring.</p>
+
+        <p><strong>Strong fit between method and host language.</strong> The design reuses Scala 3 type-checking and compiler diagnostics instead of inventing a fragile ad hoc validator. This makes the system contribution feel grounded: the paper shows how programming-language infrastructure can become part of an agent safety substrate.</p>
+
+        <p><strong>Evaluation breadth across utility and security settings.</strong> The paper does not limit itself to toy examples. It tests verifier behavior, research-style browsing tasks, conversational tool tasks, and prompt-injection/capability scenarios, giving readers a useful initial map of where typed generated-code agents can help.</p>
+
+        <p><strong>Honest treatment of limitations.</strong> The paper explicitly acknowledges that well-typed code is not necessarily correct code, that authority is only as narrow as the surrounding scope, that model coding ability matters, and that latency and resource costs remain practical constraints. This candor keeps the contribution interpretable as a safety substrate rather than a complete agent-safety solution.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Matched code-agent baselines are missing.</strong> The paper compares against native tool calling in some settings and against security-focused systems in attack settings, but it does not run CodeAct-style, RLM-style, ReAct, and native-tool baselines under identical model, tool, budget, and judge conditions. <em>To address this</em>, the authors should add a same-budget comparison table where LACUNA and the most relevant code-agent alternatives share the same models, tools, task limits, retry policies, and evaluation criteria.</p>
+
+        <p><strong>Statistical uncertainty is underreported.</strong> The experimental tables mainly present point estimates, leaving readers unable to judge whether close differences are stable or practically meaningful. <em>To address this</em>, the authors should report bootstrap or binomial confidence intervals, per-task outcome distributions, retry counts, and failure-mode breakdowns for the main utility and security results.</p>
+
+        <p><strong>Artifact availability gates independent validation.</strong> The paper describes an implementation, verifier suite, prompts, and evaluation harness, but no public repository is currently available in the reviewed materials. <em>To address this</em>, the authors should release the compiler branch, library code, benchmark adapters, prompts, scripts, and representative logs before relying on reproducibility or deployment-oriented claims.</p>
+
+        <p><strong>The guarantee boundary can be overread.</strong> Type, scope, and capability checks can prevent important classes of invalid or over-authorized code, but they do not prove that the generated program chose the right in-scope tool, interpreted the task correctly, or achieved the user's semantic goal. <em>To address this</em>, the paper should add a front-loaded guarantees-and-non-guarantees box and pair the static checks with task-level validators, runtime monitors, or contract examples for high-stakes actions.</p>
+
+        <p><strong>Portability and developer burden need sharper treatment.</strong> The design depends on static typing, effect or capability tracking, in-process recompilation, and access to live call-site context; it also relies on developers to expose only appropriate authority. <em>To address this</em>, the authors should provide a host-language portability checklist and ergonomic least-authority patterns that show how ordinary developers would scope tools and data without excessive boilerplate.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Add matched baselines.</strong> Run LACUNA, native tool calling, CodeAct-style code actions, RLM-style REPL recursion, and ReAct under identical models, tools, budgets, retry policies, and judges. This would turn the comparison story from suggestive to directly interpretable.</p>
+
+        <p><strong>2. Add uncertainty and failure distributions.</strong> Report confidence intervals, per-domain distributions, retry counts, compile-failure categories, semantic-failure categories, and raw task outcomes. This would let readers distinguish robust improvements from close or noisy differences.</p>
+
+        <p><strong>3. Release the full artifact.</strong> Publish the compiler branch, Scala library, verifier tests, prompts, benchmark wrappers, scripts, and logs. This is the highest-leverage reproducibility step and would also make future baseline comparisons easier to audit.</p>
+
+        <p><strong>4. Clarify guarantees and non-guarantees early.</strong> Add an explicit box in the introduction explaining what LACUNA checks before execution and what remains outside the static safety story. The paper should repeatedly frame the system as a safety substrate, not a semantic verifier.</p>
+
+        <p><strong>5. Provide a portability and ergonomics appendix.</strong> Spell out the language features required to recreate LACUNA outside Scala and show concrete least-authority scoping patterns for real applications. This would help readers separate the general idea from the current prototype's host-language assumptions.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
