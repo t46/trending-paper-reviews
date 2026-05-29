@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: CONF-KV | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of CONF-KV: Confidence-Aware KV Cache Eviction with Mixed-Precision Storage for Long-Horizon LLM Inference (arXiv:2605.24786)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: CONF-KV">
+    <meta property="og:description" content="CONF-KV makes a clear case for using next-token confidence to adapt KV retention over time. The main improvement path is artifact-backed auditability: release code, update baselines, and test confidence failure slices.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-24786.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: CONF-KV">
+    <meta name="twitter:description" content="CONF-KV makes a clear case for using next-token confidence to adapt KV retention over time. The main improvement path is artifact-backed auditability: release code, update baselines, and test confidence failure slices.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>CONF-KV: Confidence-Aware KV Cache Eviction with Mixed-Precision Storage for Long-Horizon LLM Inference</h1>
+        <p class="meta">
+            Yubo Li &amp; Yidi Miao &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.24786">arXiv:2605.24786</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no publication-outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            CONF-KV's strongest contribution is the confidence-gated control signal: it uses information already present in the next-token distribution to adapt KV retention over decoding time, and the paper supports that signal with useful mechanism evidence and broad systems-oriented evaluation. The most important improvement direction is auditability &mdash; releasing runnable artifacts, comparing against newer adaptive KV methods, and stress-testing confidently wrong or rare-entity cases would make the central claims much easier to verify and reuse.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>CONF-KV</strong> addresses a practical long-horizon inference bottleneck: as generation length grows, the key-value cache becomes a dominant GPU-memory consumer and increases the cost of attention. The paper proposes a cache manager that converts the current next-token distribution into a scalar confidence score, then uses that score to choose a per-step retention budget.</p>
+        <p>The method ranks tokens by accumulated attention mass plus recency while protecting a recent window. It combines this policy with blockwise online-softmax attention, mixed FP16/INT8 KV storage, and a pyramidal per-layer variant, aiming for near-sliding-window memory behavior while preserving much of full-cache quality.</p>
+        <p>The evaluation covers perplexity, memory footprint, Needle-in-a-Haystack retrieval, VisualWebArena, latency, throughput, profiling, and ablations across several model families. The paper is technically coherent and timely, but because the contribution depends on custom cache management, compaction, quantization, and kernel behavior, independent artifact access matters more than it would for a purely conceptual method.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Clear, timely systems problem.</strong> KV-cache growth is a first-order constraint for long-context serving, multi-turn assistants, and agentic workloads. The paper anchors the method in concrete serving pressure rather than treating cache compression as an isolated benchmark exercise.</p>
+        <p><strong>Simple training-free control signal.</strong> CONF-KV uses logits already produced during decoding to estimate confidence, requiring no model retraining or weight modification. That makes the idea composable with existing inference stacks and easier to reason about than learned or task-specific controllers.</p>
+        <p><strong>Mechanistic validation of the main assumption.</strong> The paper does more than report end-task metrics: it uses KL-ablation evidence to support the claim that lower confidence is associated with higher context sensitivity. This is important because the method's value depends on confidence being informative about when cached context matters.</p>
+        <p><strong>Broad systems-oriented evaluation surface.</strong> The experiments span quality, retrieval, web-agent behavior, memory, latency, throughput, ablations, and profiling. That breadth helps connect the algorithmic idea to deployment-relevant behavior rather than only showing perplexity preservation.</p>
+        <p><strong>Transparent limitations discussion.</strong> The paper explicitly discusses confidently wrong rare-entity failures, high-temperature entropy saturation, short-context no-op behavior, MLP-dominated workloads, and friction with paged serving layouts. That candor makes the method's likely operating envelope clearer.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Reproducibility is currently incomplete.</strong> The work is implementation-based, but the paper states that code will be released later, leaving core memory, latency, compaction, quantization, and benchmark-wrapper claims unauditable. <em>To address this</em>, the authors should release an anonymized runnable artifact with kernels, configs, benchmark wrappers, and scripts for the main figures and tables.</p>
+        <p><strong>Core systems claims need artifact-level verification.</strong> Written hyperparameters help, but custom compaction, mixed-precision storage, tiled attention, and cache-management details can materially change reported results. <em>To address this</em>, the artifact should include a paper-to-command mapping that lists the exact config, expected output, and compute environment for each central result.</p>
+        <p><strong>The baseline set should be updated for the current KV-compression landscape.</strong> The included comparisons are relevant, but newer or concurrent adaptive methods such as KVzip, LKV, AhaKV, EasyKV/RoCo, and simple norm-based diagnostics are missing. <em>To address this</em>, the authors should add at least two implementable recent baselines and clearly document any comparisons that are infeasible because of missing code or incompatible assumptions.</p>
+        <p><strong>Uncertainty reporting is uneven around close comparisons.</strong> Some results use repeated runs, but important perplexity tables and small margins against strong baselines lack prompt-level or document-level uncertainty. <em>To address this</em>, the paper should report bootstrap confidence intervals or document-level variance for perplexity, and tabulate exact standard deviations for retrieval, web-agent, and throughput figures.</p>
+        <p><strong>The confidence proxy has important failure modes.</strong> The authors acknowledge rare-entity cases where the model can be confidently wrong before retrieving the needed evidence, which directly targets the method's main signal. <em>To address this</em>, the evaluation should add rare-entity, high-temperature, and overconfidence slices, plus detector or fallback logic for cases where confidence is poorly calibrated.</p>
+        <p><strong>Production serving compatibility remains unproven.</strong> Token-level eviction can create partially dead blocks in paged serving layouts, so prototype contiguous compaction may not translate cleanly to vLLM-like deployment. <em>To address this</em>, the authors should implement block-coarsened eviction or sparse-mask variants and benchmark them under a paged-layout serving setup.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release a reproducibility artifact.</strong> Provide runnable code, kernels, configs, evaluation scripts, and benchmark wrappers so the memory, quality, latency, and throughput claims can be independently checked.</p>
+        <p><strong>2. Map paper results to commands.</strong> Add a reproduction README that links each main table and figure to the exact command, configuration, expected output, and compute requirement.</p>
+        <p><strong>3. Add current adaptive KV baselines.</strong> Include recent implementable methods and discuss omitted methods explicitly, so CONF-KV's comparative position is clear in the fast-moving cache-compression literature.</p>
+        <p><strong>4. Strengthen uncertainty reporting.</strong> Bootstrap over prompts or documents for perplexity and provide exact standard deviations for plotted retrieval, web-agent, and throughput categories.</p>
+        <p><strong>5. Stress-test confidence failure slices.</strong> Evaluate rare-entity lookup, high-temperature sampling, and overconfidence cases, then add calibration guidance or fallback settings for regimes where confidence is unreliable.</p>
+        <p><strong>6. Validate paged serving integration.</strong> Prototype block-level or sparse-mask variants under a paged serving layout to separate algorithmic benefit from integration overhead.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
