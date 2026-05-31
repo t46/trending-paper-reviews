@@ -9,7 +9,7 @@
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Trending Paper Review Series">
     <meta property="og:title" content="Review: RPT">
-    <meta property="og:description" content="RPT turns prompt optimization into recurring-failure diagnosis with memory, yielding credible gains and calibration improvements. The main next step is stronger evidence: uncertainty, reproducible baselines, logs, ablations, and cost-normalized comparisons.">
+    <meta property="og:description" content="RPT makes prompt optimization more inspectable through full-set diagnostics, memory, and calibration-aware selection. The main next step is stronger evidence: uncertainty, diagnostic validation, ablations, cost comparisons, and reproducibility artifacts.">
     <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-21781.html">
     <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
     <meta name="twitter:title" content="Review: RPT">
-    <meta name="twitter:description" content="RPT turns prompt optimization into recurring-failure diagnosis with memory, yielding credible gains and calibration improvements. The main next step is stronger evidence: uncertainty, reproducible baselines, logs, ablations, and cost-normalized comparisons.">
+    <meta name="twitter:description" content="RPT makes prompt optimization more inspectable through full-set diagnostics, memory, and calibration-aware selection. The main next step is stronger evidence: uncertainty, diagnostic validation, ablations, cost comparisons, and reproducibility artifacts.">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -71,7 +71,7 @@
         article a { color: #0066cc; text-decoration: none; }
         article a:hover { text-decoration: underline; }
 
-        .substance-summary {
+        .verdict {
             background: #fff8e1;
             border-left: 3px solid #f5a623;
             padding: 16px 20px;
@@ -79,7 +79,7 @@
             font-size: 15px;
             color: #5a4500;
         }
-        .substance-summary strong { color: #5a4500; }
+        .verdict strong { color: #5a4500; }
 
         .series-intro {
             background: #f8f9fa;
@@ -222,51 +222,55 @@
             actionable improvement suggestions.
         </div>
 
-        <div class="substance-summary">
-            RPT turns prompt optimization into recurring-failure diagnosis with memory, yielding credible gains and calibration improvements. The main next step is stronger evidence: uncertainty, reproducible baselines, logs, ablations, and cost-normalized comparisons.
+        <div class="verdict">
+            RPT's most consequential strength is its practical diagnostic loop: full-set failure reports, memory of prior revisions, and calibration-aware selection make prompt optimization more inspectable than plain prompt search. The main improvement direction is evidential rather than conceptual &mdash; the paper needs uncertainty estimates, validated diagnostic labels, component ablations, cost-normalized comparisons, and paper-exact reproducibility artifacts.
         </div>
 
         <h2>Paper overview</h2>
-        <p><strong>Reflective Prompt Tuning through Language Model Function-Calling</strong> proposes Reflective Prompt Tuning (RPT), an automated prompt optimization framework that treats prompt engineering as an iterative cycle of evaluation, diagnosis, memory, and revision. Instead of searching only over candidate prompts or applying fixed critique-refine loops to individual examples, RPT uses LLM function calling to generate structured reports over recurring failures in the whole optimization set.</p>
+        <p><strong>Reflective Prompt Tuning through Language Model Function-Calling</strong> proposes Reflective Prompt Tuning (RPT), an automated prompt optimization framework that treats prompt engineering as an iterative cycle of evaluation, diagnosis, memory, and revision. Instead of searching only over candidate prompts or refining one example at a time, RPT asks an optimizer LLM to call diagnostic functions over an optimization set and use structured reports about recurring failures to revise the prompt.</p>
 
-        <p>The optimizer receives diagnostic summaries, keeps memory of prior failure reports and prompt changes, and revises the prompt accordingly. The paper evaluates this workflow on HotPotQA, LiveBench-Math, and Formula, reporting improvements over seed prompts and competitive comparisons against ACE, GEPA, and MIPRO. A confidence-aware setting extends the method from task accuracy toward verbalized-confidence calibration, where the reported Brier-score improvements are a useful reliability angle.</p>
+        <p>The framework combines full-set diagnostics, clustered failure modes, memory of prior reports and prompt edits, confidence-aware diagnostics, and final prompt selection. The paper evaluates RPT on HotPotQA, LiveBench-Math, and Formula, comparing against ACE, GEPA, and MIPRO while also studying calibration through Brier-score behavior.</p>
 
-        <p>The paper is best read as a coherent integration and specialization of reflective prompt optimization ideas: full-split diagnostics, recurring-failure clustering, report memory, and calibration-aware selection are combined into a practical workflow that resembles how a human prompt engineer might inspect failures and patch prompts.</p>
+        <p>The contribution is best understood as a coherent integration of existing prompt-optimization ingredients into a diagnosis-driven workflow. Its value lies in making prompt revision more inspectable and systematic, especially when tasks have automatic evaluators and recurring error patterns.</p>
 
         <h2>Key strengths</h2>
-        <p><strong>Clear and useful diagnostic framing.</strong> RPT operationalizes prompt engineering as evaluate, diagnose recurring failures, revise, and remember. This makes the method easy to understand, inspect, and extend, and gives the paper a stronger mechanism story than prompt-search-only studies.</p>
+        <p><strong>Diagnosis-driven optimization design.</strong> RPT aligns well with the real pain point in prompt engineering: prompts fail in repeated, pattern-like ways, and useful revisions often come from inspecting those patterns rather than sampling more candidate text blindly.</p>
 
-        <p><strong>Relevant contemporary baselines.</strong> ACE, GEPA, and MIPRO are appropriate comparison points for automated prompt optimization. Their inclusion makes the empirical setup more meaningful than a seed-prompt-only evaluation, even though the adapted settings need stronger auditability.</p>
+        <p><strong>Strong contemporary baselines.</strong> ACE, GEPA, and MIPRO are relevant comparators for automated prompt optimization. Their inclusion makes the empirical setup meaningfully stronger than a seed-prompt-only study.</p>
 
-        <p><strong>Meaningful performance and calibration evidence.</strong> The reported results show consistent improvement over seed prompts across the three tasks, especially strong LiveBench-Math behavior, and calibration gains in the confidence-aware setting. The calibration objective is practically important because verbal confidence is often used for routing, abstention, and human-review workflows.</p>
+        <p><strong>Multi-task coverage across reasoning settings.</strong> HotPotQA, LiveBench-Math, and Formula cover textual, mathematical, and financial numerical reasoning. This gives the paper a credible first look at where diagnosis-guided prompt repair can help.</p>
 
-        <p><strong>Interpretability through trace analyses.</strong> The paper connects recurring failure topics to concrete prompt patches and subsequent metric changes. These traces give readers more than final aggregate metrics and help make the optimization process inspectable.</p>
+        <p><strong>Calibration is treated as a first-class objective.</strong> The confidence-aware setting moves beyond task accuracy and asks whether optimized prompts also improve verbalized-confidence reliability, which matters for routing, abstention, and human-review workflows.</p>
 
-        <p><strong>Candid limitation disclosure.</strong> The paper acknowledges narrow task scope, proprietary model dependence, compute cost, and limits of verbal-confidence calibration. That honesty usefully identifies the experiments that would most strengthen the next version.</p>
+        <p><strong>Inspectable traces from failures to prompt patches.</strong> The paper connects diagnostic clusters to concrete prompt edits and later behavior. These analyses make the method easier to audit than final aggregate numbers alone.</p>
+
+        <p><strong>Public implementation and useful appendix material.</strong> The released repository, seed prompts, critic prompts, optimizer prompt, dataset sizes, and additional implementation details give readers a workable starting point for follow-up experiments.</p>
 
         <h2>Key concerns and constructive suggestions</h2>
-        <p><strong>Main comparisons lack uncertainty estimates.</strong> Tables 1 and 2 report single-point results, so small margins are hard to interpret robustly; for example, close gaps on HotPotQA and task-specific reversals on Formula could be noise rather than stable differences. <em>To address this</em>, the authors should repeat each main setting across multiple runs or controlled resamples and report mean, standard deviation, bootstrap intervals, and paired comparisons.</p>
+        <p><strong>Main result tables lack uncertainty estimates.</strong> Tables 1 and 2 appear to report single-point outcomes, so close margins and task-specific reversals are difficult to interpret as stable differences. <em>To address this</em>, the authors should repeat optimization under multiple seeds or controlled API snapshots and report means, standard deviations, confidence intervals, and paired tests where pairing is valid.</p>
 
-        <p><strong>Baseline adaptation is not fully auditable.</strong> ACE, GEPA, and MIPRO are strong choices, but the exact adaptations, wrappers, and reproduction sanity checks are not sufficiently exposed for readers to verify that each baseline is fairly configured. <em>To address this</em>, the authors should release runnable baseline wrappers, pinned commits, exact configs, and small checks showing that adapted implementations reproduce expected behavior before being compared with RPT.</p>
+        <p><strong>Diagnostic labels and clusters are not independently validated.</strong> The critique reports are plausible, but they are still LLM-generated labels rather than established ground truth about why examples fail. <em>To address this</em>, the authors should annotate a stratified sample of failed examples and diagnostic clusters with human or expert judgments, then report agreement, cluster purity, and examples where diagnostics were misleading.</p>
 
-        <p><strong>The reproducibility package does not recreate the paper tables end to end.</strong> The public repository appears useful, but the exact logs, generated prompts, result artifacts, baseline scripts, and table-generation code are missing. <em>To address this</em>, the authors should publish a reproduction capsule with paper-exact logs, final prompts, result JSON, notebooks or scripts for Tables 1 and 2, and documented commands for each reported run.</p>
+        <p><strong>Component attribution remains incomplete.</strong> RPT combines memory, clustering, full-set diagnostics, confidence-aware selection, and function-calling control, but the current evidence does not isolate which pieces drive the gains. <em>To address this</em>, the authors should ablate each component and compare against sampled or minibatch diagnostics under matched API budgets.</p>
 
-        <p><strong>Generalization evidence remains narrow.</strong> Three reasoning datasets and a limited target-model setup are a reasonable start, but they do not establish broad prompt-optimization generality across task types, model families, and deployment conditions. <em>To address this</em>, the authors should add at least one coding task, one open-ended generation or summarization task, one dialogue or tool-use task, smaller or open target models, and a second optimizer-model family.</p>
+        <p><strong>Scope is still narrow relative to the method's likely use cases.</strong> The tasks are useful, but they mostly emphasize closed-form reasoning with automatic evaluation and do not establish behavior for coding, dialogue, tool agents, open-ended generation, smaller models, or weaker function-calling environments. <em>To address this</em>, the authors should add broader task families and include open-source target or optimizer models where possible.</p>
 
-        <p><strong>Cost and scalability trade-offs are under-quantified.</strong> RPT performs full-set evaluation, critique, clustering, and memory processing each iteration, so its practical value depends on the quality gained per target call, optimizer call, token, latency unit, and dollar spent. <em>To address this</em>, the authors should report cost and latency tables, add cost-normalized performance curves, and test optimization-set subsampling to show when full-set diagnosis is worth the extra expense.</p>
+        <p><strong>Cost and latency are material but underreported.</strong> Full-set evaluation, diagnostic reporting, clustering, and memory processing can be expensive, so practical adoption depends on the improvement per call, token, dollar, and wall-clock minute. <em>To address this</em>, the authors should publish target-call counts, optimizer-call counts, token costs, latency, and cost-normalized performance curves.</p>
+
+        <p><strong>The public repository does not fully recreate the paper tables.</strong> A code release is valuable, but exact generated datasets, logs, prompt histories, baseline outputs, table artifacts, and figure data are needed for paper-level reproduction. <em>To address this</em>, the authors should release configs, seeds, result JSONL or CSV files, prompt histories, table-generation scripts, and a single documented reproduction workflow.</p>
 
         <h2>What would most improve this paper</h2>
-        <p><strong>1. Add statistical evidence to the main tables.</strong> Repeat every Table 1 and Table 2 setting across multiple runs or controlled resampling, include interval estimates, and soften comparative claims where intervals overlap.</p>
+        <p><strong>1. Add statistical reliability to the main comparisons.</strong> Repeat the principal RPT and baseline settings, publish per-run results, and qualify comparative language wherever intervals overlap or task-level variance is large.</p>
 
-        <p><strong>2. Release a paper-exact reproducibility capsule.</strong> Provide exact configs, logs, final prompts, result JSON, baseline wrappers, pinned commits, and table-generation scripts so readers can audit the reported comparisons end to end.</p>
+        <p><strong>2. Validate diagnostic quality.</strong> Human-label representative failures, critique labels, and clusters so the diagnostic mechanism is supported by evidence rather than plausibility alone.</p>
 
-        <p><strong>3. Run component ablations.</strong> Isolate the contribution of memory, full-set diagnostics, clustering, calibration feedback, and calibration-aware selection. This would turn the method from a plausible integrated workflow into a better-understood mechanism.</p>
+        <p><strong>3. Run component ablations.</strong> Separately test memory, clustering, full-set diagnostics, function-call structure, confidence feedback, and confidence-aware final selection to identify which design choices matter most.</p>
 
-        <p><strong>4. Quantify cost and scalability.</strong> Report target calls, optimizer calls, critique calls, clustering calls, token counts, latency, and estimated cost, then compare methods under matched or cost-normalized budgets.</p>
+        <p><strong>4. Release a paper-exact reproducibility package.</strong> Provide exact configs, random seeds, model names or snapshots, prompt histories, API responses where permitted, generated logs, table CSVs, figure data, and a script that regenerates the reported tables.</p>
 
-        <p><strong>5. Broaden task and model coverage.</strong> Add coding, open-ended generation, dialogue or tool-use, smaller or open target models, and at least one alternate optimizer family to clarify where RPT's diagnostic loop is most useful.</p>
+        <p><strong>5. Quantify cost and scaling behavior.</strong> Add budget-normalized comparisons, latency tables, and sampled-diagnostic variants to show when full-set diagnosis is worth its added expense.</p>
 
-        <p><strong>6. Validate diagnostic quality.</strong> Human-label a sample of failure diagnoses and patch categories, measure agreement and cluster purity, and add causal patch ablations for common edit types.</p>
+        <p><strong>6. Broaden task and model coverage.</strong> Test coding, dialogue, tool-use, open-ended generation, and open-source model settings to clarify where RPT's diagnostic loop generalizes and where it depends on strong proprietary function calling.</p>
     </article>
 
     <div class="feedback-box">
