@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: SurGe | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of SurGe: Improved Surface Geometry in Point Maps (arXiv:2605.31577)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: SurGe">
+    <meta property="og:description" content="SurGe makes a focused and persuasive case that monocular point maps need local surface-oriented evaluation and optimization. The key next step is auditability: release training/evaluation artifacts, validate the normal metric externally, and report latency and uncertainty tradeoffs.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2605-31577.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: SurGe">
+    <meta name="twitter:description" content="SurGe makes a focused and persuasive case that monocular point maps need local surface-oriented evaluation and optimization. The key next step is auditability: release training/evaluation artifacts, validate the normal metric externally, and report latency and uncertainty tradeoffs.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>SurGe: Improved Surface Geometry in Point Maps</h1>
+        <p class="meta">
+            Knaebel, Martin Garcia, Schmidt, Fradlin et al. &middot; May 2026 &middot;
+            <a href="https://arxiv.org/abs/2605.31577">arXiv:2605.31577</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no editorial labels, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            SurGe makes a focused and persuasive case that monocular point maps need local surface-oriented evaluation and optimization. The key next step is auditability: release training/evaluation artifacts, validate the normal metric externally, and report latency and uncertainty tradeoffs.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>SurGe</strong> studies local surface artifacts in feedforward monocular point-map reconstruction. The paper argues that global point-position metrics can miss orientation errors, foreground/background mixing, and thin-structure failures that matter for downstream 3D use.</p>
+
+        <p>The method combines a DINOv2-based point-map model with a <em>Neighborhood Attention Decoder</em> and a point gradient matching loss over depth-normalized 3D finite differences. This makes the model architecture and training objective explicitly attend to neighboring-point geometry rather than treating each predicted 3D point mostly in isolation.</p>
+
+        <p>The empirical case is broad: across eight zero-shot monocular geometry benchmarks, SurGe reports the best average rank for global point-map AbsRel and consistently improves local point-map and normal evaluations. The paper also provides public inference code, pretrained weights, a command-line workflow, and a Hugging Face demo, which gives readers a practical entry point for trying the model.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Clear and useful problem targeting.</strong> The paper identifies a real gap in monocular point-map evaluation: visually plausible global geometry can still contain locally poor surfaces. This framing is especially relevant for mesh generation, robotics, AR, scene editing, and any workflow where surface orientation matters.</p>
+
+        <p><strong>Coherent metric-method alignment.</strong> The point-map normal metric, point gradient matching loss, and Neighborhood Attention Decoder all target neighboring-point surface consistency. That alignment makes the paper feel technically integrated rather than a collection of disconnected engineering choices.</p>
+
+        <p><strong>Strong empirical breadth.</strong> Evaluation across eight zero-shot benchmarks and extensive contemporary baselines gives the central claim meaningful coverage across datasets. The reported improvements in local AbsRel and normal MAE are paired with strong global point-map performance, so the local-surface emphasis does not appear to simply trade away global geometry.</p>
+
+        <p><strong>Ablations support the two main components.</strong> The decoder and surface-loss experiments isolate the contribution of the Neighborhood Attention Decoder and the point gradient matching objective. This makes the method's main design choices easier to interpret.</p>
+
+        <p><strong>Open inference ecosystem improves usability.</strong> The public repository, pretrained weights, demo, CLI, and app lower the barrier for qualitative inspection and practical experimentation. That release is a meaningful strength even though full training and benchmark reproduction remain incomplete.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Training and benchmark reproducibility are incomplete.</strong> The released repository supports inference, but external groups cannot yet regenerate the main benchmark tables or ablation suite from public scripts and configs. <em>To address this</em>, the authors should release benchmark manifests, model adapters, alignment and unprojection code, table-generation scripts, training loops, loss implementations, dataset sampling weights, and exact configs for the decoder and loss ablations.</p>
+
+        <p><strong>Some comparisons depend on a conversion pipeline that may affect rankings.</strong> For depth baselines, MoGe-2-based alignment and unprojection can influence how competing methods are represented in point-map space. <em>To address this</em>, the paper should add a sensitivity analysis over conversion choices and document the exact conversion pipeline so readers can separate model quality from evaluation-adapter effects.</p>
+
+        <p><strong>The proposed normal metric is plausible but externally unvalidated.</strong> Point-map normal MAE directly targets the artifacts the paper cares about, but the current evidence mainly shows benchmark alignment and motivating examples. <em>To address this</em>, the authors should correlate the metric with human preference, mesh-quality measures, or downstream task performance, especially on thin structures and object boundaries.</p>
+
+        <p><strong>Efficiency claims need a matched-latency view.</strong> The Neighborhood Attention Decoder is a reasonable architectural response to local mixing, but it increases inference latency relative to simpler decoder alternatives. <em>To address this</em>, the paper should report latency/accuracy curves for smaller NAD variants, larger ConvStack baselines, and hybrid designs under comparable runtime budgets.</p>
+
+        <p><strong>Repeated-run uncertainty is missing.</strong> The paper reports strong point estimates, but seed variance and training-data-mix sensitivity are not shown. <em>To address this</em>, the authors should add reduced-scale multi-seed experiments and confidence intervals for the key ablations and representative benchmark results.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release a reproducible evaluation package.</strong> Publish benchmark manifests, baseline adapters, alignment and unprojection code, and scripts that regenerate the main benchmark tables. This is the highest-impact step for making the empirical claims externally auditable.</p>
+
+        <p><strong>2. Release training and ablation configurations.</strong> Provide the training loop, loss code, dataset sampling details, and exact configs for NAD, DPT, ConvStack, ViT, and loss ablations. This would turn the paper's strong empirical story into a reproducible method package.</p>
+
+        <p><strong>3. Validate the point-map normal metric externally.</strong> Add human preference, mesh-quality, or downstream-task correlation analyses so readers can see whether lower normal MAE tracks practical surface quality beyond the paper's own benchmark framing.</p>
+
+        <p><strong>4. Add statistical robustness evidence.</strong> Report reduced-scale seed analysis and confidence intervals for key ablations. Even a focused robustness check would clarify which gains are stable and which should be interpreted cautiously.</p>
+
+        <p><strong>5. Add matched-latency decoder comparisons.</strong> Compare smaller NAD, larger ConvStack, and hybrid variants at similar runtime. This would make the deployment tradeoff clearer for users who care about real-time or resource-constrained monocular geometry.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
