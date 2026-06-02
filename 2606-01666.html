@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: DOT-MoE | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of DOT-MoE: Differentiable Optimal Transport for MoEfication (arXiv:2606.01666)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: DOT-MoE">
+    <meta property="og:description" content="DOT-MoE makes a strong case that balanced differentiable optimal transport is a natural fit for dense-to-MoE conversion. The main improvement direction is auditability: public artifacts, uncertainty, matched compute, and routing diagnostics.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2606-01666.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: DOT-MoE">
+    <meta name="twitter:description" content="DOT-MoE makes a strong case that balanced differentiable optimal transport is a natural fit for dense-to-MoE conversion. The main improvement direction is auditability: public artifacts, uncertainty, matched compute, and routing diagnostics.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>DOT-MoE: Differentiable Optimal Transport for MoEfication</h1>
+        <p class="meta">
+            Bamba, Chavan, Thakur, Teig et al. &middot; June 2026 &middot;
+            <a href="https://arxiv.org/abs/2606.01666">arXiv:2606.01666</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no editorial yes/no labels, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            DOT-MoE makes a strong case that balanced differentiable optimal transport is a natural fit for converting dense feed-forward layers into sparse MoE layers. Its most consequential strength is the coherence between the method and the bottleneck it targets: balanced neuron-to-expert assignment, output-aware alignment, and learned routing are evaluated across several LLM families. The most important improvement direction is auditability &mdash; public reproduction artifacts, uncertainty estimates, compute-normalized baseline reruns, and direct diagnostics for the soft-to-hard routing pathway would make the strongest claims much easier to verify.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>DOT-MoE</strong> studies how to convert pretrained dense LLM feed-forward layers into sparse Mixture-of-Experts layers without retraining a model from scratch. The paper argues that prior MoEfication methods rely heavily on heuristic neuron clustering or random splitting, then proposes a differentiable optimal transport formulation for balanced neuron-to-expert assignment.</p>
+        <p>The method uses Sinkhorn-Knopp iterations to learn balanced assignments and straight-through estimators to connect soft optimization with hard expert structure. It jointly learns token-to-expert routing and uses an output-aware alignment objective so the converted MoE layer is trained to preserve dense FFN behavior rather than only proxy neuron similarity.</p>
+        <p>Empirically, the paper reports results across LLaMA-2, LLaMA-3, and Qwen2.5 families, comparing against structured pruning, heuristic dense-to-MoE conversion, and random-split baselines. The claimed picture is practical and promising: retain much of the dense model's behavior while lowering the active-parameter budget through a standard MoE architecture compatible with fused expert kernels.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Strong problem-method fit.</strong> Balanced optimal transport directly targets the central bottleneck in dense-to-MoE conversion: assigning dense FFN neurons to capacity-limited experts without collapsing utilization or relying only on ad hoc clustering. The formulation is well aligned with the structure of the problem.</p>
+        <p><strong>Output-aware alignment objective.</strong> The method optimizes toward preserving dense FFN output behavior, which is more relevant than matching only static neuron similarities. This makes the conversion objective better connected to downstream model quality.</p>
+        <p><strong>Broad empirical validation.</strong> The experiments span multiple model families, pruning baselines, dense-to-MoE baselines, and ablations. That breadth makes the contribution more persuasive than a single-backbone efficiency result.</p>
+        <p><strong>Confound-aware appendix evidence.</strong> Same-granularity comparisons, LTE comparison, attention extension, and a larger 32B appendix case all help address obvious alternative explanations. These additions make the empirical story more robust.</p>
+        <p><strong>Practical serving alignment.</strong> The final converted model remains a standard MoE architecture, which matters for deployment because it can use existing expert-parallel and fused-kernel infrastructure rather than requiring a bespoke runtime.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Reproducibility is the largest current gap.</strong> For an implementation-heavy method paper, the absence of public code, exact configurations, data recipes, and evaluation commands materially limits independent validation. <em>To address this</em>, the authors should release the conversion code, training scripts, configs, environment files, benchmark commands, and model-specific recipes needed to reproduce the main tables.</p>
+        <p><strong>Statistical confidence is underdeveloped.</strong> The reported tables appear to rely on point estimates, leaving unclear whether smaller differences between DOT-MoE and competing methods are stable. <em>To address this</em>, the authors should run at least several seeds for smaller models and key ablations, then report confidence intervals or standard deviations alongside the main results.</p>
+        <p><strong>Compute-normalized comparisons need sharper control.</strong> DOT-MoE uses alignment plus fine-tuning, while some baselines may use different data, token budgets, hardware, tuning effort, or prior-reported numbers. <em>To address this</em>, the authors should rerun CMoE, LLaMA-MoE-v2, LTE, and selected pruning baselines under matched data, tokens, hardware, active-parameter budgets, and tuning protocols.</p>
+        <p><strong>Rounding and straight-through behavior need direct diagnostics.</strong> The core method depends on a soft optimal-transport assignment becoming a hard expert structure, with STE gradients bridging the mismatch. <em>To address this</em>, the paper should report soft/hard assignment disagreement, expert utilization entropy, Sinkhorn convergence behavior, and sensitivity to initialization, temperature, and rounding choices.</p>
+        <p><strong>Deployment evidence is still narrow.</strong> Compatibility with fused expert kernels is useful, but throughput alone does not fully characterize serving value. <em>To address this</em>, the authors should add end-to-end latency, memory footprint, energy, batch-size sensitivity, and serving-stack comparisons that separate algorithmic sparsity from runtime implementation effects.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release reproduction artifacts.</strong> Publish the model-conversion code, training and evaluation scripts, exact configs, environment files, and data recipe. This is the highest-leverage improvement because the method's value depends on implementation details that outside readers currently cannot audit.</p>
+        <p><strong>2. Add statistical uncertainty.</strong> Run repeated seeds for the smaller model settings and key ablations, then report variation. This would clarify which improvements are robust and which should be treated as directional.</p>
+        <p><strong>3. Standardize compute-normalized baseline reruns.</strong> Reevaluate the strongest competing MoEfication and pruning baselines under matched tokens, data, hardware, active-parameter budgets, and tuning effort. This would make the comparative claims cleaner.</p>
+        <p><strong>4. Add routing and assignment stability diagnostics.</strong> Track soft-to-hard mismatch, utilization entropy, Sinkhorn convergence, and sensitivity to initialization or temperature. These measurements would directly test the pathway that makes DOT-MoE distinctive.</p>
+        <p><strong>5. Extend practical serving measurements.</strong> Add latency, memory, energy, and batch-size studies across realistic serving setups. This would connect the conversion method more tightly to the inference-efficiency motivation.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
