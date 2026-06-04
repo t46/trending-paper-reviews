@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: ACTS | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Agentic Chain-of-Thought Steering for Efficient and Controllable LLM Reasoning (arXiv:2606.03965)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: ACTS">
+    <meta property="og:description" content="ACTS shows that interpretable strategy-level steering can improve reasoning efficiency beyond length limits alone. The key next step is evidential calibration: uncertainty reporting, adaptive budget selection, and larger/frontier reasoner tests.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2606-03965.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: ACTS">
+    <meta name="twitter:description" content="ACTS shows that interpretable strategy-level steering can improve reasoning efficiency beyond length limits alone. The key next step is evidential calibration: uncertainty reporting, adaptive budget selection, and larger/frontier reasoner tests.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Agentic Chain-of-Thought Steering for Efficient and Controllable LLM Reasoning</h1>
+        <p class="meta">
+            Xia, Xie, Xu, Kang et al. &middot; June 2026 &middot;
+            <a href="https://arxiv.org/abs/2606.03965">arXiv:2606.03965</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no publication-outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            ACTS makes a compelling case that reasoning efficiency can be improved through an explicit, interpretable control layer rather than through length limits alone. Its strongest contribution is the strategy-and-starter-phrase controller over a frozen reasoner, supported by broad benchmark evidence and practical serving analysis. The most important improvement direction is evidential calibration: uncertainty reporting, adaptive budget selection, and larger/frontier reasoner tests are needed before the broadest generalization claims are fully persuasive.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>Agentic Chain-of-Thought Steering for Efficient and Controllable LLM Reasoning</strong> introduces ACTS, an inference-time controller for budget-aware reasoning. Instead of fine-tuning the underlying reasoner or merely asking it to be shorter, ACTS keeps the reasoner frozen and steers each reasoning step with an explicit high-level strategy plus a natural-language starter phrase.</p>
+
+        <p>The controller observes the current reasoning trace and remaining token budget, then chooses actions such as understanding the problem, planning, executing, checking, summarizing, or concluding. It is initialized from synthetic steering trajectories and then optimized with GRPO-style reinforcement learning using reward shaping conditioned on the budget.</p>
+
+        <p>The evaluation covers math reasoning benchmarks and GPQA Diamond across DeepSeek-R1-Distill-Qwen and Qwen3-family reasoners. The paper reports substantial token reductions while often preserving or improving task accuracy, and it includes mechanism analysis, budget sweeps, async serving experiments, and released code/model/data artifacts.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Clear strategy-level control surface.</strong> ACTS shifts the intervention from length-only prompting to explicit reasoning behavior control. The controller actions are inspectable and semantically meaningful, which makes the method easier to audit than hidden-state or token-level steering alone.</p>
+
+        <p><strong>Practical frozen-reasoner architecture.</strong> Keeping the reasoner fixed makes the method more deployable than approaches that require retraining every target model. This design also clarifies the contribution: ACTS is a control layer over reasoning behavior, not another reasoner fine-tune.</p>
+
+        <p><strong>Broad empirical coverage for a first method paper.</strong> The experiments span MATH-500, AIME24, AMC, OlympiadBench math, and GPQA Diamond, with three tested reasoners. Across these settings, the reported token savings are often large while accuracy is frequently maintained or improved.</p>
+
+        <p><strong>Systems awareness strengthens the deployment story.</strong> The async two-server serving analysis directly addresses a likely objection to controller-based inference: controller calls may add latency. Reporting throughput close to Vanilla for Qwen3-8B and a moderate overhead for the 7B distilled reasoner makes the method feel operationally grounded.</p>
+
+        <p><strong>Real reproducibility artifacts are available.</strong> The linked repository includes evaluation paths for ACTS and Vanilla, training scripts, reward and rollout code, and data/model links. Reproduction still requires substantial compute, but the existence of core artifacts is a meaningful strength.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Statistical uncertainty is underreported.</strong> The main tables and budget sweeps report averages without confidence intervals, standard deviations, paired tests, or per-seed detail. This makes small accuracy differences hard to interpret, especially where ACTS is close to Vanilla or below it. <em>To address this</em>, the authors should release per-seed and per-sample logs, add paired bootstrap tests, and show uncertainty bands on the token-accuracy curves.</p>
+
+        <p><strong>Budget selection remains external to the method.</strong> ACTS is controllable once a budget is supplied, but the paper does not yet solve how a real service should choose that budget per question, user, model, or latency target. <em>To address this</em>, the authors should evaluate an adaptive budget policy using question difficulty, early trace features, or a two-stage estimator, then compare it against fixed-budget deployment policies.</p>
+
+        <p><strong>Scale and frontier-model transfer are not yet established.</strong> The experiments are limited to 1.5B, 7B, and 8B open reasoners. That is a useful first scope, but it does not fully support broad reasoner-agnostic claims for larger open models or API-accessible frontier systems. <em>To address this</em>, the authors should either test substantially larger reasoners and at least one compatible API model, or narrow the claim to the demonstrated model scale.</p>
+
+        <p><strong>Reward and annotation sensitivity need deeper stress testing.</strong> The synthetic strategy labels, starter phrases, reward shaping, and grace margin are plausible, but the paper does not yet show how robust the results are to these design choices. <em>To address this</em>, the authors should add sensitivity studies over reward parameters and budget margins, report annotation reliability, and include ablations that separate strategy labels from starter-phrase effects.</p>
+
+        <p><strong>Baseline reproducibility and coverage could be stronger.</strong> The selected baselines are relevant, but exact wrappers, commits, configurations, and adaptive-budget alternatives are not fully documented in a way that makes every comparison easy to audit. <em>To address this</em>, the authors should publish pinned commands for each baseline cell and add comparisons to SelfBudgeter/BudgetThinker-style adaptive allocation methods where feasible.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Add uncertainty reporting around every central comparison.</strong> Per-seed runs, paired tests, confidence intervals, and uncertainty bands would turn the accuracy-efficiency story from a point-estimate narrative into a more reliable empirical claim.</p>
+
+        <p><strong>2. Evaluate an adaptive budget policy.</strong> A lightweight budget estimator or service-level controller would make ACTS more complete as a deployment method, because the current system assumes the most important control variable is already known.</p>
+
+        <p><strong>3. Test larger and more diverse reasoners.</strong> Evaluation on 30B/70B-class open models and at least one compatible frontier model would validate or bound the claim that ACTS is broadly reasoner-agnostic.</p>
+
+        <p><strong>4. Package baseline reproduction more tightly.</strong> Pinned baseline wrappers, exact configs, commits, and raw logs would reduce replication friction and make the comparative claims easier to inspect.</p>
+
+        <p><strong>5. Turn interpretability into measured evidence.</strong> Strategy-transition audits, failure-pattern analysis, and per-strategy ablations would show whether the readable action space is merely intuitive or actually explains when and why ACTS helps.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
