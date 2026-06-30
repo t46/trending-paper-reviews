@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: TailOR | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Trimming the Long-Tail of Visual World Modeling Evaluation (arXiv:2606.24256)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: TailOR">
+    <meta property="og:description" content="TailOR offers a clear benchmark for long-tail physical affordance generalization. Its next step is measurement hardening -> uncertainty reporting, full evaluation manifests, judge validation, and reproducible scoring.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2606-24256.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: TailOR">
+    <meta name="twitter:description" content="TailOR offers a clear benchmark for long-tail physical affordance generalization. Its next step is measurement hardening -> uncertainty reporting, full evaluation manifests, judge validation, and reproducible scoring.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Trimming the Long-Tail of Visual World Modeling Evaluation</h1>
+        <p class="meta">
+            Li, Hong, Qian, Ha et al. &middot; June 2026 &middot;
+            <a href="https://arxiv.org/abs/2606.24256">arXiv:2606.24256</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no editorial gatekeeping labels, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            <strong>TailOR offers a clear benchmark for long-tail physical affordance generalization.</strong> Its next step is measurement hardening &rarr; uncertainty reporting, full evaluation manifests, judge validation, and reproducible scoring.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>Trimming the Long-Tail of Visual World Modeling Evaluation</strong> introduces TailOR, also presented as Tailor-Bench, a benchmark for testing whether image and video world models generalize physical principles beyond frequent tool-task co-occurrences. The motivating claim is straightforward: physical interactions are long-tailed, and models trained on web-scale visual data may handle common affordances while failing on rare, unconventional, or impossible combinations.</p>
+
+        <p>The benchmark organizes prompts into Regular, Unconventional, and Impossible scenarios. Regular cases reflect familiar tool-object pairings, Unconventional cases preserve physical feasibility while changing the usual tool-task association, and Impossible cases violate physical or affordance constraints. It evaluates both predictive generation, where the model must infer an outcome, and descriptive generation, where the target outcome is specified.</p>
+
+        <p>The empirical study spans contemporary text-to-image and text-to-video generation systems. The reported pattern is the paper's central result: performance declines from Regular to Unconventional to Impossible scenarios, especially for Interaction Accuracy and Physical Realism. This makes the benchmark most valuable as a diagnostic probe for long-tail physical commonsense rather than as a simple visual quality leaderboard.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Clear benchmark gap.</strong> The paper targets long-tail affordance generalization, a meaningful evaluation gap beyond conventional physical commonsense prompts and ordinary text-to-image alignment checks.</p>
+
+        <p><strong>Contrastive scenario design.</strong> Regular, Unconventional, and Impossible modes create controlled pressure on tool properties, causal constraints, and familiar co-occurrence patterns, making the evaluation more diagnostic than a flat prompt set.</p>
+
+        <p><strong>Predictive and descriptive split.</strong> Separating outcome inference from target-outcome realization helps distinguish whether models can reason about likely physical consequences or merely render an explicitly requested scene.</p>
+
+        <p><strong>Metric decomposition.</strong> Instruction Adherence, Interaction Accuracy, Physical Realism, and Perceptual Quality reduce conflation between visual polish and physical correctness, which is exactly the distinction the benchmark needs to surface.</p>
+
+        <p><strong>Open artifacts and useful transparency.</strong> The project page, GitHub repository, Hugging Face dataset, prompt templates, and judge prompt give the community a practical starting point for reuse and scrutiny.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Uncertainty and statistical evidence are incomplete.</strong> The main results are reported as means without standard deviations, confidence intervals, paired tests, or per-task variability, so fine-grained model rankings and scenario gaps are harder to interpret. <em>To address this</em>, the authors should release per-sample scores and add paired bootstrap confidence intervals, mixed-effects scenario analyses, and model-ranking uncertainty.</p>
+
+        <p><strong>Human evaluation comparability is underreported.</strong> The 80-prompt human subset and safety-filter prompt replacements can affect cross-model comparisons, but the sampling and replacement details are not sufficiently documented. <em>To address this</em>, the authors should publish prompt IDs, replacement flags, model generation status, seeds or API dates, and scoring coverage for every evaluated item.</p>
+
+        <p><strong>Automatic judge validation is insufficiently detailed.</strong> A benchmark that scales through VLM judging needs more than high-level ranking agreement; readers need to know where judge-human alignment holds and where it fails. <em>To address this</em>, the paper should report per-metric and per-scenario judge-human correlations, calibration plots, disagreement analysis, and representative judge failure cases.</p>
+
+        <p><strong>Curation and affordance graph details are not fully auditable.</strong> GPT-based curation prompts are visible, but aggregate quality-control outcomes, ConceptNet edge choices, filtering, normalization, and manual review procedures are not reproducible from the paper alone. <em>To address this</em>, the authors should add rejection rates, edit rates, ambiguity categories, before-and-after verification examples, and precise affordance extraction rules.</p>
+
+        <p><strong>Repository reproducibility is partial.</strong> Public code and data are valuable, but the current artifacts do not yet provide a complete path from prompts and generations to the reported table values. <em>To address this</em>, the repository should add pinned dependencies, configuration files, raw outputs or download scripts, scoring aggregation scripts, and a one-command reproduction path for the main results.</p>
+
+        <p><strong>Mechanistic claims should be softened.</strong> The experiments show behavioral failures under TailOR, but they do not directly reveal whether models lack internal physical principles or fail for other reasons such as prompting, data frequency, filtering, or judge sensitivity. <em>To address this</em>, the authors should frame the result as behavioral evidence and reserve internal-representation claims for future mechanistic or intervention studies.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Add uncertainty and statistical tests.</strong> Release per-sample scores and report confidence intervals, paired bootstrap tests, and mixed-effects analyses so readers can distinguish robust benchmark patterns from noisy rank differences.</p>
+
+        <p><strong>2. Publish the full evaluation manifest.</strong> Include prompt IDs, scenario labels, replacement flags, blocked prompt counts, model generation status, seeds or API dates, and scoring coverage to make the evaluation auditable end to end.</p>
+
+        <p><strong>3. Strengthen VLM judge validation.</strong> Add per-metric and per-scenario judge-human validation tables, calibration views, disagreement examples, and judge failure cases so automatic scores can be trusted at the level the benchmark requires.</p>
+
+        <p><strong>4. Make the repository fully reproducible.</strong> Add pinned requirements, config files, scoring scripts, raw outputs or download scripts, and a one-command path for regenerating the main reported tables.</p>
+
+        <p><strong>5. Report curation and affordance audit statistics.</strong> Document task rejection rates, human edit rates, ambiguous cases, ConceptNet extraction rules, and category-level diagnostics by action, environment, tool attribute, and failure mode.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
