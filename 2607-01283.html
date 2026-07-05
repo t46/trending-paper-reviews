@@ -9,7 +9,7 @@
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Trending Paper Review Series">
     <meta property="og:title" content="Review: Grid-Based ANN Scaling Laws">
-    <meta property="og:description" content="Multiprobe grid ANN shows a concrete tradeoff: weak N-scaling, favorable tested d-scaling, and low build cost. The key next step is evidence hardening through uncertainty intervals, broader high-dimensional datasets, modern baselines, and complete reproduction artifacts.">
+    <meta property="og:description" content="Multiprobe grid ANN shows a concrete tradeoff: weak N-scaling, favorable tested d-scaling, and low build cost. The key next step is evidence hardening through uncertainty intervals, broader high-dimensional datasets, tuning-parity controls, and complete reproduction artifacts.">
     <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-01283.html">
     <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
     <meta name="twitter:title" content="Review: Grid-Based ANN Scaling Laws">
-    <meta name="twitter:description" content="Multiprobe grid ANN shows a concrete tradeoff: weak N-scaling, favorable tested d-scaling, and low build cost. The key next step is evidence hardening through uncertainty intervals, broader high-dimensional datasets, modern baselines, and complete reproduction artifacts.">
+    <meta name="twitter:description" content="Multiprobe grid ANN shows a concrete tradeoff: weak N-scaling, favorable tested d-scaling, and low build cost. The key next step is evidence hardening through uncertainty intervals, broader high-dimensional datasets, tuning-parity controls, and complete reproduction artifacts.">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -223,7 +223,7 @@
         </div>
 
         <div class="verdict">
-            The paper's strongest contribution is a concrete scaling tradeoff for multiprobe grid ANN: weak dataset-size scaling, favorable tested dimensional scaling at high recall, and unusually low build cost. Its most important improvement direction is evidence hardening &mdash; uncertainty intervals for fitted exponents, broader high-dimensional datasets, stronger modern baselines, and complete reproduction artifacts.
+            The paper's strongest contribution is a concrete scaling tradeoff for multiprobe grid ANN: weak dataset-size scaling, favorable tested dimensional scaling at high recall, and unusually low build cost. Its most important improvement direction is evidence hardening &mdash; uncertainty intervals for fitted exponents, broader high-dimensional datasets, tuning-parity controls, and complete reproduction artifacts.
         </div>
 
         <h2>Paper overview</h2>
@@ -249,7 +249,7 @@
 
         <p><strong>Dimensionality evidence is too narrow for the broad motivation.</strong> The favorable <em>d</em>-scaling result is measured on the GloVe dimensional family up to 200 dimensions, while the paper's motivation points toward modern embedding and attention workloads that often sit at much higher dimensions. <em>To address this</em>, add transformer embeddings, attention key/query vectors, and vector-search datasets at <em>d</em> &ge; 512, then separate claims that hold broadly from those specific to GloVe-like data.</p>
 
-        <p><strong>Modern baseline coverage is incomplete.</strong> The baseline families are useful, but the comparison does not yet cover several systems readers would expect in a current ANN study, including stronger graph/disk, partitioning/quantization, and update-oriented methods. <em>To address this</em>, add DiskANN or Vamana, ScaNN, HNSWlib or FAISS-HNSW, RaBitQ, and a dynamic HNSW-style baseline, or narrow the competitiveness claims to the baselines actually tested.</p>
+        <p><strong>Baseline tuning parity is not fully established.</strong> The paper uses multiple baseline families, but the comparison is harder to interpret without clearer evidence that each method received comparable tuning effort and budget. <em>To address this</em>, report the search spaces, tuning budgets, and selected hyperparameters for every baseline, then add a small parity study showing whether the relative scaling conclusions survive stronger baseline tuning.</p>
 
         <p><strong>Rebuild-heavy claims are mostly derived rather than directly measured.</strong> The paper's operational argument comes from build/query timing algebra, but it does not yet run workloads with controlled insertions, deletions, updates, or periodic rebuilds. <em>To address this</em>, implement public update APIs or explicitly scope them out, then benchmark end-to-end workloads with measured update throughput, recall drift, and rebuild cost.</p>
 
@@ -262,7 +262,7 @@
 
         <p><strong>2. Expand datasets and dimensionality.</strong> Add modern embedding datasets beyond GloVe and SIFT, include dimensions above 200 where possible, and evaluate attention key/query vectors from actual transformer workloads.</p>
 
-        <p><strong>3. Strengthen the baseline set.</strong> Add current graph, disk, partitioning, quantization, and dynamic-update baselines so that the paper's systems claims are calibrated against methods practitioners would plausibly deploy today.</p>
+        <p><strong>3. Add a baseline tuning-parity study.</strong> Document comparable tuning budgets for multiprobe grid and each baseline family, publish selected hyperparameters, and show whether the qualitative scaling conclusions are stable under stronger baseline optimization.</p>
 
         <p><strong>4. Complete the reproduction package.</strong> Add scripts for the missing <em>N</em>-scaling figure, Table 1, Appendix C tables, hardware/software metadata, and a one-command cached reproduction route when full Docker sweeps are too expensive.</p>
 
