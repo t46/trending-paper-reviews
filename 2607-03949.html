@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: TESSERA v2 | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of TESSERA v2: Scaling Pixel-wise Earth Foundation Models (arXiv:2607.03949)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: TESSERA v2">
+    <meta property="og:description" content="TESSERA v2's strongest contribution is a downstream-driven 395-run scaling study showing that pretraining loss is a poor proxy for EO utility. The key improvement direction is auditable release: v2 code, score matrices, uncertainty, and regional stress tests.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-03949.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: TESSERA v2">
+    <meta name="twitter:description" content="TESSERA v2's strongest contribution is a downstream-driven 395-run scaling study showing that pretraining loss is a poor proxy for EO utility. The key improvement direction is auditable release: v2 code, score matrices, uncertainty, and regional stress tests.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>TESSERA v2: Scaling Pixel-wise Earth Foundation Models</h1>
+        <p class="meta">
+            Feng, Jaffer, Shokar, Knezevic et al. &middot; July 2026 &middot;
+            <a href="https://arxiv.org/abs/2607.03949">arXiv:2607.03949</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no publication-outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            TESSERA v2's most consequential strength is its downstream-driven scaling study: 395 controlled runs show that self-supervised pretraining loss is a poor guide to Earth-observation utility, while encoder capacity and data should grow together. The most important improvement direction is auditability &mdash; releasing the v2 code, sweep manifests, score matrices, checkpoints, and uncertainty-aware benchmark evidence needed to make the strongest product claims independently checkable.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>TESSERA v2</strong> studies how to allocate pretraining compute for pixel-wise Earth-observation foundation models, where the practical output is not only a model checkpoint but a reusable global embedding product. The paper focuses on a fixed Barlow Twins family trained on Sentinel-1 and Sentinel-2 data, then evaluates every scaling run on downstream tasks rather than selecting by self-supervised loss.</p>
+
+        <p>The headline empirical result is that pretraining loss barely predicts downstream performance, while downstream-calibrated scaling points toward a simple allocation rule: invest in larger encoders and more data, but keep the projector fixed. The authors use this rule to train larger teachers, then distill them into compact student models designed for embedding-as-data deployment.</p>
+
+        <p>The deployment story is unusually central. The paper presents compact distilled students, including a 21-million-parameter TESSERA v2-1B-M model, and reports that Matryoshka prefixes can trade storage for quality so that a short 16-dimensional prefix retains most of the full 128-dimensional representation's aggregate performance. The public v2 global embedding release, however, is still pending in the inspected materials.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>The research question is concrete and economically important.</strong> The paper asks how to spend expensive pretraining compute for product-grade EO embeddings, then studies that question directly through a large controlled sweep rather than presenting only a final model.</p>
+
+        <p><strong>The controlled scaling design is unusually valuable for EO foundation models.</strong> Encoder size, projector size, and data are varied within a fixed architecture family, and each run is evaluated downstream. This makes the paper's most useful result &mdash; loss is a weak proxy for utility &mdash; far more actionable than another single-checkpoint leaderboard comparison.</p>
+
+        <p><strong>The deployment orientation matches real adoption constraints.</strong> Treating the teacher as a representation distribution, then distilling into compact students with Matryoshka prefixes, addresses recurring global inference and storage costs that often determine whether EO foundation models become usable products.</p>
+
+        <p><strong>The baseline and evaluation coverage are relevant.</strong> The comparison set includes prior TESSERA versions, AlphaEarth, OlmoEarth, Presto, MOSAIKS, remote-sensing foundation models, and generic backbones, with additional held-out datasets beyond the scaling suite. This gives the empirical claims a broader context than a narrow in-family comparison.</p>
+
+        <p><strong>The paper is careful about its scope.</strong> It does not present the allocation rule as a universal scaling law for all EO models. The authors explicitly tie the result to a pixel-wise Sentinel-1/Sentinel-2 Barlow Twins setting and acknowledge under-represented climates and seasons as limitations.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Public v2 reproducibility is still incomplete.</strong> The repository inspected for this review documents v1 and v1.1 implementation details while describing v2 as coming soon, so independent verification of the scaling sweeps, distillation, checkpoints, and evaluation harness is not yet possible. <em>To address this</em>, the authors should release versioned sweep manifests, per-run configs, seeds, compute estimates, downstream score matrices, teacher and student checkpoints, evaluation scripts, exact data splits, and embedding artifact identifiers tied to the arXiv version.</p>
+
+        <p><strong>Benchmark uncertainty is underreported for modest composite margins.</strong> The aggregate product-performance results are promising, but the extracted main text does not expose enough per-task variance, paired intervals, or statistical tests to distinguish robust superiority from benchmark noise in close comparisons. <em>To address this</em>, the authors should publish per-task tables for all baselines and prefix dimensions, add paired bootstrap confidence intervals over tasks or datasets, and report repeated-seed tests wherever repeated runs or splits exist.</p>
+
+        <p><strong>The scaling law's generality is necessarily narrow.</strong> The study is strong within one objective, modality pair, and task suite, but readers could easily overgeneralize the compute-allocation recipe to other EO objectives, patch-based architectures, multimodal models, or downstream distributions. <em>To address this</em>, the authors should add at least one contrasting objective or architecture-family check, or make the limitation more operational by specifying where they expect the rule to fail.</p>
+
+        <p><strong>Global deployment claims need more geographic and seasonal stress testing.</strong> The paper acknowledges that under-represented climates, regions, and unseen seasons remain an evaluation gap, which matters because the proposed output is a global embedding product. <em>To address this</em>, the authors should add region- and season-stratified evaluations by biome, continent, cloud regime, label density, and temporal holdout, then report failure cases rather than only aggregate scores.</p>
+
+        <p><strong>The Matryoshka and distillation story needs sharper causal evidence.</strong> The prefix results are practically useful, but their sensitivity to teacher choice, distillation corpus, task family, and the failure mode of prefix-BT is not yet fully explained. <em>To address this</em>, the authors should include a concise ablation comparing teacher choices, distillation data mixtures, prefix dimensions, and the direct prefix-BT alternative to clarify why distillation succeeds where direct prefix training does not.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release the v2 reproducibility package.</strong> The highest-impact step is to publish the v2 code, scaling sweep manifests, per-run metadata, score matrices, checkpoints, evaluation harness, and versioned embedding artifacts so that the strongest empirical and product claims can be independently checked.</p>
+
+        <p><strong>2. Add uncertainty-aware benchmark reporting.</strong> Per-task scores, paired bootstrap intervals, repeated-seed evidence where available, and effect-size reporting would make the comparisons against AlphaEarth, TESSERA v1, and other baselines much easier to interpret.</p>
+
+        <p><strong>3. Add region and season stress tests.</strong> Stratified evaluation over under-represented climates, continents, cloud regimes, label densities, and temporal holdouts would better match the paper's global product ambition.</p>
+
+        <p><strong>4. Clarify the novelty boundaries.</strong> The paper should more explicitly separate inherited ingredients &mdash; Barlow Twins, TESSERA v1, distillation, and Matryoshka representation learning &mdash; from the new downstream-calibrated EO scaling and deployment pipeline.</p>
+
+        <p><strong>5. Document operational product details.</strong> A release plan covering GeoTessera version identifiers, migration from v1 and v1.1, storage formats, and prefix-selection guidance would turn the deployment narrative into a clearer artifact users can adopt.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
