@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: Proactive Memory Agent | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Remember When It Matters: Proactive Memory Agent for Long-Horizon Agents (arXiv:2607.08716)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: Proactive Memory Agent">
+    <meta property="og:description" content="A clean plug-and-play memory monitor improves long-horizon agents across two benchmarks. Matched-compute controls, paired uncertainty, cost reporting, and complete artifacts are now needed to isolate the value of selective structured memory.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-08716.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: Proactive Memory Agent">
+    <meta name="twitter:description" content="A clean plug-and-play memory monitor improves long-horizon agents across two benchmarks. Matched-compute controls, paired uncertainty, cost reporting, and complete artifacts are now needed to isolate the value of selective structured memory.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Remember When It Matters: Proactive Memory Agent for Long-Horizon Agents</h1>
+        <p class="meta">
+            Wu, Zhang, Zhou, Wang et al. &middot; July 2026 &middot;
+            <a href="https://arxiv.org/abs/2607.08716">arXiv:2607.08716</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no editorial outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            A clean, plug-and-play memory monitor makes preserved execution state behaviorally useful at the moment of action, with notable reported gains across two complementary benchmarks. The most important next step is to isolate that mechanism from added frontier-model deliberation through matched-compute controls, paired uncertainty estimates, transparent cost reporting, and complete public artifacts.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>Remember When It Matters</strong> studies a practical failure mode in long-horizon agents: requirements, environment facts, prior attempts, diagnoses, and open subgoals can remain somewhere in a growing trajectory yet stop influencing the next decision. The authors call this <em>behavioral state decay</em> and treat memory as an active intervention mechanism rather than a passive retrieval store.</p>
+
+        <p>The proposed Proactive Memory Agent runs beside an unchanged action agent in two phases. It first updates a private structured memory bank from recent trajectory evidence, then decides whether to inject a memory-grounded reminder or remain silent. This separation preserves compatibility with black-box agents and existing harnesses while making the timing of memory use an explicit control decision.</p>
+
+        <p>Across Terminal-Bench 2.0 and &tau;<sup>2</sup>-Bench, the paper reports pass@1 improvements for both weaker and stronger action agents, including gains of 8.3 percentage points and 6.8 percentage points for Sonnet-based conditions. Ablations compare selective intervention with passive bank exposure, always-on reminders, advisor-only guidance, and general retrieval. An open-weight study also trains Qwen3.5-27B on SETA using supervised fine-tuning and GRPO, showing improved validation reward and partial transfer to Terminal-Bench.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Clear problem-to-mechanism alignment.</strong> The structured bank preserves execution state while the intervention decision makes selected information salient when an action is chosen. This is an intelligible decomposition of storage from behavioral influence.</p>
+
+        <p><strong>Modular deployment with unchanged action agents.</strong> The memory component operates alongside the action policy rather than requiring access to its weights. That makes the design relevant to closed frontier models, existing harnesses, and heterogeneous agent stacks.</p>
+
+        <p><strong>Complementary empirical settings and meaningful point improvements.</strong> Terminal debugging and policy-governed service conversations exercise different forms of long-horizon state. Improvements across both domains and across action-agent strengths make the system more compelling than a single-benchmark demonstration.</p>
+
+        <p><strong>Mechanism-oriented ablations.</strong> Comparisons against full-bank exposure, always-on injection, a no-bank advisor, and Mem0 probe whether value comes from structured state, selection, or generic auxiliary guidance. This is the right experimental instinct even though tighter controls remain necessary.</p>
+
+        <p><strong>A credible open-weight direction.</strong> The Qwen3.5-27B SFT and GRPO study suggests that proactive memory policies need not remain dependent on a closed frontier model. Its partial transfer result provides a useful starting point for a more fully specified training program.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>The implementation is not presently reproducible.</strong> The repository advertised by the paper has no commits, while exact prompts, configurations, task manifests, raw trajectories, training details, and result artifacts are absent. <em>To address this</em>, the authors should publish a tagged implementation with environment lockfiles, data provenance, prompts, configs, task-level outputs, exclusions, and an end-to-end reproduction command.</p>
+
+        <p><strong>Point estimates lack statistical reliability measures.</strong> The paper reports no confidence intervals, repeated stochastic runs, or paired hypothesis tests, leaving unclear how stable the observed gains are across task and evaluator variation. <em>To address this</em>, the authors should repeat the main conditions, report paired bootstrap intervals and McNemar-style tests where appropriate, and document seeds, run counts, and exclusions.</p>
+
+        <p><strong>The causal contribution of selective structured memory is not isolated from added computation.</strong> A separate Opus-class model reasons at every step, so a similarly expensive critic or self-reflection module might produce comparable gains without a memory bank. <em>To address this</em>, the authors should run a compute-matched factorial study crossing bank versus no bank with selective, always-on, and silent intervention, alongside equal-token advisor, self-reflection, random-reminder, and no-op controls.</p>
+
+        <p><strong>Result tables and selective-superiority wording need reconciliation.</strong> Full-system &tau;<sup>2</sup>-Bench values differ across tables, and always-on injection leads the Table 2 micro average even though selective intervention has the stronger macro balance. <em>To address this</em>, the authors should regenerate every table from versioned source results, explain population or run differences, and qualify claims by the aggregation under which each method leads.</p>
+
+        <p><strong>Deployment cost and latency are unreported.</strong> Calling a frontier memory model at every step may materially increase tokens, wall-clock time, and dollar cost, which could change the practical ranking of methods. <em>To address this</em>, the authors should report calls, tokens, latency, cost, bank growth, and error rates, then present quality&ndash;cost Pareto curves against matched baselines and less frequent triggers.</p>
+
+        <p><strong>Behavioral state decay is named but not directly measured.</strong> Benchmark success is consistent with the proposed explanation, but the evaluation does not identify decay events, measure intervention precision and recall, or show when reminders repair or harm decisions. <em>To address this</em>, the authors should blind-annotate decay events on stratified trajectories, link interventions to action changes and outcomes, and stress-test stale, conflicting, and adversarial memories before irreversible tool actions.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release a complete, versioned reproduction package.</strong> Populate the advertised repository with code, license, prompts, configs, environment locks, task manifests, training-data provenance, raw trajectories, task-level results, exclusions, and exact commands. This is the highest-priority prerequisite for independent scrutiny.</p>
+
+        <p><strong>2. Establish reliability and reconcile the reported results.</strong> Repeat all principal conditions, add paired uncertainty and tests, expose seed and exclusion accounting, and regenerate Tables 1&ndash;2 from versioned artifacts with a clear explanation of any differing evaluation populations.</p>
+
+        <p><strong>3. Isolate memory from auxiliary deliberation.</strong> Use matched token and model budgets in a factorial bank/no-bank &times; selective/always/silent experiment, with critic, self-reflection, random-reminder, and no-op controls. This would directly test whether structured selective memory is the active ingredient.</p>
+
+        <p><strong>4. Quantify the deployment tradeoff.</strong> Log interventions, calls, tokens, latency, dollar cost, bank size, failures, and harmful reminders; compare event-driven and periodic triggers; and report quality&ndash;cost Pareto frontiers.</p>
+
+        <p><strong>5. Measure the proposed construct and its safety boundaries.</strong> Create blinded behavioral-state-decay annotations, report intervention precision, recall, and causal outcome changes, and test stale or adversarial memories across broader models and web, research, embodied, and software-engineering tasks.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
