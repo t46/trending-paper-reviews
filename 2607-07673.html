@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: MedPMC | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of MedPMC: A Systematic Framework for Scaling High-Fidelity Medical Multimodal Data for Foundation Models (arXiv:2607.07673)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: MedPMC">
+    <meta property="og:description" content="MedPMC turns PMC literature into a high-fidelity medical multimodal resource with broad transfer evidence. The key next step is auditability: release exact artifacts and stress-test benchmark independence and patient-level clinical validity.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-07673.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: MedPMC">
+    <meta name="twitter:description" content="MedPMC turns PMC literature into a high-fidelity medical multimodal resource with broad transfer evidence. The key next step is auditability: release exact artifacts and stress-test benchmark independence and patient-level clinical validity.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>MedPMC: A Systematic Framework for Scaling High-Fidelity Medical Multimodal Data for Foundation Models</h1>
+        <p class="meta">
+            Kim, Kim, Xiao, Applebaum et al. &middot; July 2026 &middot;
+            <a href="https://arxiv.org/abs/2607.07673">arXiv:2607.07673</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no editorial labels, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            MedPMC&rsquo;s strongest contribution is a broad, modular curation pipeline that turns permissively licensed PMC literature into a high-fidelity resource, with convincing transfer across specialties, visual question answering, and a dermatology retrieval probe. The most consequential next step is auditability: release the exact implementation and evaluation artifacts, then stress-test benchmark independence and patient-level clinical validity so the reported gains can be independently verified.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p>MedPMC presents a five-stage framework for converting permissively licensed PubMed Central literature into training data for medical vision-language models. Applied to 6.1 million articles, the pipeline produces 11 million image-text pairs through medical relevance screening, multi-panel figure handling, figure separation, caption extraction and alignment, and medical figure classification.</p>
+
+        <p>The paper evaluates both the curation components and the downstream value of the resulting corpus. Manual review finds markedly higher medical relevance than a prior PMC-derived dataset, while a CLIP-style model trained on MedPMC improves average zero-shot performance across 26 benchmarks spanning 11 specialties. The same representation also improves medical visual question answering and morphology-to-image retrieval on 10,524 Yale New Haven Health System dermatology photographs.</p>
+
+        <p>This is best understood as an open-data and curation blueprint with promising transfer evidence, not as evidence of deployment readiness. The paper&rsquo;s central unresolved question is whether independent researchers can reproduce the public-data results and separate genuine curation gains from benchmark overlap, selective filtering, and patient-level dependence.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>A high-value bottleneck is addressed directly.</strong> The framework targets the scarcity of large, expert-authored clinical image-text data by making systematic use of PMC&rsquo;s permissively licensed literature, creating a resource with clear practical value for medical multimodal research.</p>
+
+        <p><strong>The pipeline is modular and unusually auditable in design.</strong> Its five stages isolate distinct failure modes, and held-out component evaluations provide useful evidence about screening, panel detection, figure separation, and caption alignment rather than treating curation as an opaque preprocessing step.</p>
+
+        <p><strong>The downstream evaluation is broad and triangulated.</strong> Results span 26 benchmarks and 11 specialties, two medical VQA settings, and an out-of-domain dermatology retrieval probe. The architecture-matched corpus replacement is a particularly useful control because it keeps the model recipe fixed while testing the supervision source.</p>
+
+        <p><strong>The paper is candid about important limits.</strong> It acknowledges possible benchmark overlap and correctly avoids presenting the Yale New Haven Health System retrieval experiment as deployment validation. That restraint makes the positive transfer evidence more credible.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>The public release does not yet match the reproducibility claim.</strong> The inspected official repository contains only a README while the paper describes code, benchmarks, and training recipes as available. <em>To address this</em>, publish an immutable paper-version tag containing the exact code, dependencies, configurations, manifests, checkpoints, evaluators, and an end-to-end smoke test; otherwise revise the availability wording to describe what is actually released.</p>
+
+        <p><strong>Benchmark contamination is not demonstrated away.</strong> The paper excludes some curated QA subsets but states that exact image-level overlap with public benchmarks cannot be fully excluded, leaving open the possibility that part of the reported gain reflects reused content. <em>To address this</em>, run article-level and perceptual near-duplicate audits against every benchmark, publish hashes and exclusions, and report residual overlap and sensitivity results.</p>
+
+        <p><strong>The clinical retrieval probe may overstate independence.</strong> Images from the same patients are treated as individual samples, and morphology concepts are normalized with an open LLM while only a sample receives resident verification. <em>To address this</em>, use patient-grouped splits and bootstrap procedures, add stratified clinician adjudication, and compare raw, normalized, and alternate label mappings.</p>
+
+        <p><strong>Selective filtering obscures the weakest curation stage.</strong> Pairs with mismatched panel and generated-subcaption counts are removed even though caption alignment is the least strong component, so the final corpus may hide difficult cases. <em>To address this</em>, report stage-wise attrition by panel count and specialty, publish metrics with and without mismatch filtering, and evaluate abstentions explicitly.</p>
+
+        <p><strong>Aggregate reporting limits independent effect-size checks.</strong> Confidence intervals are provided, but per-task paired differences, raw variance, and the multiplicity policy across many benchmarks are not exposed clearly enough. <em>To address this</em>, release per-task predictions and differences, bootstrap distributions, exact effect sizes, and a prespecified multiplicity analysis.</p>
+
+        <p><strong>Novelty and update claims need tighter boundaries.</strong> The integration is useful, but several individual ingredients overlap prior curation and biomedical vision-language work, while the promised update cadence is not yet demonstrated. <em>To address this</em>, cite contemporaneous systems, narrow priority language, and publish a second versioned snapshot with a machine-readable change log.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Complete the reproducibility package.</strong> Release the exact paper commit, environment lockfiles, source and configuration files, manifests, checkpoints, benchmark evaluators, and a smoke test that runs on public data.</p>
+
+        <p><strong>2. Establish data and evaluation independence.</strong> Audit article-level and perceptual near-duplicates against every benchmark, publish exclusions and residual overlap, and add patient-grouped clinical resampling with raw-versus-normalized label sensitivity analyses.</p>
+
+        <p><strong>3. Quantify curation selection effects.</strong> Publish stage attrition, subgroup metrics, calibration, and with/without filtering ablations so readers can see how much quality and coverage are traded at each stage.</p>
+
+        <p><strong>4. Make the statistics independently checkable.</strong> Release paired predictions, per-task differences, bootstrap distributions, uncertainty details, and the multiplicity policy behind the aggregate comparisons.</p>
+
+        <p><strong>5. Tighten positioning and demonstrate updating.</strong> Add contemporaneous curation references, narrow priority language, and publish a second corpus snapshot with a machine-readable diff.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
+
