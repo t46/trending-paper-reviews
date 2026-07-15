@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: MACE | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Multi-Agent LLMs Fail to Explore Each Other (arXiv:2607.11250)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: MACE">
+    <meta property="og:description" content="MACE makes peer exploration explicit and interpretable in heterogeneous multi-agent LLMs, but the evidence remains tied to controlled settings. Release artifacts, matched action interfaces, uncertainty reporting, and adaptive-peer tests would make the claim more verifiable.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-11250.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: MACE">
+    <meta name="twitter:description" content="MACE makes peer exploration explicit and interpretable in heterogeneous multi-agent LLMs, but the evidence remains tied to controlled settings. Release artifacts, matched action interfaces, uncertainty reporting, and adaptive-peer tests would make the claim more verifiable.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Multi-Agent LLMs Fail to Explore Each Other</h1>
+        <p class="meta">
+            Choi, Li, Li, Wang et al. &middot; July 2026 &middot;
+            <a href="https://arxiv.org/abs/2607.11250">arXiv:2607.11250</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no editorial labels, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            MACE makes peer exploration explicit and interpretable in heterogeneous multi-agent LLMs, and its reported gains are strongest as a controlled demonstration of a lightweight selector. The central improvement direction is evidentiary alignment: release the implementation, match baseline action interfaces, report uncertainty, and test whether the theory and gains survive adaptive peers and broader operating conditions.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>Multi-Agent LLMs Fail to Explore Each Other</strong> studies whether LLM agents discover and use useful peers in multi-agent systems. It formalizes Multi-Agent Exploration as a partially observable stochastic game and frames peer selection as an exploration&ndash;exploitation problem under latent capability and information differences.</p>
+
+        <p>The paper proposes <strong>Multi-Agent Contextual Exploration (MACE)</strong>, an interpretable LinUCB-style selector that uses relational features to estimate the value and uncertainty of consulting each peer. The theoretical analysis connects exploration to capability diversity through regret-style results, while the empirical study examines contextual and parametric diversity.</p>
+
+        <p>Experiments include motivating diagnostics, transfer, homogeneous and stronger-model controls, sensitivity analyses, and round-wise results. Together they show a promising pattern in the tested small heterogeneous populations, but the linked repository is currently README-only, and the paper evaluates a narrow slice of the adaptive, dynamic settings described by its broader framing.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Clear motivating failure mode.</strong> The two-arm diagnostic makes premature peer commitment visible before the paper introduces its full formalism, giving the problem a concrete empirical anchor.</p>
+
+        <p><strong>Interpretable intervention.</strong> Relational features combined with LinUCB provide a lightweight, inspectable mechanism for selecting peers and representing uncertainty, making the proposed behavior easier to diagnose than an opaque routing policy.</p>
+
+        <p><strong>Complementary experimental coverage.</strong> Contextual and parametric diversity are supplemented by transfer, homogeneous, stronger-model, sensitivity, and round-wise analyses, so the method is not supported by a single benchmark comparison.</p>
+
+        <p><strong>Useful persistence and theory connections.</strong> Frozen exploitation and cross-benchmark transfer probe reuse of the learned selector, while the diversity analysis gives a coherent hypothesis for when exploration should create value.</p>
+
+        <p><strong>Responsible scope disclosure.</strong> The limitations and broader-impact discussion acknowledges scale, dynamics, and misuse risks, which helps distinguish the controlled evidence from the paper&apos;s longer-term vision.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>The theory is broader than its assumptions.</strong> The paper frames an adaptive partially observable stochastic game, but Theorem 1 relies on fixed per-pair linear reward parameters. <em>To address this</em>, narrow the theorem&apos;s claim to the stated surrogate or develop an adaptive/non-stationary analysis with explicit conditions and model-fit diagnostics.</p>
+
+        <p><strong>Reproducibility is currently incomplete.</strong> The linked repository at the checked commit contains only a README saying that code will be released soon, preventing code-level verification of prompts, features, rewards, evaluators, and configurations. <em>To address this</em>, release executable source, an environment lockfile, seeds, raw outputs, checkpoints or API versions, and a one-command smoke test.</p>
+
+        <p><strong>The in-context comparison has an interface confound.</strong> Free-form router outputs can trigger a predefined routing fallback when parsing fails, so the comparison may partly measure action-interface reliability rather than exploration quality. <em>To address this</em>, give every router the same constrained choice interface, report parse and fallback rates, and include a deterministic LLM router with identical action space.</p>
+
+        <p><strong>Inferential reporting is incomplete.</strong> Means and standard errors favor MACE in the tested settings, but complete independent-run distributions, formal tests, and effect sizes are not consistently available, while several main effects appear small or uncertain. <em>To address this</em>, release per-task and per-seed outcomes, use paired bootstrap or mixed-effects intervals, report effect sizes, and explain multiplicity handling.</p>
+
+        <p><strong>Generality and practical cost remain under-tested.</strong> The study uses small populations, short horizons, limited diversity variation, and one transfer pair, without reporting the token, API, latency, or communication cost of exploration. <em>To address this</em>, sweep population size, horizon, churn, delays, task families, capability diversity, and communication budgets while reporting cost per quality gain.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release a complete reproducibility package.</strong> Publish source, prompts, evaluator and feature/reward implementations, configurations, seeds, raw outcomes, version information, and a smoke test so the central comparisons can be independently checked.</p>
+
+        <p><strong>2. Remove the baseline interface confound.</strong> Re-run all routers with a constrained action schema, publish parse/fallback statistics, and add matched delegation, learned-routing, or topology-selection baselines.</p>
+
+        <p><strong>3. Establish statistical and practical uncertainty.</strong> Provide paired per-task/per-seed data, confidence intervals, effect sizes, formal tests, and calls, tokens, latency, and communication overhead per improvement.</p>
+
+        <p><strong>4. Align the theory with adaptive interaction.</strong> Either explicitly scope the guarantees to the fixed linear surrogate or analyze non-stationary peers and validate the model assumptions empirically.</p>
+
+        <p><strong>5. Test the operating envelope.</strong> Vary population size, interaction horizon, capability diversity, context noise, churn, delayed feedback, model families, tasks, and communication budgets to determine where peer exploration remains useful.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
