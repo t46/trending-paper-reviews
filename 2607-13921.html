@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: Generative Compilation | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Generative Compilation: On-the-Fly Compiler Feedback as AI Generates Code (arXiv:2607.13921)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: Generative Compilation">
+        <meta property="og:description" content="Generative compilation gives black-box code models early Rust feedback with formal guarantees and gains across seven models. Confidence is limited by two-run aggregates and unproved diagnostics; raw traces, uncertainty intervals, and diagnostic-quality tests are the key next steps.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-13921.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: Generative Compilation">
+        <meta name="twitter:description" content="Generative compilation gives black-box code models early Rust feedback with formal guarantees and gains across seven models. Confidence is limited by two-run aggregates and unproved diagnostics; raw traces, uncertainty intervals, and diagnostic-quality tests are the key next steps.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Generative Compilation: On-the-Fly Compiler Feedback as AI Generates Code</h1>
+        <p class="meta">
+            Niels M&uuml;ndler-Sasahara, Hristo Venev, Dawn Song, Martin Vechev et al. &middot; July 2026 &middot;
+            <a href="https://arxiv.org/abs/2607.13921">arXiv:2607.13921</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no editorial labels, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            Generative compilation gives black-box code models early Rust feedback with formal guarantees and gains across seven models. Confidence is limited by two-run aggregates and unproved diagnostics; raw traces, uncertainty intervals, and diagnostic-quality tests are the key next steps.
+        </div>
+
+        <h2>Paper overview</h2>
+        
+        <p><strong>Generative Compilation</strong> addresses a practical weakness of black-box code generation: standard compilers usually provide useful feedback only after an autoregressive model has finished producing a program. The paper introduces a <em>sealor</em>, a lightweight mostly syntax-guided transformation that turns a partial Rust-like program into a compilable complete program, allowing rustc or rust-analyzer to diagnose problems during generation.</p>
+
+        <p>The formal development separates two guarantees. A partial program that can still be completed should remain eligible, while partial programs that have entered genuine dead ends should remain detectable early enough to guide generation. These properties are proved for a core Rust-like calculus with Lean mechanization, and the approach is extended to real Rust with support for partial syntax, placeholders, control flow, and errors that depend on future code.</p>
+
+        <p>The evaluation covers seven frontier black-box and open-weight models on Translation and UpdatedAPI repository-level Rust tasks. Compared with standard post-generation feedback and a partial-compilation baseline, generative compilation reduces non-compiling outputs and improves functional correctness, while additional analyses examine detection position, diagnostics, timing, and the effect of restart-based feedback.</p>
+
+        <h2>Key strengths</h2>
+        
+        <p><strong>A crisp intervention point for black-box generation.</strong> The method uses ordinary compiler infrastructure to move semantic feedback into intermediate decoding without requiring white-box model access or a reimplemented Rust type system.</p>
+
+        <p><strong>An elegant formal abstraction with a clear guarantee boundary.</strong> The sealor construction and its completeness/soundness split make precise why partial programs can be checked without incorrectly ruling out valid completions, and the Lean mechanization gives the core claims unusually strong support.</p>
+
+        <p><strong>Promising evidence across models and task families.</strong> Seven models, repository-level Rust tasks, functional tests, timing measurements, and mechanism-level analyses provide a broader evaluation than a single-model compile-rate comparison.</p>
+
+        <p><strong>Useful engineering reuse and public-artifact direction.</strong> Extending the approach to real Rust while delegating language semantics to rustc is practical, and the reported release of code, proofs, and benchmarks creates a foundation for independent reproduction.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        
+        <p><strong>Diagnostic faithfulness is not established.</strong> The formal guarantees cover the <code>ok</code> outcome, while the paper explicitly does not prove that an <code>err</code> diagnosis faithfully represents the partial program's true dead end. <em>To address this</em>, add a labeled benchmark for false-positive sealing artifacts, error localization, repair success, and human or agent usefulness, or prove a diagnostic-faithfulness approximation guarantee.</p>
+
+        <p><strong>Uncertainty is difficult to judge from two runs.</strong> The main configurations are run twice and aggregate percentages are reported without per-run outcomes, standard deviations, confidence intervals, or effect sizes. <em>To address this</em>, release raw per-instance traces and seeds, report uncertainty intervals and exact effect sizes, and repeat the key comparisons across more independent runs.</p>
+
+        <p><strong>The task distribution is narrow.</strong> Translation and UpdatedAPI are meaningful repository-level tests, but they do not establish performance on broader maintenance, security, interactive-agent, or out-of-distribution Rust workflows. <em>To address this</em>, add diverse repositories, task types, Rust versions, and independent evaluation harnesses.</p>
+
+        <p><strong>Causal attribution remains entangled with the harness.</strong> Restart budgets, feedback prompts, check frequency, and timing may each mediate the observed gains, making it hard to isolate the contribution of early checking itself. <em>To address this</em>, run a factorial ablation covering partial compilation, early checking without sealing, generative compilation without restart, varied check frequencies, and prompt-format controls.</p>
+
+        <p><strong>Positioning against constrained generation is incomplete.</strong> The lack of a full real-Rust constrained-decoding comparator is understandable, but it leaves the relative trade-offs unclear. <em>To address this</em>, compare with the strongest available semantic-prefix or grammar-based baseline and quantify implementation, runtime, and model-access costs.</p>
+
+        <p><strong>Hand-written sealors may be brittle as Rust evolves.</strong> The construction is technically appealing but labor-intensive, and its maintenance burden across language versions is not yet measured. <em>To address this</em>, report version-portability and maintenance studies, then add automated rule derivation or validation tooling.</p>
+
+        <h2>What would most improve this paper</h2>
+        
+        <p><strong>1. Publish a reproducibility package with uncertainty.</strong> Include raw per-instance and per-run outputs, seeds, model/API/toolchain versions, pinned-container instructions, failure logs, confidence intervals, and exact effect sizes so the headline results can be independently reconstructed.</p>
+
+        <p><strong>2. Add diagnostic-quality evaluation.</strong> Measure false-positive sealing artifacts, localization accuracy, repair success, and human or agent usefulness, making the practical meaning of compiler feedback as testable as the Boolean compile verdict.</p>
+
+        <p><strong>3. Separate the mechanism from the interaction protocol.</strong> Use the proposed factorial ablation to isolate early checking, restart policy, check frequency, feedback wording, and model capability.</p>
+
+        <p><strong>4. Broaden external validity.</strong> Evaluate more repositories, task types, Rust releases, open models, and independent harnesses, and include the strongest available constrained-generation comparator with engineering-cost measurements.</p>
+
+        <p><strong>5. Reduce long-term maintenance risk.</strong> Automate sealor rule derivation and validation, and extend the formal and implementation framework beyond the current Rust setting.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
