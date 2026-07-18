@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: Locality and Length Generalization | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of On Locality and Length Generalization in Visual Reasoning (arXiv:2607.09061)">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: Locality and Length Generalization">
+    <meta property="og:description" content="Strict local recurrence helps controlled visual state tracking generalize beyond training length, but statistical uncertainty and supervision/capacity confounds limit the broader claim. The next step is matched multi-seed causal testing and transfer beyond generated tasks.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-09061.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: Locality and Length Generalization">
+    <meta name="twitter:description" content="Local recurrence improves visual state-tracking extrapolation in controlled tasks, but missing uncertainty and mismatched supervision limit causal claims. Test matched seeds, controls, and transfer beyond generated data.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a1a1a; background: #fafafa; line-height: 1.7; }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+        nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 12px 0; font-size: 14px; }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+        header { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 48px 0 40px; text-align: center; }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+        article { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 40px 32px; margin: 32px auto; }
+        article h2 { font-size: 20px; font-weight: 600; margin: 32px 0 16px; padding-bottom: 6px; border-bottom: 1px solid #eee; }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+        .verdict { background: #fff8e1; border-left: 3px solid #f5a623; padding: 16px 20px; margin: 0 0 24px; font-size: 15px; color: #5a4500; }
+        .verdict strong { color: #5a4500; }
+        .series-intro { background: #f8f9fa; border-left: 3px solid #0066cc; padding: 16px 20px; margin-bottom: 32px; font-size: 14px; color: #555; }
+        .feedback-box, .newsletter, .paid-review { border-radius: 8px; padding: 24px; margin: 32px auto; text-align: center; }
+        .feedback-box { background: #f8f9fa; border: 1px solid #e5e5e5; }
+        .newsletter { background: #f0f4ff; border: 2px solid #ccd6f0; }
+        .paid-review { background: #fff; border: 1px solid #d9d9d9; }
+        .feedback-box h2, .newsletter h2, .paid-review h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p, .newsletter p, .paid-review p { font-size: 14px; color: #555; }
+        .feedback-box a, footer a { color: #0066cc; }
+        .newsletter form, .paid-review .actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .newsletter form { max-width: 400px; margin: 12px auto 0; }
+        .newsletter input[type="email"] { flex: 1; min-width: 180px; padding: 8px 12px; font-size: 14px; border: 1px solid #ccc; border-radius: 6px; }
+        .newsletter button, .paid-review a.button { padding: 9px 14px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .newsletter button, .paid-review a.primary { color: #fff; background: #0066cc; border: 1px solid #0066cc; }
+        .paid-review a.button { text-decoration: none; border: 1px solid #0066cc; }
+        .paid-review a.secondary { color: #0066cc; background: #fff; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+        footer { text-align: center; padding: 32px 0; font-size: 13px; color: #999; }
+        footer a { text-decoration: none; }
+    </style>
+</head>
+<body>
+<nav><div class="container"><a href="./">&larr; All Reviews</a></div></nav>
+<header><div class="container">
+    <p class="series">Trending Paper Review Series</p>
+    <h1>On Locality and Length Generalization in Visual Reasoning</h1>
+    <p class="meta">Pulkit Madan, Sanjay Haresh, Reza Ebrahimi, Sunny Panchal et al. &middot; July 2026 &middot; <a href="https://arxiv.org/abs/2607.09061">arXiv:2607.09061</a></p>
+    <p class="meta" style="margin-top: 8px;">AI-generated review by Unktok Reviewer</p>
+</div></header>
+<div class="container"><article>
+    <div class="series-intro">This is part of the <strong>Trending Paper Review Series</strong> &mdash; automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy: <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores, no editorial outcome predictions, just evidence-based analysis and actionable improvement suggestions.</div>
+    <div class="verdict">The paper’s strongest result is a coherent controlled study showing that a low-bandwidth local interface with strict recurrent updates can extrapolate better than tested global alternatives on spatial state-tracking tasks. The main improvement direction is to establish whether this advantage survives repeated seeds and matched supervision, capacity, compute, and memory controls, then test transfer beyond generated task families.</div>
+    <h2>Paper overview</h2>
+    <p><strong>On Locality and Length Generalization in Visual Reasoning</strong> asks whether sequential visual processing through local glimpses offers computational benefits beyond biological plausibility. The authors study visual state tracking and length generalization using synthetic tasks that require aggregating local information across an image.</p>
+    <p>The experiments cover visual parity, an order-sensitive state machine, and a recall control, alongside Math-Search finding-roots tasks. This decomposition separates state tracking from retrieval and tests out-of-distribution changes in entity count, resolution, clutter, subplot count, and root count.</p>
+    <p>The central comparison is between global processing, local-plus-global interfaces, and recurrent policies with strictly local perception. The results suggest that local recurrent models can generalize beyond the training task length and resolution, while global models are stronger on recall. A compute-aware Finding Roots analysis further suggests that targeted high-resolution glimpses can be more effective than uniformly increasing global resolution.</p>
+    <h2>Key strengths</h2>
+    <p><strong>Important question.</strong> The paper tests systematic extrapolation over task length and complexity rather than relying only on in-distribution accuracy.</p>
+    <p><strong>Clean task decomposition.</strong> Parity, order-sensitive state tracking, recall, and Finding Roots expose different computational demands and make the central contrast legible.</p>
+    <p><strong>Coherent mechanistic controls.</strong> Global, Local+Global, foveated interfaces, fixed-local-input comparisons, and the recall negative control provide a useful chain of evidence about locality and recurrence.</p>
+    <p><strong>Meaningful out-of-distribution axes.</strong> The study probes entity count, resolution, density, clutter, subplot count, and root count, revealing distinct failure modes instead of collapsing them into one benchmark score.</p>
+    <p><strong>Compute-aware analysis.</strong> The Finding Roots experiments compare targeted glimpses with global-resolution and token-matched alternatives, connecting performance to visual allocation.</p>
+    <p><strong>Detailed implementation description.</strong> The appendix reports task formalization, data sizes, optimizer settings, architecture details, resolutions, and metric definitions, creating a solid foundation for a reusable benchmark.</p>
+    <h2>Key concerns and constructive suggestions</h2>
+    <p><strong>Statistical support is incomplete.</strong> The headline comparisons are reported as point estimates without repeated seeds, uncertainty intervals, or statistical tests, so the consistency of the observed gaps is unknown. <em>To address this</em>, repeat each headline comparison across at least five independent seeds and report means, standard deviations, 95% intervals, exact per-length values, and paired instance-level tests.</p>
+    <p><strong>Locality is confounded with supervision and capacity.</strong> Oracle glimpse trajectories, probes, visitation marks, pretraining, model family, parameter count, token budget, and intermediate targets are not uniformly matched across the core baselines. <em>To address this</em>, run a factorial study over locality, recurrence, trajectory/probe supervision, and external memory with matched backbones, parameters, visual tokens, optimizer budgets, and training examples.</p>
+    <p><strong>Several out-of-distribution shifts are entangled.</strong> Length, resolution, density, clutter, layout, and entity count sometimes change together, making it difficult to identify which shift drives each failure or gain. <em>To address this</em>, add one-factor-at-a-time splits followed by cross-factor splits, with exact generator settings and per-axis results.</p>
+    <p><strong>Transfer beyond generated tasks remains uncertain.</strong> The synthetic suite and Math-Search plots provide a controlled mechanism study, but they do not establish behavior on natural images or interactive real-world scenes. <em>To address this</em>, test unseen renderers, colors, fonts, symbols, and layouts, then add a natural-image or embodied-search task with a learned rather than oracle policy.</p>
+    <p><strong>Intermediate oracle information may be essential.</strong> The synthetic agents use oracle trajectories and probes, while active search uses visitation marks that supply external memory. <em>To address this</em>, ablate probes, arrows, and marks and evaluate noisy or incomplete trajectories, outcome-only imitation or reinforcement learning, learned stopping, and learned search.</p>
+    <p><strong>Reproducibility and efficiency details are missing.</strong> No public repository or release artifact was identified, and trajectory length, latency, energy, memory, and training/inference cost are not reported consistently. <em>To address this</em>, release generators, code, seeds, configurations, checkpoints, prompts, evaluation scripts, and exact curve data, while reporting accuracy against token count, trajectory length, latency, memory, and training cost.</p>
+    <h2>What would most improve this paper</h2>
+    <p><strong>1. Establish multi-seed statistical validity.</strong> Re-run the headline comparisons with fixed checkpoint-selection rules, validation/test separation, uncertainty intervals, and paired tests so the local recurrent advantage can be confirmed or appropriately qualified.</p>
+    <p><strong>2. Make the causal comparison factorial and matched.</strong> Equalize backbone capacity, parameters, tokens, compute, training examples, trajectories, probes, and external memory across locality and recurrence conditions.</p>
+    <p><strong>3. Isolate shift axes and test transfer.</strong> Separate length, resolution, density, layout, and entity-count shifts, then evaluate unseen renderers and at least one natural or embodied visual task.</p>
+    <p><strong>4. Remove privileged intermediate targets.</strong> Add learned policies, noisy trajectories, outcome-only supervision, and ablations of probes and visitation marks to determine whether the mechanism survives without oracle structure.</p>
+    <p><strong>5. Release artifacts and narrow the claims.</strong> Publish the full benchmark and reproducibility package, and describe the result as evidence for the tested task and interface family rather than a universal rule about visual reasoning.</p>
+</article>
+<div class="feedback-box"><h2>Your feedback matters</h2>
+    <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+    <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+    <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+</div>
+<div class="newsletter"><h2>Get daily AI paper reviews in your inbox</h2>
+    <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+    <form action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews" method="post" target="popupwindow">
+        <input type="email" name="email" placeholder="you@example.com" required /><button type="submit">Subscribe</button>
+    </form><p class="privacy">No spam. Unsubscribe anytime.</p>
+</div>
+<div class="paid-review"><h2>Need this review process for your own paper?</h2>
+    <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+    <div class="actions"><a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&amp;body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a><a class="button secondary" href="pricing.html">See pricing</a></div>
+</div></div>
+<footer><a href="./">Trending Paper Review Series</a> &middot; <a href="https://t46.github.io/">Shiro Takagi</a> &middot; <a href="https://unktok.com/">Unktok</a><br><br>Powered by Unktok Reviewer</footer>
+</body>
+</html>
