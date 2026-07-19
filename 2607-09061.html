@@ -8,7 +8,7 @@
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Trending Paper Review Series">
     <meta property="og:title" content="Review: Locality and Length Generalization">
-    <meta property="og:description" content="Strict local recurrence helps controlled visual state tracking generalize beyond training length, but statistical uncertainty and supervision/capacity confounds limit the broader claim. The next step is matched multi-seed causal testing and transfer beyond generated tasks.">
+    <meta property="og:description" content="The paper shows strict local recurrence can extrapolate beyond training lengths better than tested global alternatives on controlled visual state-tracking tasks. Next, match supervision, capacity, compute, and memory across seeds, then test transfer beyond generated tasks.">
     <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-09061.html">
     <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
     <meta name="twitter:title" content="Review: Locality and Length Generalization">
-    <meta name="twitter:description" content="Local recurrence improves visual state-tracking extrapolation in controlled tasks, but missing uncertainty and mismatched supervision limit causal claims. Test matched seeds, controls, and transfer beyond generated data.">
+    <meta name="twitter:description" content="The paper shows strict local recurrence can extrapolate beyond training lengths better than tested global alternatives on controlled visual state-tracking tasks. Next, match supervision, capacity, compute, and memory across seeds, then test transfer beyond generated tasks.">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a1a1a; background: #fafafa; line-height: 1.7; }
@@ -69,7 +69,7 @@
 </div></header>
 <div class="container"><article>
     <div class="series-intro">This is part of the <strong>Trending Paper Review Series</strong> &mdash; automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy: <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores, no editorial outcome predictions, just evidence-based analysis and actionable improvement suggestions.</div>
-    <div class="verdict">The paper’s strongest result is a coherent controlled study showing that a low-bandwidth local interface with strict recurrent updates can extrapolate better than tested global alternatives on spatial state-tracking tasks. The main improvement direction is to establish whether this advantage survives repeated seeds and matched supervision, capacity, compute, and memory controls, then test transfer beyond generated task families.</div>
+    <div class="verdict">The paper shows strict local recurrence can extrapolate beyond training lengths better than tested global alternatives on controlled visual state-tracking tasks. Next, match supervision, capacity, compute, and memory across seeds, then test transfer beyond generated tasks.</div>
     <h2>Paper overview</h2>
     <p><strong>On Locality and Length Generalization in Visual Reasoning</strong> asks whether sequential visual processing through local glimpses offers computational benefits beyond biological plausibility. The authors study visual state tracking and length generalization using synthetic tasks that require aggregating local information across an image.</p>
     <p>The experiments cover visual parity, an order-sensitive state machine, and a recall control, alongside Math-Search finding-roots tasks. This decomposition separates state tracking from retrieval and tests out-of-distribution changes in entity count, resolution, clutter, subplot count, and root count.</p>
