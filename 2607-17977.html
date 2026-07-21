@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: RynnBrain 1.1 | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of RynnBrain 1.1: Towards More Capable and Generalizable Embodied Foundation Model (arXiv:2607.17977)">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: RynnBrain 1.1">
+    <meta property="og:description" content="RynnBrain 1.1 offers a broad, open embodied-model family with promising robot results. The next decisive step is uncertainty-aware, component-isolated evaluation plus held-out transfer and reproducible VLA code.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-17977.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: RynnBrain 1.1">
+    <meta name="twitter:description" content="RynnBrain 1.1 offers a broad, open embodied-model family with promising robot results. The next decisive step is uncertainty-aware, component-isolated evaluation plus held-out transfer and reproducible VLA code.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a1a1a; background: #fafafa; line-height: 1.7; }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+        nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 12px 0; font-size: 14px; }
+        nav a, article a, footer a { color: #0066cc; text-decoration: none; }
+        nav a:hover, article a:hover, footer a:hover { text-decoration: underline; }
+        header { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 48px 0 40px; text-align: center; }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+        article { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 40px 32px; margin: 32px auto; }
+        article h2 { font-size: 20px; font-weight: 600; margin: 32px 0 16px; padding-bottom: 6px; border-bottom: 1px solid #eee; }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        .verdict { background: #fff8e1; border-left: 3px solid #f5a623; padding: 16px 20px; margin: 0 0 24px; font-size: 15px; color: #5a4500; }
+        .verdict strong { color: #5a4500; }
+        .series-intro { background: #f8f9fa; border-left: 3px solid #0066cc; padding: 16px 20px; margin-bottom: 32px; font-size: 14px; color: #555; }
+        .feedback-box, .newsletter, .paid-review { border-radius: 8px; padding: 24px; margin: 32px auto; text-align: center; }
+        .feedback-box { background: #f8f9fa; border: 1px solid #e5e5e5; }
+        .newsletter { background: #f0f4ff; border: 2px solid #ccd6f0; }
+        .paid-review { background: #fff; border: 1px solid #d9d9d9; }
+        .feedback-box h2, .newsletter h2, .paid-review h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p, .newsletter p, .paid-review p { font-size: 14px; color: #555; }
+        .newsletter form { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 400px; margin: 12px auto 0; }
+        .newsletter input { flex: 1; min-width: 180px; padding: 8px 12px; font-size: 14px; border: 1px solid #ccc; border-radius: 6px; }
+        .newsletter button, .paid-review a { padding: 8px 16px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .newsletter button { color: #fff; background: #0066cc; border: none; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+        .paid-review .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+        .paid-review a { border: 1px solid #0066cc; }
+        .paid-review a.primary { color: #fff; background: #0066cc; }
+        .paid-review a.secondary { color: #0066cc; background: #fff; }
+        footer { text-align: center; padding: 32px 0; font-size: 13px; color: #999; }
+        footer a { color: #666; }
+    </style>
+</head>
+<body>
+<nav><div class="container"><a href="./">&larr; All Reviews</a></div></nav>
+<header><div class="container">
+    <p class="series">Trending Paper Review Series</p>
+    <h1>RynnBrain 1.1: Towards More Capable and Generalizable Embodied Foundation Model</h1>
+    <p class="meta">Kehan Li, Bohan Hou, Minghao Zhu, Tianyi Zhang et al. &middot; July 2026 &middot; <a href="https://arxiv.org/abs/2607.17977">arXiv:2607.17977</a></p>
+    <p class="meta" style="margin-top: 8px;">AI-generated review by Unktok Reviewer</p>
+</div></header>
+<div class="container"><article>
+    <div class="series-intro">This is part of the <strong>Trending Paper Review Series</strong> &mdash; automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy: <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores or editorial predictions, just evidence-based analysis and actionable improvement suggestions.</div>
+    <div class="verdict">RynnBrain 1.1’s strongest contribution is a coherent, open embodied-model family that links spatial understanding, contact prediction, planning, and cross-embodiment control, with promising same-recipe robot comparisons. The most important next step is to isolate component effects and report uncertainty, functional contact outcomes, held-out transfer, and the missing implementation details needed for independent reproduction.</div>
+    <h2>Paper overview</h2>
+    <p><strong>RynnBrain 1.1</strong> presents a family of embodied foundation models at 2B, 9B, and 122B-A10B scales. It unifies spatio-temporal and physically grounded pretraining for perception, spatial reasoning, localization, and planning, extending the earlier line with native 3D grounding and contact-point prediction for smaller variants.</p>
+    <p>The report also introduces RynnBrain-VLA, a cross-embodiment policy using an 81-dimensional masked action space. The system is evaluated across cognition and localization benchmarks, 3D outputs, and real-robot tasks on Unitree G1, Astribot-S1, and Tianji-Wuji.</p>
+    <p>Its headline evidence combines broad benchmark coverage with same-recipe control comparisons: the report gives an average final success of 86.67% for RynnBrain-VLA versus 60.00% for the corresponding Qwen control. The release includes checkpoints, a project page, and code, but the public repository snapshot does not expose the complete training, VLA, evaluation, or robot-driver implementation.</p>
+    <h2>Key strengths</h2>
+    <p><strong>Integrated embodied scope.</strong> One model family connects cognition, localization, 3D understanding, contact, planning, and action, making the package practically relevant and easy to inspect as a capability taxonomy.</p>
+    <p><strong>Concrete physical outputs.</strong> Oriented 3D boxes and compact contact <code>(p, &theta;)</code> outputs are closer to manipulation than free-form language descriptions and give the system a useful interface to downstream control.</p>
+    <p><strong>Broad evaluation surface.</strong> Tables 3&ndash;6 cover multiple benchmarks, three hardware platforms, and both base-model and VLA behavior, providing more evidence than a single-task demonstration.</p>
+    <p><strong>Useful same-recipe control.</strong> The RynnBrain-VLA versus Qwen-based-VLA comparison holds the post-training recipe more nearly constant and reports consistent task-level gains, which is a valuable starting point for attribution.</p>
+    <p><strong>Meaningful openness.</strong> Public checkpoints, a project page, and links to GitHub, Hugging Face, and ModelScope make external inspection and follow-up work possible.</p>
+    <h2>Key concerns and constructive suggestions</h2>
+    <p><strong>Uncertainty is missing.</strong> Tables 3&ndash;6 primarily provide point estimates; the 20-trial protocol does not report confidence intervals, repeated training seeds, or significance tests. <em>To address this</em>, publish trial-level outcomes, binomial confidence intervals, seed-level benchmark results, and effect sizes before describing small gains as robust.</p>
+    <p><strong>Central implementation details are not reproducible from the repository.</strong> The inspected public snapshot contains inference/demo materials but not the training, VLA, action-mask, evaluation, or robot implementation needed to recreate the central transfer claim. <em>To address this</em>, release pinned source, configs, manifests, prompts, seeds, evaluation scripts, robot calibration, and a containerized reproduction bundle.</p>
+    <p><strong>Component attribution and generalization are under-tested.</strong> The base model, data mixture, 3D/contact supervision, architecture, and VLA recipe change together, while evaluations use selected adapted tasks rather than a clearly held-out transfer protocol. <em>To address this</em>, run matched factorial ablations and hold out embodiments, objects, scenes, instructions, and camera configurations for zero- or few-shot tests.</p>
+    <p><strong>Contact prediction is evaluated qualitatively.</strong> Figure 7 examples show plausible contacts, but do not establish geometric accuracy or closed-loop usefulness. <em>To address this</em>, report pixel and angle error, top-k valid contacts, human or robot agreement, and downstream grasp success with failure cases.</p>
+    <p><strong>Novelty positioning needs precision.</strong> Prior work already contains related 3D grounding and shared embodied/action representations, so the distinct claim is best located in RynnBrain’s particular integration and interface. <em>To address this</em>, add a component-lineage table and matched comparisons that identify the measurable delta over each relevant precedent.</p>
+    <p><strong>Generated labels need reliability audits.</strong> Qwen-VL and Gemini-generated annotations introduce a potentially important source of label noise, but prompt and agreement details are limited. <em>To address this</em>, publish prompt versions, human agreement samples, error categories, and source-wise sensitivity experiments.</p>
+    <h2>What would most improve this paper</h2>
+    <p><strong>1. Add uncertainty and trial-level evidence.</strong> Repeated seeds, raw 20-trial outcomes, confidence intervals, and pre-specified effect-size analyses would show which headline differences exceed sampling variation.</p>
+    <p><strong>2. Release a full reproduction bundle.</strong> Versioned training/VLA/evaluation code, data manifests, prompts, configs, seeds, baseline adapters, and robot settings would turn the current openness into independently testable evidence.</p>
+    <p><strong>3. Isolate the component contributions.</strong> Matched-data, matched-compute ablations for 3D supervision, contact representation, data sources, action masking, and joint training would clarify what drives the gains.</p>
+    <p><strong>4. Test genuine transfer and functional contact.</strong> Held-out embodiments, objects, scenes, and viewpoints, paired with quantitative contact metrics and closed-loop grasp outcomes, would bound the generalization claims.</p>
+    <p><strong>5. Tighten claims and provenance.</strong> A claim-to-evidence matrix, explicit result provenance, failure/latency/safety reporting, and a more precise related-work discussion would make the report easier to audit and build on.</p>
+</article>
+<div class="feedback-box"><h2>Your feedback matters</h2><p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p><p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p><p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p></div>
+<div class="newsletter"><h2>Get daily AI paper reviews in your inbox</h2><p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p><form action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews" method="post" target="popupwindow"><input type="email" name="email" placeholder="you@example.com" required /><button type="submit">Subscribe</button></form><p class="privacy">No spam. Unsubscribe anytime.</p></div>
+<div class="paid-review"><h2>Need this review process for your own paper?</h2><p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p><div class="actions"><a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request">Request a paid review</a><a class="button secondary" href="pricing.html">See pricing</a></div></div>
+</div>
+<footer><a href="./">Trending Paper Review Series</a> &middot; <a href="https://t46.github.io/">Shiro Takagi</a> &middot; <a href="https://unktok.com/">Unktok</a><br><br>Powered by Unktok Reviewer</footer>
+</body>
+</html>
