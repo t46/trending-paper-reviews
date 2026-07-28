@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: StateAct | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of StateAct: Program State, before Pixels, for Long-Horizon Computer-Use Agents (arXiv:2607.22798)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: StateAct">
+    <meta property="og:description" content="StateAct makes a strong practical case for grounding computer-use agents in program state rather than screenshots alone. The key next step is auditability -> code, prompts, uncertainty analysis, verifier validation, and clearer prior-art positioning.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-22798.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: StateAct">
+    <meta name="twitter:description" content="StateAct makes a strong practical case for grounding computer-use agents in program state rather than screenshots alone. The key next step is auditability -> code, prompts, uncertainty analysis, verifier validation, and clearer prior-art positioning.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>StateAct: Program State, before Pixels, for Long-Horizon Computer-Use Agents</h1>
+        <p class="meta">
+            Yan Yang, Xiangru Jian, Ziyang Luo, Zirui Zhao et al. &middot; July 2026 &middot;
+            <a href="https://arxiv.org/abs/2607.22798">arXiv:2607.22798</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no editorial outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            StateAct makes a strong practical case for grounding long-horizon computer-use agents in program state rather than screenshots alone. Its most consequential strength is the coherent harness: state-first action, rare GUI delegation, structural finish checks, and context management all serve the same diagnosis of hidden-state failures. The most important improvement direction is auditability &mdash; release the implementation details, add uncertainty analysis, validate the verifier boundary, and sharpen the comparison to adjacent state/code/hybrid agent systems.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p><strong>StateAct</strong> addresses a practical failure mode in computer-use agents: screenshots are only a lossy rendering of the underlying application state. Files, DOM structure, spreadsheet formulas, hidden rows, backend data, and persistence details can matter more than pixels for long-horizon desktop tasks.</p>
+
+        <p>The paper proposes a code-first, multi-agent harness. A main agent directly inspects and modifies program state through code, while a dedicated GUI subagent handles the smaller set of subgoals that truly require visual interaction. The same emphasis on state also informs verification: an independent finish gate checks the saved result for structural failures before task completion is accepted by the harness.</p>
+
+        <p>The reported OSWorld 2.0 results are promising because they use the same model backbone in the reference and StateAct settings, which makes the harness contribution easier to isolate than a model-to-model comparison. The paper is strongest as a systems argument: many long-horizon failures are not primarily screenshot perception failures, and agent infrastructure should expose and verify the program state that actually defines success.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Clear state-vs-pixel framing.</strong> The paper gives a crisp reason why screenshot-only agents struggle: different application states can render to similar pixels, while the state that determines task success may live in files, formulas, backend objects, or DOM elements. This framing is simple, reusable, and directly tied to the method.</p>
+
+        <p><strong>Coherent harness design.</strong> The architecture aligns action, verification, and context management around the same long-horizon state problem. The GUI subagent is used sparingly, which makes the design feel concrete rather than rhetorical: visual interaction remains available, but it is no longer the default substrate for every step.</p>
+
+        <p><strong>Same-backbone empirical evidence.</strong> Comparing the reference harness and StateAct with the same underlying model better isolates the value of the harness itself. The reported gains therefore support a useful systems claim: better access to program state can improve computer-use agents even without changing the base model.</p>
+
+        <p><strong>Honest verifier diagnostics.</strong> The paper does not treat its finish gate as a full correctness oracle. It acknowledges that structural checks can pass tasks with wrong values, which is exactly the right boundary to surface for future verifier work.</p>
+
+        <p><strong>Cost-aware evaluation.</strong> Reporting task performance alongside cost is important for agent systems, where long episodes and visual interaction can dominate deployment feasibility. The paper's cost framing makes the efficiency advantage of state access part of the scientific claim rather than an afterthought.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>Reproducibility is insufficient for an implementation-based paper.</strong> The central contribution is a harness, but no public implementation package was detected for the exact paper. This limits confidence in prompts, tool interfaces, routing behavior, context handling, cost accounting, and failure labels. <em>To address this</em>, the authors should release the harness, prompts, tool schemas, environment setup, OSWorld 2.0 configuration, metric scripts, cost-accounting code, finish-gate prompts, and sample trajectories; if some components cannot be released, a reduced runnable harness would still materially improve auditability.</p>
+
+        <p><strong>Main results need uncertainty analysis.</strong> The benchmark evidence is reported as point estimates, which makes it hard to judge effect size and robustness across a modest task set. <em>To address this</em>, the authors should add bootstrap or Wilson intervals, paired task-level tests, partial-score variance, and per-task delta plots that show where the harness helps and where it does not.</p>
+
+        <p><strong>Closest prior art needs sharper differentiation.</strong> The paper cites adjacent code-action, hybrid GUI/state, and verifier-centered systems, but the distinction from CodeAct, CoAct-1, UFO2, MCPWorld, OpenComputer, and the earlier StateAct paper remains underdeveloped. <em>To address this</em>, the authors should add a design matrix and a concise comparison section that separates novelty in routing, state access, verification, context sustain, and empirical diagnosis.</p>
+
+        <p><strong>The finish gate should remain framed as structural verification.</strong> The finish gate is valuable, but it cannot validate general value correctness, and the paper's own analysis shows residual wrong-value tasks can pass. <em>To address this</em>, the authors should consistently label the gate as structural, report pass/fail behavior by error type, and test hybrid structural/value-aware verifier variants on a subset of tasks.</p>
+
+        <p><strong>The manual failure audit needs a published protocol.</strong> The failure taxonomy is useful, but the labeling process, rubric, examples, and annotator agreement are not described in enough detail to make the diagnosis independently assessable. <em>To address this</em>, the authors should publish category definitions, representative trajectories, annotation instructions, and multi-annotator checks.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release a reproduction package.</strong> The paper's method is the harness, so the highest-impact improvement is making that harness inspectable: code, prompts, tool schemas, operating constraints, benchmark setup, traces, metric scripts, and cost accounting.</p>
+
+        <p><strong>2. Add uncertainty and paired task-level analysis.</strong> Confidence intervals, paired tests, partial-score variance, and task-level deltas would make the reported gain easier to interpret and would show which task types benefit from state-first action.</p>
+
+        <p><strong>3. Publish exact protocol details.</strong> An appendix with prompts, routing policy, finish-gate prompt, retry behavior, compaction policy, and tool contracts would turn the method from a persuasive architecture into something other researchers can implement and critique.</p>
+
+        <p><strong>4. Calibrate novelty against adjacent systems.</strong> A direct comparison to prior state/code/hybrid agent systems, including disambiguation from the earlier StateAct work, would strengthen the paper's scholarly positioning without weakening the contribution.</p>
+
+        <p><strong>5. Extend the verifier and audit story.</strong> Reporting structural versus value-correctness failures, releasing audit rubrics, and testing value-aware verifier variants would turn the limitation discussion into a clearer research agenda.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
