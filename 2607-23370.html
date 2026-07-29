@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: RAML | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of Bitcoin Price Direction Prediction via Regime-Aware Multi-Modal Fusion of Social Sentiment and Technical Features (arXiv:2607.23370)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: RAML">
+    <meta property="og:description" content="RAML tests volatility-conditioned sentiment fusion for Bitcoin direction prediction with chronological evaluation and ablations. Its benefit is unproven because the gate equation and rankings conflict with the evidence; release the protocol and rerun with matched controls.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-23370.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: RAML">
+    <meta name="twitter:description" content="RAML tests volatility-conditioned sentiment fusion for Bitcoin direction prediction with chronological evaluation and ablations. Its benefit is unproven because the gate equation and rankings conflict with the evidence; release the protocol and rerun with matched controls.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>Bitcoin Price Direction Prediction via Regime-Aware Multi-Modal Fusion of Social Sentiment and Technical Features</h1>
+        <p class="meta">
+            Muhammad Abdullah Haroon &middot; July 2026 &middot;
+            <a href="https://arxiv.org/abs/2607.23370">arXiv:2607.23370</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no editorial predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            RAML tests volatility-conditioned sentiment fusion for Bitcoin direction prediction with chronological evaluation and ablations. Its benefit is unproven because the gate equation and rankings conflict with the evidence; release the protocol and rerun with matched controls.
+        </div>
+
+        <h2>Paper overview</h2>
+        <p>&ldquo;Bitcoin Price Direction Prediction via Regime-Aware Multi-Modal Fusion of Social Sentiment and Technical Features&rdquo; proposes Regime-Aware Multi-Modal Learning (RAML), a compact architecture for predicting whether Bitcoin&rsquo;s future close will be higher over short horizons. It processes technical-price history and Reddit sentiment through separate branches, then uses a volatility-conditioned gate to vary the contribution of each modality.</p>
+        <p>The study uses aligned hourly Bitcoin OHLCV data and <em>/r/Bitcoin</em> sentiment scores derived with FinBERT, with a 24-hour context window and a chronological train/test split. Price-only, sentiment-only, static-fusion, RAML, and component ablations are compared across two prediction horizons.</p>
+        <p>The paper&rsquo;s narrow task, temporal holdout, and interpretable design make it a useful pilot. However, the main empirical story is not internally stable: the gate equation does not yield the stable-regime weights described in the prose and figure, while the headline rankings do not match the reported results table. The findings therefore support careful follow-up rather than a settled design principle.</p>
+
+        <h2>Key strengths</h2>
+        <p><strong>Focused, testable forecasting task.</strong> The paper defines a concrete Bitcoin direction target, short prediction horizons, and a bounded historical context, making the multimodal question operational rather than vague.</p>
+        <p><strong>Chronological evaluation.</strong> The no-shuffling temporal split is better aligned with forecasting than a random split and shows awareness of future-information risks.</p>
+        <p><strong>Interpretable architecture intent.</strong> Separate price and sentiment branches plus a low-parameter volatility condition make the proposed mechanism inspectable in principle.</p>
+        <p><strong>Component-oriented ablations.</strong> The ablation plan tries to isolate the sentiment branch, regime signal, and fusion policy, which is a valuable structure even though one comparison is not capacity-matched.</p>
+        <p><strong>Transparent failure analysis and limitations.</strong> The paper discusses biased baseline behavior, class difficulty, sample size, binary regimes, single-asset scope, and missing macroeconomic features instead of presenting an unqualified success story.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+        <p><strong>The central gate specification is internally inconsistent.</strong> The stated sigmoid equation yields a sentiment weight of one-half when the stable-regime input is zero, whereas the surrounding explanation and figure show a much lower stable-regime sentiment weight. <em>To address this</em>, publish the exact equation and implementation, clarify whether an intercept or regime-specific parameter is intended, add unit tests for both regimes, and rerun every affected experiment.</p>
+        <p><strong>The headline result narrative conflicts with the reported table.</strong> The abstract and discussion describe RAML as the strongest configuration across the main metrics, but Table IV gives other configurations higher results for several horizon-metric combinations. <em>To address this</em>, regenerate the tables and prose from one result source, reconcile the abstract, figures, discussion, and conclusion, and describe each metric and horizon separately.</p>
+        <p><strong>The regime threshold and timestamp protocol are under-specified.</strong> The manuscript alternates between a full-dataset and a training-only volatility median, and does not fully define post availability, aggregation boundaries, missing hours, scaling scope, or overlap handling. <em>To address this</em>, fit thresholds and scalers on each training portion only, publish regime counts, define every information cutoff, and use purging or embargo where overlapping windows require it.</p>
+        <p><strong>The fusion ablation does not isolate adaptive weighting cleanly.</strong> The no-weighting variant changes the fused representation dimension and downstream parameterization, so its collapse may reflect capacity or conditioning rather than the fusion policy alone. <em>To address this</em>, compare fixed-weight, learned-fixed, concatenation-with-projection, and adaptive gates with matched dimensions, parameter counts, and tuning budgets.</p>
+        <p><strong>Uncertainty and calibration evidence are missing.</strong> Each configuration is represented by a single run, and AUC is discussed as calibration without proper calibration measures; the highlighted differences are also close to chance-level discrimination. <em>To address this</em>, report repeated-seed distributions, temporal-window confidence intervals, paired comparisons, Brier scores, expected calibration error, and reliability diagrams.</p>
+        <p><strong>The sentiment input is not independently validated.</strong> The retained FinBERT/Gemma-derived labels are not audited against human judgments on Bitcoin Reddit language or checked for temporal and domain drift. <em>To address this</em>, create a blinded human-labeled audit sample, report agreement and class balance, and compare the downstream sensitivity to alternative sentiment models or lexicon controls.</p>
+        <p><strong>The evidence and positioning are narrower than the broad conclusion.</strong> One asset, one social source, and one contiguous market period do not establish a general forecasting principle, while close prior work already combines Bitcoin technical and social signals with ablations. <em>To address this</em>, add matched persistence and classical baselines, cite and distinguish close multimodal work such as PreBit, test additional periods or assets, and narrow the claims to the validated task and protocol.</p>
+
+        <h2>What would most improve this paper</h2>
+        <p><strong>1. Release an executable reference pipeline.</strong> Provide versioned code, environment files, data identifiers or collection scripts, preprocessing, split files, seeds, and table-generation commands so an independent reader can inspect the gate and reproduce the results.</p>
+        <p><strong>2. Freeze the leakage-safe protocol and correct the gate.</strong> Resolve the equation and threshold contradictions, document timestamp boundaries and regime assignments, add protocol tests, and rerun the complete core evaluation.</p>
+        <p><strong>3. Add uncertainty-aware temporal validation.</strong> Repeat the corrected experiments across several seeds and rolling-origin windows, reporting variability and paired comparisons for each horizon and metric.</p>
+        <p><strong>4. Rebuild the controls around matched capacity.</strong> Add fixed-weight fusion, capacity-matched concatenation, market-only controls, persistence or majority baselines, and classical models under the same feature access and tuning budget.</p>
+        <p><strong>5. Validate the sentiment dependency and scope.</strong> Audit the upstream labels, test another sentiment source or model, and evaluate additional market periods or assets; if that is not feasible, state the single-period Bitcoin scope explicitly.</p>
+        <p><strong>6. Align claims with metrics and prior work.</strong> Separate discrimination from calibration and trading utility, add the appropriate measures if those claims remain, and position the specific regime-conditioned gate against close social-technical forecasting studies.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&amp;body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
