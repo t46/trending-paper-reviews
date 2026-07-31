@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: SpecFirst | Trending Paper Review Series</title>
+    <meta name="description" content="Rigorous constructive review of SpecFirst: Behavioral Specification Elicitation as a First-Class Step in Agent-Based Program Synthesis from Scratch (arXiv:2607.27167)">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trending Paper Review Series">
+    <meta property="og:title" content="Review: SpecFirst">
+    <meta property="og:description" content="SpecFirst offers a coherent, inspectable workflow and improves observed ProgramBench performance across four configurations. The decisive next step is to audit SPEC.md directly and use repeated, matched-resource controls to isolate its contribution from the larger pipeline.">
+    <meta property="og:url" content="https://t46.github.io/trending-paper-reviews/2607-27167.html">
+    <meta property="og:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://t46.github.io/trending-paper-reviews/og-image.png">
+    <meta name="twitter:title" content="Review: SpecFirst">
+    <meta name="twitter:description" content="SpecFirst offers a coherent, inspectable workflow and improves observed ProgramBench performance across four configurations. The decisive next step is to audit SPEC.md directly and use repeated, matched-resource controls to isolate its contribution from the larger pipeline.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+        nav a { color: #0066cc; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 48px 0 40px;
+            text-align: center;
+        }
+        header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        header .series { font-size: 14px; color: #888; margin-bottom: 16px; }
+        header .meta { font-size: 14px; color: #666; }
+        header .meta a { color: #666; }
+
+        article {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 32px;
+            margin: 32px auto;
+        }
+        article h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        article h2:first-child { margin-top: 0; }
+        article p { margin-bottom: 14px; font-size: 15px; color: #333; }
+        article ul { margin: 0 0 14px 24px; font-size: 15px; color: #333; }
+        article li { margin-bottom: 6px; }
+        article strong { color: #1a1a1a; }
+        article em { color: #555; }
+        article a { color: #0066cc; text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+
+        .verdict {
+            background: #fff8e1;
+            border-left: 3px solid #f5a623;
+            padding: 16px 20px;
+            margin: 0 0 24px;
+            font-size: 15px;
+            color: #5a4500;
+        }
+        .verdict strong { color: #5a4500; }
+
+        .series-intro {
+            background: #f8f9fa;
+            border-left: 3px solid #0066cc;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .feedback-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .feedback-box h2 { font-size: 18px; border: none; margin: 0 0 8px; padding: 0; }
+        .feedback-box p { font-size: 14px; color: #555; }
+        .feedback-box a { color: #0066cc; }
+
+        .newsletter {
+            background: #f0f4ff;
+            border: 2px solid #ccd6f0;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .newsletter h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .newsletter p { font-size: 14px; color: #555; margin-bottom: 12px; }
+        .newsletter form {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .newsletter input[type="email"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        .newsletter input[type="email"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+        }
+        .newsletter button {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: #0066cc;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter button:hover { background: #0052a3; }
+        .newsletter .privacy { font-size: 12px; color: #999; margin-top: 8px; }
+
+        .paid-review {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px auto;
+            text-align: center;
+        }
+        .paid-review h2 { font-size: 18px; border: none; margin: 0 0 6px; padding: 0; }
+        .paid-review p { font-size: 14px; color: #555; margin-bottom: 14px; }
+        .paid-review .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .paid-review a.button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #0066cc;
+        }
+        .paid-review a.primary {
+            color: #fff;
+            background: #0066cc;
+        }
+        .paid-review a.secondary {
+            color: #0066cc;
+            background: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            font-size: 13px;
+            color: #999;
+        }
+        footer a { color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="./">&larr; All Reviews</a>
+    </div>
+</nav>
+
+<header>
+    <div class="container">
+        <p class="series">Trending Paper Review Series</p>
+        <h1>SpecFirst: Behavioral Specification Elicitation as a First-Class Step in Agent-Based Program Synthesis from Scratch</h1>
+        <p class="meta">
+            Yihao Chen, Shi Chang, Feng Lin, Khaled Chawa et al. &middot; July 2026 &middot;
+            <a href="https://arxiv.org/abs/2607.27167">arXiv:2607.27167</a>
+        </p>
+        <p class="meta" style="margin-top: 8px;">
+            AI-generated review by Unktok Reviewer
+        </p>
+    </div>
+</header>
+
+<div class="container">
+    <article>
+        <div class="series-intro">
+            This is part of the <strong>Trending Paper Review Series</strong> &mdash;
+            automated rigorous reviews of trending ML/AI papers using AI agents. Our philosophy:
+            <em>Rigorous Constructive Criticism</em> &mdash; no numerical scores,
+            no publication-outcome predictions, just evidence-based analysis and
+            actionable improvement suggestions.
+        </div>
+
+        <div class="verdict">
+            SpecFirst offers a coherent, inspectable workflow and improves observed ProgramBench performance across four configurations. The decisive next step is to audit <code>SPEC.md</code> directly and use repeated, matched-resource controls to isolate its contribution from the larger pipeline.
+        </div>
+
+        <h2>Paper overview</h2>
+
+        <p><strong>SpecFirst</strong> studies black-box behavioral reimplementation of deterministic command-line programs. Given incomplete natural-language documentation and execute-only access to a reference binary, an agent must infer behavior and construct a compatible program from scratch &mdash; a setting where existing agents often begin coding before they have explored enough of the target's behavior.</p>
+
+        <p>The proposed workflow separates discovery from implementation. A dedicated specification agent probes the binary and records its findings in a six-part <code>SPEC.md</code>; a fresh-context synthesis agent then receives the documentation, binary access, and specification, and may re-probe ambiguous behavior while implementing the program. This combination of active execute-only elicitation, a specification-only agent, a persistent natural-language handoff, and fresh-context synthesis is distinct within the literature examined by the review.</p>
+
+        <p>The evaluation covers all 200 ProgramBench tasks with four model configurations from two families. On the observed runs, the complete SpecFirst package raises mean hidden-test pass rate for every configuration and reaches more reference-program lines during probing, while increasing mean per-instance cost by 48%&ndash;130%. These results establish a promising package-level pattern; they do not yet identify which component causes it or characterize run-to-run stability.</p>
+
+        <h2>Key strengths</h2>
+
+        <p><strong>A consequential whole-program problem is sharply instantiated.</strong> Reconstructing a program from incomplete documentation and a behavioral oracle requires active experiment design, retention of interacting observations, and repository-scale implementation without source code as an architectural anchor. Hidden executable tests give the study an objective finite-suite endpoint.</p>
+
+        <p><strong>The elicitation-to-synthesis integration is coherent and usefully distinct.</strong> The workflow gives behavioral discovery protected time, externalizes findings before coding, and provides the implementation agent with a stable reference in a fresh context. The contribution is strongest when described as this precise four-element integration rather than as a broad claim over specification-first development.</p>
+
+        <p><strong>The handoff creates an inspectable research object.</strong> A persistent <code>SPEC.md</code> makes cross-agent knowledge transfer visible and, in principle, auditable. It also creates a practical interface for future replay, verification, caching, human review, and cross-model experiments.</p>
+
+        <p><strong>The in-scope evaluation footprint is strong.</strong> The paper uses the complete 200-task benchmark, same-task comparisons, four model configurations, an unchanged downstream scaffold, network-isolated execution, and dense hidden behavioral tests. Using the full suite avoids favorable task selection in the main study.</p>
+
+        <p><strong>The empirical reporting exposes useful trade-offs.</strong> All four observed configurations move in the same performance direction, and the paper supplements final pass rates with exploration coverage, task difficulty, work trajectories, failure categories, format comparisons, and explicit cost overhead. This diagnostic breadth makes the system easier to interrogate than a final-score-only study.</p>
+
+        <h2>Key concerns and constructive suggestions</h2>
+
+        <p><strong>The defining specification contract is not independently validated.</strong> The specification agent decides when exploration is complete, the enforced gate checks only that <code>SPEC.md</code> exists, and the study does not measure claim correctness, behavioral completeness, contradictions, output-channel fidelity, or probe provenance across the corpus. <em>To address this</em>, the authors should build a claim-to-probe ledger, replay claims against held-out valid and invalid behaviors, and report independently adjudicated completeness, fidelity, contradiction, and traceability measures.</p>
+
+        <p><strong>The main comparison bundles several causal changes.</strong> SpecFirst adds an agent, a mandatory phase, more probing and inference, structured external memory, a context reset, and substantially higher cost while retaining downstream re-probing. The observed contrast therefore identifies the complete workflow package, not the contribution of the specification artifact alone. <em>To address this</em>, the authors should run matched-token, matched-cost, and matched-query controls that cross specification presence, agent count, context reset, phase order, trace representation, and re-probing.</p>
+
+        <p><strong>Run-to-run reliability and several headline inferences remain unresolved.</strong> The evaluation appears to contain one stochastic trajectory per task and condition, and the paper does not provide complete paired inference for upper-tail, difficulty, or process claims. Exact test details, paired effect magnitudes, multiplicity handling, and empirical run variance are also missing. <em>To address this</em>, the authors should repeat independent generations under archived settings and publish task- and run-level outcomes with paired intervals, interaction tests, threshold-transition analyses, and task/run hierarchical uncertainty.</p>
+
+        <p><strong>The intermediate metrics do not yet validate the claimed mechanism.</strong> Executed-line reach measures which source lines a probe touches, not whether behavior was understood or recorded faithfully; source-line growth measures code volume, not productive implementation. Discarding the elicitation trace also hides uncertainty and rejected hypotheses, while downstream correction is not quantified. <em>To address this</em>, the authors should track each behavioral requirement from probe to specification to code and hidden test, compare specification-only, full-trace, and evidence-ledger handoffs, and measure re-probe corrections and contradictions.</p>
+
+        <p><strong>Reproducibility and scope remain narrower than the framing.</strong> The dated artifact search did not locate the claimed patch set, exact prompts, immutable environments, raw outcomes, traces, specifications, or analysis scripts, and the evidence comes from one deterministic-CLI benchmark and one scaffold lineage. <em>To address this</em>, the authors should publish an immutable author-linked experiment package and then replicate across another scaffold plus a stateful or non-CLI oracle before extending claims to broader program construction.</p>
+
+        <h2>What would most improve this paper</h2>
+
+        <p><strong>1. Validate <code>SPEC.md</code> as a scientific object.</strong> Attach replayable evidence and uncertainty to every behavioral claim, evaluate held-out positive and negative behaviors, and report contract correctness, completeness, contradiction, channel fidelity, and downstream mediation.</p>
+
+        <p><strong>2. Isolate the mechanism with matched-resource controls.</strong> Compare the full workflow with equal-budget direct synthesis, a forced second pass without a specification, a single-agent required-spec condition, a two-agent no-spec condition, alternative handoff representations, and an oracle-spec upper bound.</p>
+
+        <p><strong>3. Add repeated runs and complete paired inference.</strong> Archive generation settings, separate task and run variation, test every headline contrast directly, and report empirical paired magnitudes alongside accuracy&ndash;cost, accuracy&ndash;query, and accuracy&ndash;latency frontiers.</p>
+
+        <p><strong>4. Release an immutable exact-run package.</strong> Provide patches and commits, complete prompts, dependency locks, container digests, provider snapshots, raw per-task outcomes, command traces, <code>SPEC.md</code> files, subset identifiers, cost logs, and scripts that regenerate every table and figure.</p>
+
+        <p><strong>5. Formalize and broaden the evidence boundary.</strong> Define observable behavior across stdout, stderr, exit status, filesystem effects, and state; distinguish finite-suite agreement from full equivalence; calibrate novelty language to the exact integration; and replicate in a different scaffold and oracle setting.</p>
+    </article>
+
+    <div class="feedback-box">
+        <h2>Your feedback matters</h2>
+        <p>This review was generated entirely by an AI system. We are exploring what rigorous AI-assisted review can look like in practice &mdash; not providing definitive judgments. AI reviewers have blind spots and may miss domain-specific nuances.</p>
+        <p style="margin-top: 8px;"><strong>If you notice anything inaccurate, unfair, or improvable, please tell us.</strong> Your feedback directly improves the pipeline. Paper suggestions are also welcome at the same link.</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/t46/trending-paper-reviews/issues">Open an issue</a> &middot; <a href="https://t46.github.io/">Contact Shiro Takagi</a></p>
+    </div>
+
+    <div class="newsletter">
+        <h2>Get daily AI paper reviews in your inbox</h2>
+        <p>Free newsletter &mdash; rigorous reviews of trending ML/AI papers, every day.</p>
+        <form
+            action="https://buttondown.com/api/emails/embed-subscribe/trending-paper-reviews"
+            method="post"
+            target="popupwindow"
+        >
+            <input type="email" name="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe</button>
+        </form>
+        <p class="privacy">No spam. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="paid-review">
+        <h2>Need this review process for your own paper?</h2>
+        <p>Private reviews are available at JPY 10,000 per paper, or JPY 50,000 per month for Reviewer Pro.</p>
+        <div class="actions">
+            <a class="button primary" href="https://github.com/t46/trending-paper-reviews/issues/new?title=Private%20paper%20review%20request&amp;body=Paper%20URL%3A%0AReview%20type%3A%20Pay-per%20or%20Pro%0ADeadline%3A%0AWhat%20you%20want%20the%20review%20to%20focus%20on%3A">Request a paid review</a>
+            <a class="button secondary" href="pricing.html">See pricing</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <a href="./">Trending Paper Review Series</a> &middot;
+    <a href="https://t46.github.io/">Shiro Takagi</a> &middot;
+    <a href="https://unktok.com/">Unktok</a>
+    <br><br>
+    Powered by Unktok Reviewer
+</footer>
+
+</body>
+</html>
